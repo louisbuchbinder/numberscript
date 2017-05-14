@@ -1,0 +1,17 @@
+{
+  "name": "numberscript",
+  "version": "0.0.0",
+  "description": "NumberScript Language Interpreter",
+  "main": "index.js",
+  "scripts": {
+    "qt": "echo 'Quick Test'; mocha test --recursive",
+    "test": "jenkins-mocha test --recursive"
+  },
+  "author": "Louis Buchbinder",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "jenkins-mocha": "^4.1.2",
+    "sinon": "^2.2.0"
+  }
+}
