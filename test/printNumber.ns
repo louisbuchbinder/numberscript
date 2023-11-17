@@ -1,0 +1,16 @@
+= goal is to print a 2 digit literal number
+
+10>			= stack[0] += 10
+48>			= stack[1] += 48
+23>			= stack[2] += 23, the number to print
++<.>		= stack[3] += stack[2]
+(/<<<.	= stack[3] /= stack[0]
+>>>?		= if stack[3] != 0
++<<.		= true: stack[3] += stack[1]
+>>π			= true: print(stack[3])
+-<<.		= true: stack[3] -= stack[1]
+>>,.)		= false: noop
+<%<<.		= stack[2] %= stack[0]
+>>+<.		= stack[2] += stack[1]
+>π			= print(stack[2])
+<<π			= print(stack[0])
