@@ -1,0 +1,2 @@
+build --symlink_prefix=.bazel/
+run:use-build-dir --run_under="cd $BUILD_WORKING_DIRECTORY &&"
