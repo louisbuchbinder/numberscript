@@ -1,0 +1,50 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "wasm",
+    srcs = ["main.go"],
+    importpath = "github.com/louisbuchbinder/core/wasm",
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "external",
+    srcs = [":go1.24.5_wasm_exec.js"],
+    outs = ["external.tar.gz"],
+    cmd = """
+        mkdir -p wasm/external
+        cp $(location :go1.24.5_wasm_exec.js) wasm/external
+        tar -czf  $(location :external.tar.gz) wasm/external/*
+    """,
+)
+
+dist_srcs = [
+    ":external.tar.gz",
+    "//wasm/crypto/md5/pkg:dist",
+    "//wasm/crypto/rand/pkg:dist",
+    "//wasm/crypto/sha1/pkg:dist",
+    "//wasm/crypto/sha3/pkg:dist",
+    "//wasm/crypto/sha256/pkg:dist",
+    "//wasm/crypto/sha512/pkg:dist",
+    "//wasm/encoding/base32/pkg:dist",
+    "//wasm/encoding/base64/pkg:dist",
+    "//wasm/encoding/hex/pkg:dist",
+]
+
+genrule(
+    name = "dist",
+    srcs = dist_srcs,
+    outs = ["wasm.tar.gz"],
+    cmd = """
+    mkdir archive
+    {extract_pkgs}
+    cd archive
+    find . -type f | xargs \
+        tar -czf ../$(location :wasm.tar.gz)
+    """.format(
+        extract_pkgs = "\n".join([
+            "tar -xzf $(location {}) -C archive".format(src)
+            for src in dist_srcs
+        ]),
+    ),
+)

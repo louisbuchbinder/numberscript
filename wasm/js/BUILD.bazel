@@ -1,0 +1,15 @@
+# gazelle:ignore
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "js",
+    srcs = select({
+        "@rules_go//go/platform:js": [
+            "main.go",
+        ],
+        "//conditions:default": [],
+    }),
+    importpath = "github.com/louisbuchbinder/core/wasm/js",
+    visibility = ["//visibility:public"],
+    deps = ["//wasm"],
+)

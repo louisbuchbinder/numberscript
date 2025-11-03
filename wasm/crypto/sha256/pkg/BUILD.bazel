@@ -1,0 +1,56 @@
+# gazelle:ignore
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("//wasm:rules.bzl", "wasm_dist", "wasm_go", "wasm_html", "wasm_js")
+
+module = "wasm/crypto/sha256"
+
+wasm_exports = [
+    "wasm.crypto.sha256.Sum224",
+    "wasm.crypto.sha256.Sum256",
+]
+
+wasm_js(
+    name = "wasm_js",
+    module = module,
+    wasm_exports = wasm_exports,
+)
+
+wasm_go(
+    name = "wasm.go",
+    wasm_exports = wasm_exports,
+)
+
+wasm_html(
+    name = "script.partial",
+    module = module,
+)
+
+wasm_dist(
+    name = "dist",
+    module = module,
+)
+
+go_library(
+    name = "pkg_lib",
+    srcs = select({
+        "@rules_go//go/platform:js": [
+            ":wasm.go",
+        ],
+        "//conditions:default": [],
+    }),
+    importpath = "github.com/louisbuchbinder/core/" + module + "/pkg",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//wasm",
+        "//" + module,
+        "//wasm/js",
+    ],
+)
+
+go_binary(
+    name = "pkg",
+    embed = [":pkg_lib"],
+    goarch = "wasm",
+    goos = "js",
+    visibility = ["//visibility:public"],
+)

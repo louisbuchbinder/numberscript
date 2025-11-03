@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "base32",
+    srcs = ["wasm.go"],
+    importpath = "github.com/louisbuchbinder/core/wasm/encoding/base32",
+    visibility = ["//visibility:public"],
+    deps = ["//wasm"],
+)
