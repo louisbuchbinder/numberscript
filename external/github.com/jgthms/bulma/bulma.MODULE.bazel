@@ -1,0 +1,12 @@
+"""
+"""
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "bulma-1.0.4",
+    build_file = "//external/github.com/jgthms/bulma:bulma.BUILD",
+    sha256 = "0d139c4a809ab92b9e2171aac4e4d414a755da1224d7c1e98ef27574a178a337",
+    strip_prefix = "",
+    url = "https://github.com/jgthms/bulma/releases/download/1.0.4/bulma-1.0.4.zip",
+)

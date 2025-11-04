@@ -1,0 +1,60 @@
+filegroup(
+    name = "html",
+    srcs = glob(["**/*.html"]),
+)
+
+genrule(
+    name = "static",
+    srcs = [":html"],
+    outs = ["static.tar.gz"],
+    cmd = """
+        cd louisbuchbinder.com
+        find . -type l | xargs tar -Lczf ../$(location :static.tar.gz)
+    """,
+)
+
+external_srcs = [
+    "//external/github.com/jgthms/bulma:dist",
+]
+
+genrule(
+    name = "external",
+    srcs = external_srcs,
+    outs = ["external.tar.gz"],
+    cmd = """
+    mkdir -p archive/external
+    {extract_pkgs}
+    cd archive
+    find external -type f | xargs \
+        tar -czf ../$(location :external.tar.gz)
+    """.format(
+        extract_pkgs = "\n".join([
+            "tar -xzf $(location {}) -C archive/external".format(src)
+            for src in external_srcs
+        ]),
+    ),
+)
+
+dist_srcs = [
+    ":static",
+    ":external",
+    "//wasm:dist",
+]
+
+genrule(
+    name = "dist",
+    srcs = dist_srcs,
+    outs = ["dist.tar.gz"],
+    cmd = """
+    mkdir archive
+    {extract_pkgs}
+    cd archive
+    find . -type f | xargs \
+        tar -czf ../$(location :dist.tar.gz)
+    """.format(
+        extract_pkgs = "\n".join([
+            "tar -xzf $(location {}) -C archive".format(src)
+            for src in dist_srcs
+        ]),
+    ),
+)

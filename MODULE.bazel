@@ -13,3 +13,5 @@ go_sdk.download(
 )
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+
+include("//external/github.com/jgthms/bulma:bulma.MODULE.bazel")

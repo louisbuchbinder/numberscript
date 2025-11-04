@@ -47,4 +47,5 @@ genrule(
             for src in dist_srcs
         ]),
     ),
+    visibility = ["//visibility:public"],
 )

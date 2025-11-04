@@ -1,0 +1,17 @@
+genrule(
+    name = "dist",
+    srcs = [
+        "@bulma-1.0.4//:bulma/css/bulma.css",
+        "@bulma-1.0.4//:bulma/css/bulma.min.css",
+    ],
+    outs = [
+        "dist.tar.gz",
+    ],
+    cmd = """
+    mkdir -p bulma-1.0.4/css
+    cp $(location @bulma-1.0.4//:bulma/css/bulma.css) bulma-1.0.4/css/bulma.css
+    cp $(location @bulma-1.0.4//:bulma/css/bulma.min.css) bulma-1.0.4/css/bulma.min.css
+    find bulma-1.0.4 -type f | xargs tar -czf $(location dist.tar.gz)
+    """,
+    visibility = ["//visibility:public"],
+)

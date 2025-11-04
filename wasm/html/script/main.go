@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/louisbuchbinder/core/lib/util"
 )
@@ -28,9 +29,10 @@ func main() {
 	f := util.Must(os.Open(file))
 	defer f.Close()
 	sha256 := util.Must(util.Sha256HexOfFile(f))
-	filenameSHA256 := sha256 + "." + path.Base(file)
-	src := fmt.Sprintf("%s/%s", module, path.Base(file))
-	srcSHA256 := fmt.Sprintf("%s/%s", module, filenameSHA256)
+	filename := strings.TrimPrefix(path.Base(file), "sha256.")
+	filenameSHA256 := sha256 + "." + filename
+	src := fmt.Sprintf("/%s/pkg/%s", module, filename)
+	srcSHA256 := fmt.Sprintf("/%s/pkg/%s", module, filenameSHA256)
 	target := `<script src="%s"></script>`
 	content := fmt.Sprintf(target, src)
 	contentSHA256 := fmt.Sprintf(target, srcSHA256)

@@ -7,6 +7,7 @@ module = "wasm/encoding/hex"
 wasm_exports = [
     "wasm.encoding.hex.EncodeToString",
     "wasm.encoding.hex.DecodeString",
+    "wasm.encoding.hex.DecodeStringAsBytes",
 ]
 
 wasm_js(

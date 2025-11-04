@@ -22,7 +22,7 @@ const WASM_JS_TEMPLATE = `(function () {
 {{.DefineTree}}
     const go = new Go();
     WebAssembly.instantiateStreaming(
-        fetch("{{.Module}}/{{.SHA256Prefix}}main.wasm"),
+        fetch("/{{.Module}}/pkg/{{.SHA256Prefix}}main.wasm"),
         go.importObject
     ).then((result) => {
         go.run(result.instance);

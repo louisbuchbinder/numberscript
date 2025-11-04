@@ -21,7 +21,7 @@ def wasm_js(name, wasm_exports, module):
         ),
     )
 
-go_export_template = '\tjs.Global(){go_export_gets}.Set("{func_name}", js.FuncOf(func(_ js.Value, args []js.Value) any {{\n\t\treturn pkg.{func_name}(jsutil.ToValues(args))\n\t}}))'
+go_export_template = '\tjs.Global(){go_export_gets}.Set("{func_name}", js.FuncOf(func(_ js.Value, args []js.Value) any {{\n\t\treturn jsutil.OrError(pkg.{func_name}(jsutil.ToValues(args)))\n\t}}))'
 
 wasm_go_main_template = """
 package main
