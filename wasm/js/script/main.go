@@ -18,16 +18,20 @@ type JsDefineExportTreeTemplateInput struct {
 	ObjPath string
 }
 
-const WASM_JS_TEMPLATE = `(function () {
+const WASM_JS_TEMPLATE = `
+if (typeof window.wasmContentLoaders === "undefined") {
+    window.wasmContentLoaders = [];
+}
+window.wasmContentLoaders.push((function () {
 {{.DefineTree}}
     const go = new Go();
-    WebAssembly.instantiateStreaming(
+    return WebAssembly.instantiateStreaming(
         fetch("/{{.Module}}/pkg/{{.SHA256Prefix}}main.wasm"),
         go.importObject
     ).then((result) => {
         go.run(result.instance);
     });
-})();`
+})());`
 
 type WasmJsTemplateInput struct {
 	DefineTree   string

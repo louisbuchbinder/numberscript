@@ -1,0 +1,261 @@
+<style>
+  .is-float-right {
+    float: right;
+  }
+  .is-hover-visible-target {
+    visibility: hidden;
+  }
+  .is-hover-visible-parent:hover .is-hover-visible-target {
+    visibility: visible;
+  }
+</style>
+<script>
+  function addClass(cls, ...elems) {
+    elems.forEach((e) => e.classList.add(cls));
+  }
+  function removeClass(cls, ...elems) {
+    elems.forEach((e) => e.classList.remove(cls));
+  }
+  function hide(...elems) {
+    elems.forEach((e) => e.setAttribute("hidden", "true"));
+  }
+  function unhide(...elems) {
+    elems.forEach((e) => e.removeAttribute("hidden"));
+  }
+  function uint8ArrayFromSpaceSeparatedString(s) {
+    // TODO: harden, expect user data
+    const bytes = s.split(" ").map(Number);
+    for (b of bytes) {
+      if (Number.isNaN(b) || b < 0 || 255 < b) {
+        throw new Error(
+          "Unable to parse bytes. Expected space separated uint8, but instead got: " +
+            s
+        );
+      }
+    }
+    return Uint8Array.from(bytes);
+  }
+  function arrToSpaceSeparatedString(b) {
+    return b.map(String).join(" ");
+  }
+  function resolve(p) {
+    parts = p.split(".");
+    v = window;
+    while (parts.length > 0) {
+      v = v[parts.shift()];
+    }
+    return v;
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    [].slice
+      .call(document.getElementsByClassName("is-copy-button"))
+      .forEach((b) => {
+        const target = b.parentElement.querySelector(".is-copy-target");
+        b.addEventListener("click", () => {
+          navigator.clipboard.writeText(target.textContent);
+        });
+      });
+  });
+</script>
+<script>
+  const page = {};
+  page.toggleTab = function (name, group) {
+    const target = document.getElementById(name + "-toggle");
+    removeClass("is-active", ...target.parentElement.children);
+    addClass("is-active", target);
+    hide(...[].slice.call(document.getElementsByClassName(group)));
+    unhide(
+      ...[].slice.call(document.getElementsByClassName(group + "-" + name))
+    );
+  };
+  page.operator = function (name, n) {
+    const warning = document.getElementById("page-warning");
+    try {
+      const argOps = Array(n)
+        .fill(null)
+        .map((_, i) => {
+          return resolve(
+            document
+              .getElementById(name + "-arg-" + i + "-ops")
+              .querySelector(".is-active").dataset.operator
+          );
+        });
+      const args = Array(n)
+        .fill(null)
+        .map((_, i) => {
+          return argOps[i](
+            document.getElementById(name + "-input-" + i).textContent
+          );
+        });
+      const op = resolve(
+        document
+          .getElementById(name + "-result-ops")
+          .querySelector(".is-active").dataset.operator
+      );
+      let result = op(...args);
+      if (result instanceof Error) {
+        throw result;
+      }
+      if (Array.isArray(result)) {
+        result = arrToSpaceSeparatedString(result);
+      }
+      document.getElementById(name + "-result").textContent = result;
+      hide(warning);
+    } catch (err) {
+      document.getElementById(name + "-result").textContent = "";
+      warning.querySelector("p").textContent = err.message;
+      unhide(warning);
+    }
+  };
+</script>
+<div class="notification is-warning" id="page-warning" hidden="true">
+  <button
+    class="delete"
+    onclick="javascript:hide(document.getElementById('page-warning'))"
+  ></button>
+  <div class="content is-large">
+    <b><p></p></b>
+  </div>
+</div>
+<section class="hero has-text-centered">
+  <div class="hero-body">
+    <h1 class="title is-1">{{.Title}}</h1>
+  </div>
+</section>
+<div class="container">
+  <div
+    class="tabs is-centered is-large is-toggle is-toggle-rounded is-fullwidth"
+  >
+    <ul>
+      {{range $i, $t := .Tabs}}
+      <li id="{{$t.Name}}-toggle" {{if eq $i 0}}class="is-active" {{end}}>
+        <a
+          href="javascript:[
+            page.toggleTab('{{$t.Name}}', 'tab-group-function'),
+            page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
+          ]"
+          >{{$t.Title}}</a
+        >
+      </li>
+      {{end}}
+    </ul>
+  </div>
+  {{range $i, $t := .Tabs}}
+  <div
+    class="tab-group-function tab-group-function-{{$t.Name}}"
+    {{if
+    ne
+    $i
+    0}}hidden="true"
+    {{end}}
+  >
+    {{range $j, $a := $t.Args}}
+    <div class="level has-text-centered">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="subtitle is-2">{{$a.Title}}:</h2>
+        </div>
+        <div class="tabs level-item is-large is-toggle is-toggle-rounded">
+          <ul id="{{$t.Name}}-arg-{{$j}}-ops">
+            {{range $k, $o := $a.Operators}}
+            <li
+              id="{{$t.Name}}-{{$a.Name}}-{{$o.Name}}-toggle"
+              {{if
+              eq
+              $k
+              0}}class="is-active"
+              {{end}}
+              data-operator="{{$o.Operator}}"
+            >
+              <a
+                {{if
+                eq
+                (len
+                $a.Operators)
+                1}}
+                href="javascript:void(0)"
+                style="cursor: default"
+                {{else}}
+                href="javascript:[
+                  page.toggleTab('{{$t.Name}}-{{$a.Name}}-{{$o.Name}}', 'tab-group-function-arg-operator'),
+                  page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
+                ]"
+                {{end}}
+                >{{$o.Title}}</a
+              >
+            </li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="box is-hover-visible-parent">
+      <button
+        class="button is-right is-hover-visible-target is-float-right is-copy-button"
+      >
+        copy
+      </button>
+      <div class="content is-large">
+        {{if eq $a.Type "text"}}
+        <p
+          contenteditable
+          id="{{$t.Name}}-input-{{$j}}"
+          class="is-copy-target"
+          oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'))"
+        ></p>
+        {{end}}
+      </div>
+    </div>
+    {{end}}
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="subtitle is-2">Result:</h2>
+        </div>
+        <div class="tabs is-centered is-large is-toggle is-toggle-rounded">
+          <ul id="{{$t.Name}}-result-ops">
+            {{range $j, $o := $t.Result.Operators}}
+            <li
+              id="{{$t.Name}}-result-{{$o.Name}}-toggle"
+              {{if
+              eq
+              $j
+              0}}class="is-active"
+              {{end}}
+              data-operator="{{$o.Operator}}"
+            >
+              <a
+                {{if
+                eq
+                (len
+                $t.Result.Operators)
+                1}}
+                href="javascript:void(0)"
+                style="cursor: default"
+                {{else}}
+                href="javascript:[
+                  page.toggleTab('{{$t.Name}}-result-{{$o.Name}}', 'is-tab-group-function-result-operator'),
+                  page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
+                ]"
+                {{end}}
+                >{{$o.Title}}</a
+              >
+            </li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="box is-hover-visible-parent">
+      <button
+        class="button is-right is-hover-visible-target is-float-right is-copy-button"
+      >
+        copy
+      </button>
+      <div class="content is-large" style="overflow-wrap: break-word">
+        <p id="{{$t.Name}}-result" class="is-copy-target"></p>
+      </div>
+    </div>
+  </div>
+  {{end}}
+</div>

@@ -1,17 +1,7 @@
-filegroup(
-    name = "html",
-    srcs = glob(["**/*.html"]),
-)
-
-genrule(
-    name = "static",
-    srcs = [":html"],
-    outs = ["static.tar.gz"],
-    cmd = """
-        cd louisbuchbinder.com
-        find . -type l | xargs tar -Lczf ../$(location :static.tar.gz)
-    """,
-)
+# filegroup(
+#     name = "html",
+#     srcs = glob(["**/*.html"]),
+# )
 
 external_srcs = [
     "//external/github.com/jgthms/bulma:dist",
@@ -36,7 +26,7 @@ genrule(
 )
 
 dist_srcs = [
-    ":static",
+    "//louisbuchbinder.com/build:site",
     ":external",
     "//wasm:dist",
 ]

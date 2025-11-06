@@ -1,0 +1,80 @@
+load("@rules_go//go:def.bzl", "go_library")
+load("//:rules/utils.bzl", "write")
+load(":template.bzl", "render_templates_embed_go", "template", "template_struct_field")
+
+templates = [
+    template(
+        name = "Document",
+        const_name = "DOCUMENT",
+        filename = "document.html",
+        struct_fields_list = [
+            template_struct_field(
+                name = "Title",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "Scripts",
+                type = "template.HTML",
+            ),
+            template_struct_field(
+                name = "Main",
+                type = "template.HTML",
+            ),
+        ],
+    ),
+    template(
+        name = "Script",
+        const_name = "SCRIPT",
+        filename = "script.html",
+        struct_fields_list = [
+            template_struct_field(
+                name = "Src",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "Attrs",
+                type = "template.HTMLAttr",
+            ),
+        ],
+    ),
+    template(
+        name = "Home",
+        const_name = "HOME",
+        filename = "home.html",
+        struct_fields_list = [],
+    ),
+    template(
+        name = "WasmPlayground",
+        const_name = "WASM_PLAYGROUND",
+        filename = "wasm_playground.html",
+        struct_fields_list = [
+            template_struct_field(
+                name = "Title",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "Tabs",
+                type = "[]WasmPlaygroundTab",
+            ),
+        ],
+    ),
+]
+
+write(
+    name = "embed",
+    content = render_templates_embed_go(templates),
+    out_file = "embed.go",
+)
+
+# gazelle:exclude embed.go
+go_library(
+    name = "templates",
+    srcs = [
+        "main.go",
+        ":embed.go",  #keep
+    ],
+    embedsrcs = [t.filename for t in templates],  #keep
+    importpath = "github.com/louisbuchbinder/core/louisbuchbinder.com/templates",
+    visibility = ["//visibility:public"],
+    deps = ["//lib/util"],
+)

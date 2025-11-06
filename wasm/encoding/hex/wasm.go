@@ -13,6 +13,12 @@ func EncodeToString(args []wasm.Value) any {
 	if len(args) < 1 {
 		return nil
 	}
+
+	if args[0].IsUint8Array() {
+		v := hex.EncodeToString(args[0].Uint8Array())
+		return string(v)
+	}
+
 	v := hex.EncodeToString([]byte(args[0].String()))
 	return string(v)
 }

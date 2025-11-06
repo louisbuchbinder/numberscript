@@ -1,0 +1,1 @@
+../../.bazel/bin/louisbuchbinder.com/templates/embed.go
