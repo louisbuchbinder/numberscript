@@ -7,6 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//lib/util",
+        "//louisbuchbinder.com/build/wasm_playground",
         "//louisbuchbinder.com/templates",
     ],
 )

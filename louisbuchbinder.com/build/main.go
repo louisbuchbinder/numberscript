@@ -4,9 +4,9 @@ import (
 	"html/template"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/louisbuchbinder/core/lib/util"
+	"github.com/louisbuchbinder/core/louisbuchbinder.com/build/wasm_playground"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
@@ -14,71 +14,6 @@ var MainPage = templates.MustRenderDocumentTemplate(templates.DocumentTemplateIn
 	Title:   "Home",
 	Scripts: "",
 	Main:    template.HTML(templates.MustRenderHomeTemplate(templates.HomeTemplateInput{})),
-})
-
-var EncodingHexPage = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
-	Title: "Hex Encoding",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
-	}, "\n")),
-	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
-		Title: "Hex Encoding",
-		Tabs: []templates.WasmPlaygroundTab{
-			{
-				Name:  "encode",
-				Title: "Encode",
-				Args: []templates.WasmPlaygroundTabArg{
-					{
-						Type:  templates.WasmPlaygroundTabValType_Text,
-						Name:  "data",
-						Title: "Data",
-						Operators: []templates.WasmPlaygroundTabOperator{
-							{Name: "from-text", Title: "From Text", Operator: "String"},
-							{Name: "from-bytes", Title: "From Bytes", Operator: "uint8ArrayFromSpaceSeparatedString"},
-						},
-					},
-				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.hex.EncodeToString",
-						},
-					},
-				},
-			},
-			{
-				Name:  "decode",
-				Title: "Decode",
-				Args: []templates.WasmPlaygroundTabArg{
-					{
-						Type:  templates.WasmPlaygroundTabValType_Text,
-						Name:  "data",
-						Title: "Data",
-						Operators: []templates.WasmPlaygroundTabOperator{
-							{Name: "from-text", Title: "From Text", Operator: "String"},
-						},
-					},
-				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.hex.DecodeString",
-						},
-						{
-							Name:     "as-bytes",
-							Title:    "As Bytes",
-							Operator: "wasm.encoding.hex.DecodeStringAsBytes",
-						},
-					},
-				},
-			},
-		},
-	})),
 })
 
 func write(f string, content []byte) error {
@@ -93,5 +28,15 @@ func write(f string, content []byte) error {
 
 func main() {
 	util.Must0(write("index.html", MainPage))
-	util.Must0(write("encoding/hex/index.html", EncodingHexPage))
+
+	util.Must0(write("crypto/md5/index.html", wasm_playground.CryptoMD5Page))
+	util.Must0(write("crypto/rand/index.html", wasm_playground.CryptoRandPage))
+	util.Must0(write("crypto/sha1/index.html", wasm_playground.CryptoSHA1Page))
+	util.Must0(write("crypto/sha3/index.html", wasm_playground.CryptoSHA3Page))
+	util.Must0(write("crypto/sha256/index.html", wasm_playground.CryptoSHA256Page))
+	util.Must0(write("crypto/sha512/index.html", wasm_playground.CryptoSHA512Page))
+
+	util.Must0(write("encoding/base32/index.html", wasm_playground.EncodingBase32Page))
+	util.Must0(write("encoding/base64/index.html", wasm_playground.EncodingBase64Page))
+	util.Must0(write("encoding/hex/index.html", wasm_playground.EncodingHexPage))
 }

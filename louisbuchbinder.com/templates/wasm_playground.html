@@ -130,10 +130,19 @@
       {{range $i, $t := .Tabs}}
       <li id="{{$t.Name}}-toggle" {{if eq $i 0}}class="is-active" {{end}}>
         <a
+          {{if
+          eq
+          (len
+          $.Tabs)
+          1}}
+          href="javascript:void(0)"
+          style="cursor: default"
+          {{else}}
           href="javascript:[
             page.toggleTab('{{$t.Name}}', 'tab-group-function'),
             page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
           ]"
+          {{end}}
           >{{$t.Title}}</a
         >
       </li>
@@ -149,7 +158,23 @@
     0}}hidden="true"
     {{end}}
   >
-    {{range $j, $a := $t.Args}}
+    {{if eq (len $t.Args) 0}}
+    <div class="level has-text-centered">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="subtitle is-2">{{$t.Title}}:</h2>
+        </div>
+        <div class="level-item">
+          <button
+            class="button is-large"
+            onclick="javascript:page.operator('{{$t.Name}}', 0)"
+          >
+            Generate
+          </button>
+        </div>
+      </div>
+    </div>
+    {{end}}{{range $j, $a := $t.Args}}
     <div class="level has-text-centered">
       <div class="level-left">
         <div class="level-item">
