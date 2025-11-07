@@ -1,12 +1,18 @@
 <style>
-  .is-float-right {
-    float: right;
+  .is-copy-button {
+    position: absolute;
+    right: 0;
+    z-index: 1;
   }
   .is-hover-visible-target {
     visibility: hidden;
   }
   .is-hover-visible-parent:hover .is-hover-visible-target {
     visibility: visible;
+  }
+  textarea.is-auto-resize {
+    resize: none;
+    overflow-y: hidden;
   }
 </style>
 <script>
@@ -46,16 +52,44 @@
     }
     return v;
   }
+  function respondToVisibility(element, callback) {
+    const options = {
+      root: document.documentElement,
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        callback(entry.intersectionRatio > 0);
+      });
+    }, options);
+
+    observer.observe(element);
+  }
   document.addEventListener("DOMContentLoaded", function () {
     [].slice
       .call(document.getElementsByClassName("is-copy-button"))
       .forEach((b) => {
         const target = b.parentElement.querySelector(".is-copy-target");
         b.addEventListener("click", () => {
-          navigator.clipboard.writeText(target.textContent);
+          navigator.clipboard.writeText(dataValue(target));
         });
       });
+
+    [].slice
+      .call(document.querySelectorAll("textarea.is-auto-resize"))
+      .forEach((e) => {
+        const resize = () => {
+          e.style.height = "auto";
+          e.style.height = e.scrollHeight + "px";
+        };
+        e.addEventListener("input", resize);
+        respondToVisibility(e, resize);
+        resize();
+      });
   });
+  function dataValue(e) {
+    return e.value || e.textContent;
+  }
 </script>
 <script>
   const page = {};
@@ -84,7 +118,7 @@
         .fill(null)
         .map((_, i) => {
           return argOps[i](
-            document.getElementById(name + "-input-" + i).textContent
+            dataValue(document.getElementById(name + "-input-" + i))
           );
         });
       const op = resolve(
@@ -149,7 +183,13 @@
       {{end}}
     </ul>
   </div>
-  {{range $i, $t := .Tabs}}
+  {{range $i, $t := .Tabs}} {{if eq $i 0}}
+  <script>
+    Promise.all(window.wasmContentLoaders).then((_) => {
+      page.operator("{{$t.Name}}", Number("{{len $t.Args}}"));
+    });
+  </script>
+  {{end}}
   <div
     class="tab-group-function tab-group-function-{{$t.Name}}"
     {{if
@@ -215,19 +255,16 @@
       </div>
     </div>
     <div class="box is-hover-visible-parent">
-      <button
-        class="button is-right is-hover-visible-target is-float-right is-copy-button"
-      >
+      <button class="button is-right is-hover-visible-target is-copy-button">
         copy
       </button>
       <div class="content is-large">
         {{if eq $a.Type "text"}}
-        <p
-          contenteditable
+        <textarea
           id="{{$t.Name}}-input-{{$j}}"
-          class="is-copy-target"
+          class="input is-copy-target content is-large is-auto-resize"
           oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'))"
-        ></p>
+        ></textarea>
         {{end}}
       </div>
     </div>
@@ -272,9 +309,7 @@
       </div>
     </div>
     <div class="box is-hover-visible-parent">
-      <button
-        class="button is-right is-hover-visible-target is-float-right is-copy-button"
-      >
+      <button class="button is-right is-hover-visible-target is-copy-button">
         copy
       </button>
       <div class="content is-large" style="overflow-wrap: break-word">
