@@ -13,6 +13,10 @@ templates = [
                 type = "string",
             ),
             template_struct_field(
+                name = "Links",
+                type = "template.HTML",
+            ),
+            template_struct_field(
                 name = "Scripts",
                 type = "template.HTML",
             ),
@@ -23,6 +27,25 @@ templates = [
             template_struct_field(
                 name = "Main",
                 type = "template.HTML",
+            ),
+        ],
+    ),
+    template(
+        name = "Link",
+        const_name = "LINK",
+        filename = "link.html",
+        struct_fields_list = [
+            template_struct_field(
+                name = "Rel",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "Href",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "Attrs",
+                type = "template.HTMLAttr",
             ),
         ],
     ),
@@ -53,6 +76,21 @@ templates = [
         const_name = "NAVBAR",
         filename = "navbar.html",
         struct_fields_list = [],
+    ),
+    template(
+        name = "WasmPlaygroundMain",
+        const_name = "WASM_PLAYGROUND_MAIN",
+        filename = "wasm_playground_main.html",
+        struct_fields_list = [
+            template_struct_field(
+                name = "Title",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "Menu",
+                type = "template.HTML",
+            ),
+        ],
     ),
     template(
         name = "WasmPlayground",

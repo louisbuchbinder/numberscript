@@ -7,7 +7,7 @@ import (
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
-var CryptoMD5Page = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "MD5 Hash",
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
@@ -42,9 +42,9 @@ var CryptoMD5Page = templates.MustRenderDocumentTemplate(templates.DocumentTempl
 			},
 		},
 	})),
-})
+}
 
-var CryptoRandPage = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Rand",
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
@@ -70,9 +70,9 @@ var CryptoRandPage = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 			},
 		},
 	})),
-})
+}
 
-var CryptoSHA1Page = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+var CryptoSHA1DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA1 Hash",
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
@@ -107,9 +107,9 @@ var CryptoSHA1Page = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 			},
 		},
 	})),
-})
+}
 
-var CryptoSHA3Page = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA3 Hash",
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
@@ -287,9 +287,9 @@ var CryptoSHA3Page = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 			},
 		},
 	})),
-})
+}
 
-var CryptoSHA256Page = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA256 Hash",
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
@@ -347,9 +347,9 @@ var CryptoSHA256Page = templates.MustRenderDocumentTemplate(templates.DocumentTe
 			},
 		},
 	})),
-})
+}
 
-var CryptoSHA512Page = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA512 Hash",
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
@@ -453,4 +453,4 @@ var CryptoSHA512Page = templates.MustRenderDocumentTemplate(templates.DocumentTe
 			},
 		},
 	})),
-})
+}

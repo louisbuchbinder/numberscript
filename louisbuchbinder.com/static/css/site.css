@@ -1,0 +1,20 @@
+.is-copy-button {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+.is-hover-visible-target {
+  visibility: hidden;
+}
+.is-hover-visible-parent:hover .is-hover-visible-target {
+  visibility: visible;
+}
+textarea.is-auto-resize {
+  resize: none;
+  overflow-y: hidden;
+}
+.menu {
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
+  padding: 30px;
+}
