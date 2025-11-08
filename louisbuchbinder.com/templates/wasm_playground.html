@@ -89,12 +89,16 @@
     [].slice.call(document.querySelectorAll(".is-menu-button")).forEach((b) => {
       const target = b.parentElement.querySelector(".menu-list");
       b.addEventListener("click", function () {
-        if (b.classList.contains("is-active")) {
+        if (b.classList.contains("is-selected")) {
           target.setAttribute("hidden", "true");
-          b.classList.remove("is-active");
+          b.classList.remove("is-selected");
+          b.classList.remove("is-outlined");
+          b.classList.remove("is-primary");
         } else {
           target.removeAttribute("hidden");
-          b.classList.add("is-active");
+          b.classList.add("is-selected");
+          b.classList.add("is-outlined");
+          b.classList.add("is-primary");
         }
       });
     });
@@ -113,6 +117,22 @@
   });
   function dataValue(e) {
     return e.value || e.textContent;
+  }
+  function safeUInt(v) {
+    n = Number(v);
+    if (isNaN(n)) {
+      throw new Error("expected uint, but instead got: " + v);
+    }
+    if (n < 0) {
+      throw new Error("expected uint, but instead got: " + n);
+    }
+    if (!Number.isInteger(n)) {
+      throw new Error("expected uint, but instead got: " + n);
+    }
+    if (!Number.isSafeInteger(n)) {
+      throw new Error("integer out of range: " + n);
+    }
+    return n;
   }
 </script>
 <script>
@@ -291,6 +311,16 @@
             class="input is-copy-target content is-large is-auto-resize"
             oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'))"
           ></textarea>
+          {{else if eq $a.Type "int"}}
+          <input
+            id="{{$t.Name}}-input-{{$j}}"
+            class="input is-copy-target content is-large"
+            style="width: 95%"
+            type="number"
+            oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'))"
+            min="{{$a.Options.IntOptions.Min}}"
+            max="{{$a.Options.IntOptions.Max}}"
+          />
           {{end}}
         </div>
       </div>

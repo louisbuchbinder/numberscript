@@ -211,6 +211,80 @@ var CryptoSHA3Page = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 					},
 				},
 			},
+			{
+				Name:  "sum-shake-128-hash",
+				Title: "SumSHAKE128 Hash",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Int,
+						Name:  "length",
+						Title: "Length",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							IntOptions: templates.WasmPlaygroundTabArgOptions_Int{
+								Min: 0,
+								Max: 1024,
+							},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "wasm.crypto.sha3.SumSHAKE128",
+						},
+					},
+				},
+			},
+			{
+				Name:  "sum-shake-256-hash",
+				Title: "SumSHAKE256 Hash",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Int,
+						Name:  "length",
+						Title: "Length",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							IntOptions: templates.WasmPlaygroundTabArgOptions_Int{
+								Min: 0,
+								Max: 1024,
+							},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "wasm.crypto.sha3.SumSHAKE256",
+						},
+					},
+				},
+			},
 		},
 	})),
 })
