@@ -33,3 +33,14 @@ type WasmPlaygroundTabOperator struct {
 	Title    string
 	Operator string
 }
+
+type WasmPlaygroundMenuItemContainer struct {
+	Title string
+	Items []WasmPlaygroundMenuItem
+}
+
+type WasmPlaygroundMenuItem struct {
+	Url   string
+	Title string
+	Key   string
+}

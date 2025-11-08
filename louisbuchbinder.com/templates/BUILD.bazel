@@ -53,8 +53,31 @@ templates = [
                 type = "string",
             ),
             template_struct_field(
+                name = "Menu",
+                type = "template.HTML",
+            ),
+            template_struct_field(
                 name = "Tabs",
                 type = "[]WasmPlaygroundTab",
+            ),
+        ],
+    ),
+    template(
+        name = "WasmPlaygroundMenu",
+        const_name = "WASM_PLAYGROUND_MENU",
+        filename = "wasm_playground_menu.html",
+        struct_fields_list = [
+            template_struct_field(
+                name = "Containers",
+                type = "[]WasmPlaygroundMenuItemContainer",
+            ),
+            template_struct_field(
+                name = "ActiveContainer",
+                type = "string",
+            ),
+            template_struct_field(
+                name = "ActiveItem",
+                type = "string",
             ),
         ],
     ),

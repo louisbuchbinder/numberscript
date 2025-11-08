@@ -14,6 +14,17 @@
     resize: none;
     overflow-y: hidden;
   }
+  .menu {
+    /* position: sticky;
+    display: inline-block;
+    vertical-align: top;
+    width: 200px;
+    top: 0;
+    bottom: 0; */
+    overflow-y: auto;
+    max-height: 100vh;
+    padding: 30px;
+  }
 </style>
 <script>
   function addClass(cls, ...elems) {
@@ -74,6 +85,19 @@
           navigator.clipboard.writeText(dataValue(target));
         });
       });
+
+    [].slice.call(document.querySelectorAll(".is-menu-button")).forEach((b) => {
+      const target = b.parentElement.querySelector(".menu-list");
+      b.addEventListener("click", function () {
+        if (b.classList.contains("is-active")) {
+          target.setAttribute("hidden", "true");
+          b.classList.remove("is-active");
+        } else {
+          target.removeAttribute("hidden");
+          b.classList.add("is-active");
+        }
+      });
+    });
 
     [].slice
       .call(document.querySelectorAll("textarea.is-auto-resize"))
@@ -151,171 +175,174 @@
     <b><p></p></b>
   </div>
 </div>
-<section class="hero has-text-centered">
-  <div class="hero-body">
-    <h1 class="title is-1">{{.Title}}</h1>
-  </div>
-</section>
-<div class="container">
-  <div
-    class="tabs is-centered is-large is-toggle is-toggle-rounded is-fullwidth"
-  >
-    <ul>
-      {{range $i, $t := .Tabs}}
-      <li id="{{$t.Name}}-toggle" {{if eq $i 0}}class="is-active" {{end}}>
-        <a
-          {{if
-          eq
-          (len
-          $.Tabs)
-          1}}
-          href="javascript:void(0)"
-          style="cursor: default"
-          {{else}}
-          href="javascript:[
+<section class="columns">
+  {{.Menu}}
+  <div class="column container">
+    <section class="hero has-text-centered">
+      <div class="hero-body">
+        <h1 class="title is-1">{{.Title}}</h1>
+      </div>
+    </section>
+    <div
+      class="tabs is-centered is-large is-toggle is-toggle-rounded is-fullwidth"
+    >
+      <ul>
+        {{range $i, $t := .Tabs}}
+        <li id="{{$t.Name}}-toggle" {{if eq $i 0}}class="is-active" {{end}}>
+          <a
+            {{if
+            eq
+            (len
+            $.Tabs)
+            1}}
+            href="javascript:void(0)"
+            style="cursor: default"
+            {{else}}
+            href="javascript:[
             page.toggleTab('{{$t.Name}}', 'tab-group-function'),
             page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
           ]"
-          {{end}}
-          >{{$t.Title}}</a
-        >
-      </li>
-      {{end}}
-    </ul>
-  </div>
-  {{range $i, $t := .Tabs}} {{if eq $i 0}}
-  <script>
-    Promise.all(window.wasmContentLoaders).then((_) => {
-      page.operator("{{$t.Name}}", Number("{{len $t.Args}}"));
-    });
-  </script>
-  {{end}}
-  <div
-    class="tab-group-function tab-group-function-{{$t.Name}}"
-    {{if
-    ne
-    $i
-    0}}hidden="true"
-    {{end}}
-  >
-    {{if eq (len $t.Args) 0}}
-    <div class="level has-text-centered">
-      <div class="level-left">
-        <div class="level-item">
-          <h2 class="subtitle is-2">{{$t.Title}}:</h2>
-        </div>
-        <div class="level-item">
-          <button
-            class="button is-large"
-            onclick="javascript:page.operator('{{$t.Name}}', 0)"
+            {{end}}
+            >{{$t.Title}}</a
           >
-            Generate
-          </button>
+        </li>
+        {{end}}
+      </ul>
+    </div>
+    {{range $i, $t := .Tabs}} {{if eq $i 0}}
+    <script>
+      Promise.all(window.wasmContentLoaders).then((_) => {
+        page.operator("{{$t.Name}}", Number("{{len $t.Args}}"));
+      });
+    </script>
+    {{end}}
+    <div
+      class="tab-group-function tab-group-function-{{$t.Name}}"
+      {{if
+      ne
+      $i
+      0}}hidden="true"
+      {{end}}
+    >
+      {{if eq (len $t.Args) 0}}
+      <div class="level has-text-centered">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="subtitle is-2">{{$t.Title}}:</h2>
+          </div>
+          <div class="level-item">
+            <button
+              class="button is-large"
+              onclick="javascript:page.operator('{{$t.Name}}', 0)"
+            >
+              Generate
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    {{end}}{{range $j, $a := $t.Args}}
-    <div class="level has-text-centered">
-      <div class="level-left">
-        <div class="level-item">
-          <h2 class="subtitle is-2">{{$a.Title}}:</h2>
-        </div>
-        <div class="tabs level-item is-large is-toggle is-toggle-rounded">
-          <ul id="{{$t.Name}}-arg-{{$j}}-ops">
-            {{range $k, $o := $a.Operators}}
-            <li
-              id="{{$t.Name}}-{{$a.Name}}-{{$o.Name}}-toggle"
-              {{if
-              eq
-              $k
-              0}}class="is-active"
-              {{end}}
-              data-operator="{{$o.Operator}}"
-            >
-              <a
+      {{end}}{{range $j, $a := $t.Args}}
+      <div class="level has-text-centered">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="subtitle is-2">{{$a.Title}}:</h2>
+          </div>
+          <div class="tabs level-item is-large is-toggle is-toggle-rounded">
+            <ul id="{{$t.Name}}-arg-{{$j}}-ops">
+              {{range $k, $o := $a.Operators}}
+              <li
+                id="{{$t.Name}}-{{$a.Name}}-{{$o.Name}}-toggle"
                 {{if
                 eq
-                (len
-                $a.Operators)
-                1}}
-                href="javascript:void(0)"
-                style="cursor: default"
-                {{else}}
-                href="javascript:[
+                $k
+                0}}class="is-active"
+                {{end}}
+                data-operator="{{$o.Operator}}"
+              >
+                <a
+                  {{if
+                  eq
+                  (len
+                  $a.Operators)
+                  1}}
+                  href="javascript:void(0)"
+                  style="cursor: default"
+                  {{else}}
+                  href="javascript:[
                   page.toggleTab('{{$t.Name}}-{{$a.Name}}-{{$o.Name}}', 'tab-group-function-arg-operator'),
                   page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
                 ]"
-                {{end}}
-                >{{$o.Title}}</a
-              >
-            </li>
-            {{end}}
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="box is-hover-visible-parent">
-      <button class="button is-right is-hover-visible-target is-copy-button">
-        copy
-      </button>
-      <div class="content is-large">
-        {{if eq $a.Type "text"}}
-        <textarea
-          id="{{$t.Name}}-input-{{$j}}"
-          class="input is-copy-target content is-large is-auto-resize"
-          oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'))"
-        ></textarea>
-        {{end}}
-      </div>
-    </div>
-    {{end}}
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <h2 class="subtitle is-2">Result:</h2>
-        </div>
-        <div class="tabs is-centered is-large is-toggle is-toggle-rounded">
-          <ul id="{{$t.Name}}-result-ops">
-            {{range $j, $o := $t.Result.Operators}}
-            <li
-              id="{{$t.Name}}-result-{{$o.Name}}-toggle"
-              {{if
-              eq
-              $j
-              0}}class="is-active"
+                  {{end}}
+                  >{{$o.Title}}</a
+                >
+              </li>
               {{end}}
-              data-operator="{{$o.Operator}}"
-            >
-              <a
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="box is-hover-visible-parent">
+        <button class="button is-right is-hover-visible-target is-copy-button">
+          copy
+        </button>
+        <div class="content is-large">
+          {{if eq $a.Type "text"}}
+          <textarea
+            id="{{$t.Name}}-input-{{$j}}"
+            class="input is-copy-target content is-large is-auto-resize"
+            oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'))"
+          ></textarea>
+          {{end}}
+        </div>
+      </div>
+      {{end}}
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="subtitle is-2">Result:</h2>
+          </div>
+          <div class="tabs is-centered is-large is-toggle is-toggle-rounded">
+            <ul id="{{$t.Name}}-result-ops">
+              {{range $j, $o := $t.Result.Operators}}
+              <li
+                id="{{$t.Name}}-result-{{$o.Name}}-toggle"
                 {{if
                 eq
-                (len
-                $t.Result.Operators)
-                1}}
-                href="javascript:void(0)"
-                style="cursor: default"
-                {{else}}
-                href="javascript:[
+                $j
+                0}}class="is-active"
+                {{end}}
+                data-operator="{{$o.Operator}}"
+              >
+                <a
+                  {{if
+                  eq
+                  (len
+                  $t.Result.Operators)
+                  1}}
+                  href="javascript:void(0)"
+                  style="cursor: default"
+                  {{else}}
+                  href="javascript:[
                   page.toggleTab('{{$t.Name}}-result-{{$o.Name}}', 'is-tab-group-function-result-operator'),
                   page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
                 ]"
-                {{end}}
-                >{{$o.Title}}</a
-              >
-            </li>
-            {{end}}
-          </ul>
+                  {{end}}
+                  >{{$o.Title}}</a
+                >
+              </li>
+              {{end}}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="box is-hover-visible-parent">
+        <button class="button is-right is-hover-visible-target is-copy-button">
+          copy
+        </button>
+        <div class="content is-large" style="overflow-wrap: break-word">
+          <p id="{{$t.Name}}-result" class="is-copy-target"></p>
         </div>
       </div>
     </div>
-    <div class="box is-hover-visible-parent">
-      <button class="button is-right is-hover-visible-target is-copy-button">
-        copy
-      </button>
-      <div class="content is-large" style="overflow-wrap: break-word">
-        <p id="{{$t.Name}}-result" class="is-copy-target"></p>
-      </div>
-    </div>
+    {{end}}
   </div>
-  {{end}}
-</div>
+</section>

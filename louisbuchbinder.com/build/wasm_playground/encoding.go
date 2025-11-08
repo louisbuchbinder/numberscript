@@ -15,6 +15,7 @@ var EncodingBase32Page = templates.MustRenderDocumentTemplate(templates.Document
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Base32 Encoding",
+		Menu:  Menu("Encoding", "Base32"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "encode",
@@ -74,6 +75,7 @@ var EncodingBase64Page = templates.MustRenderDocumentTemplate(templates.Document
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Base64 Encoding",
+		Menu:  Menu("Encoding", "Base64"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "encode",
@@ -133,6 +135,7 @@ var EncodingHexPage = templates.MustRenderDocumentTemplate(templates.DocumentTem
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Hex Encoding",
+		Menu:  Menu("Encoding", "Hex"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "encode",

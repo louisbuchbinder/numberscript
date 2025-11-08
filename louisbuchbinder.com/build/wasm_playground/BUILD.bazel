@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "crypto.go",
         "encoding.go",
+        "menu.go",
     ],
     importpath = "github.com/louisbuchbinder/core/louisbuchbinder.com/build/wasm_playground",
     visibility = ["//visibility:public"],

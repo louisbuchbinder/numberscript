@@ -15,6 +15,7 @@ var CryptoMD5Page = templates.MustRenderDocumentTemplate(templates.DocumentTempl
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "MD5 Hash",
+		Menu:  Menu("Crypto", "MD5"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "hash",
@@ -51,6 +52,7 @@ var CryptoRandPage = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Rand",
+		Menu:  Menu("Crypto", "Rand"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "text",
@@ -78,6 +80,7 @@ var CryptoSHA1Page = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA1 Hash",
+		Menu:  Menu("Crypto", "SHA1"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "hash",
@@ -114,6 +117,7 @@ var CryptoSHA3Page = templates.MustRenderDocumentTemplate(templates.DocumentTemp
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA3 Hash",
+		Menu:  Menu("Crypto", "SHA3"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "sum224-hash",
@@ -219,6 +223,7 @@ var CryptoSHA256Page = templates.MustRenderDocumentTemplate(templates.DocumentTe
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA256 Hash",
+		Menu:  Menu("Crypto", "SHA256"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "sum224-hash",
@@ -278,6 +283,7 @@ var CryptoSHA512Page = templates.MustRenderDocumentTemplate(templates.DocumentTe
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA512 Hash",
+		Menu:  Menu("Crypto", "SHA512"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "sum512_224-hash",

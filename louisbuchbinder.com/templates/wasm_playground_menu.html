@@ -1,0 +1,53 @@
+<aside class="menu is-large">
+  <p class="menu-label"><b>Playground Utilities</b></p>
+  <ul class="menu-list">
+    {{range $container := .Containers}}
+    <li>
+      <button
+        {{if
+        eq
+        $.ActiveContainer
+        $container.Title}}
+        hidden="true"
+        class="is-menu-button is-active"
+        {{else}}
+        class="is-menu-button"
+        {{end}}
+      >
+        {{$container.Title}}
+      </button>
+      <ul
+        class="menu-list"
+        {{if
+        ne
+        $.ActiveContainer
+        $container.Title}}
+        hidden="true"
+        {{end}}
+      >
+        {{range $item := $container.Items}}
+        <li>
+          <a
+            {{if
+            and
+            (eq
+            $.ActiveContainer
+            $container.Title)
+            (eq
+            $.ActiveItem
+            $item.Title)
+            }}
+            class="tab is-active"
+            {{else}}
+            class="tab"
+            {{end}}
+            href="{{$item.Url}}"
+            >{{$item.Title}}</a
+          >
+        </li>
+        {{end}}
+      </ul>
+    </li>
+    {{end}}
+  </ul>
+</aside>
