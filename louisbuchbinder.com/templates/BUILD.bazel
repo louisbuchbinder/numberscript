@@ -17,6 +17,10 @@ templates = [
                 type = "template.HTML",
             ),
             template_struct_field(
+                name = "Navbar",
+                type = "template.HTML",
+            ),
+            template_struct_field(
                 name = "Main",
                 type = "template.HTML",
             ),
@@ -41,6 +45,13 @@ templates = [
         name = "Home",
         const_name = "HOME",
         filename = "home.html",
+        struct_fields_list = [
+        ],
+    ),
+    template(
+        name = "Navbar",
+        const_name = "NAVBAR",
+        filename = "navbar.html",
         struct_fields_list = [],
     ),
     template(
