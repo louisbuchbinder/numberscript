@@ -204,7 +204,7 @@
       </div>
     </section>
     <div
-      class="tabs is-centered is-large is-toggle is-toggle-rounded is-fullwidth"
+      class="tabs is-centered is-toggle is-toggle-rounded is-fullwidth {{if gt (len .Tabs) 5}}is-medium{{else}}is-large{{end}}"
     >
       <ul>
         {{range $i, $t := .Tabs}}
