@@ -39,4 +39,6 @@ func main() {
 	util.Must0(write("encoding/base32/index.html", wasm_playground.EncodingBase32Page))
 	util.Must0(write("encoding/base64/index.html", wasm_playground.EncodingBase64Page))
 	util.Must0(write("encoding/hex/index.html", wasm_playground.EncodingHexPage))
+	util.Must0(write("encoding/html/index.html", wasm_playground.EncodingHTMLPage))
+	util.Must0(write("encoding/uri/index.html", wasm_playground.EncodingURIPage))
 }

@@ -192,3 +192,166 @@ var EncodingHexPage = templates.MustRenderDocumentTemplate(templates.DocumentTem
 		},
 	})),
 })
+
+var EncodingHTMLPage = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+	Title: "HTML Encoding",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/html/pkg/wasm.js"})), // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "HTML Escape",
+		Menu:  Menu("Encoding", "HTML"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "escape",
+				Title: "Escape",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "wasm.encoding.html.EscapeString",
+						},
+					},
+				},
+			},
+			{
+				Name:  "unescape",
+				Title: "Unescape",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "wasm.encoding.html.UnescapeString",
+						},
+					},
+				},
+			},
+		},
+	})),
+})
+
+var EncodingURIPage = templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
+	Title:   "URI Encoding",
+	Scripts: template.HTML(strings.Join([]string{}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "URI Encoding",
+		Menu:  Menu("Encoding", "URI"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "encode-uri",
+				Title: "Encode URI",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "encodeURI",
+						},
+					},
+				},
+			},
+			{
+				Name:  "decode-uri",
+				Title: "Decode URI",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "decodeURI",
+						},
+					},
+				},
+			},
+			{
+				Name:  "encode-uri-component",
+				Title: "Encode URI Component",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "encodeURIComponent",
+						},
+					},
+				},
+			},
+			{
+				Name:  "decode-uri-component",
+				Title: "Decode URI Component",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Result: templates.WasmPlaygroundTabResult{
+					Operators: []templates.WasmPlaygroundTabOperator{
+						{
+							Name:     "as-text",
+							Title:    "As Text",
+							Operator: "decodeURIComponent",
+						},
+					},
+				},
+			},
+		},
+	})),
+})

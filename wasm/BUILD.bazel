@@ -29,6 +29,7 @@ dist_srcs = [
     "//wasm/encoding/base32/pkg:dist",
     "//wasm/encoding/base64/pkg:dist",
     "//wasm/encoding/hex/pkg:dist",
+    "//wasm/encoding/html/pkg:dist",
 ]
 
 genrule(

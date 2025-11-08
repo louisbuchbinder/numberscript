@@ -51,6 +51,14 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 				Url:   "/encoding/hex",
 				Title: "Hex",
 			},
+			{
+				Url:   "/encoding/html",
+				Title: "HTML",
+			},
+			{
+				Url:   "/encoding/uri",
+				Title: "URI",
+			},
 		},
 	},
 }
