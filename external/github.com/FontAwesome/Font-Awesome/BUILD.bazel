@@ -1,0 +1,22 @@
+genrule(
+    name = "dist",
+    srcs = [
+        "@font-awesome-7.1.0//:LICENSE.txt",
+        "@font-awesome-7.1.0//:css",
+        "@font-awesome-7.1.0//:webfonts",
+    ],
+    outs = [
+        "dist.tar.gz",
+    ],
+    cmd = """
+    DIR=font-awesome-7.1.0
+    mkdir $$DIR
+    mkdir $$DIR/css
+    mkdir $$DIR/webfonts
+    cp $(location @font-awesome-7.1.0//:LICENSE.txt) $$DIR
+    cp $(locations @font-awesome-7.1.0//:css) $$DIR/css
+    cp $(locations @font-awesome-7.1.0//:webfonts) $$DIR/webfonts
+    find $$DIR -type f | xargs tar -czf $(location dist.tar.gz)
+    """,
+    visibility = ["//visibility:public"],
+)

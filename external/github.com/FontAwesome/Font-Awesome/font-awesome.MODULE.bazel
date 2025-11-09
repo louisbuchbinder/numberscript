@@ -1,0 +1,12 @@
+"""
+"""
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "font-awesome-7.1.0",
+    build_file = "//external/github.com/FontAwesome/Font-Awesome:font-awesome.BUILD",
+    sha256 = "030047279b2ca2baad16b8ad9de1c798b07e8fca20a81f55474488ca051d3a62",
+    strip_prefix = "fontawesome-free-7.1.0-web",
+    url = "https://github.com/FortAwesome/Font-Awesome/releases/download/7.1.0/fontawesome-free-7.1.0-web.zip",
+)

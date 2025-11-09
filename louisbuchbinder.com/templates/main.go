@@ -56,5 +56,10 @@ type WasmPlaygroundMenuItemContainer struct {
 type WasmPlaygroundMenuItem struct {
 	Url   string
 	Title string
-	Key   string
+}
+
+type WasmPlaygroundMainMenuItem struct {
+	Url         string
+	Key         string
+	Description string
 }

@@ -58,19 +58,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   [].slice.call(document.querySelectorAll(".is-menu-button")).forEach((b) => {
     const target = b.parentElement.querySelector(".menu-list");
+    const icon = b.parentElement.querySelector(".icon > i");
     b.addEventListener("click", function () {
-      console.log("click", b);
       if (b.classList.contains("is-selected")) {
         target.setAttribute("hidden", "true");
-        b.classList.remove("is-selected");
-        b.classList.remove("is-outlined");
-        b.classList.remove("is-primary");
+        icon.classList.remove("fa-angle-down");
+        icon.classList.add("fa-angle-up");
       } else {
         target.removeAttribute("hidden");
-        b.classList.add("is-selected");
-        b.classList.add("is-outlined");
-        b.classList.add("is-primary");
+        icon.classList.remove("fa-angle-up");
+        icon.classList.add("fa-angle-down");
       }
+      b.classList.toggle("is-selected");
+      b.classList.toggle("is-outlined");
+      b.classList.toggle("is-primary");
     });
   });
 

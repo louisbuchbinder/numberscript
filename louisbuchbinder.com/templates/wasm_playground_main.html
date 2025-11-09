@@ -1,17 +1,33 @@
+<style>
+  .is-scrollable-container {
+    overflow-y: auto;
+    max-height: calc(100vh-60px);
+  }
+  .has-padded-links > a.button {
+    padding: 4%;
+  }
+</style>
 <section class="columns">
   {{.Menu}}
-  <div class="column container">
+  <div class="column container is-scrollable-container">
     <section class="hero has-text-centered">
       <div class="hero-body">
         <h1 class="title is-1">{{.Title}}</h1>
         <div class="content is-large">
           <p>
-            Add some introduction and explanation of what these utilities are
-            and how they work.
+            <b class="has-text-danger">TODO:</b> Add some introduction and
+            explanation of what these utilities are and how they work.
           </p>
-
-          <p>Consider putting some menu buttons here</p>
+          <p>
+            <b class="has-text-danger">TODO:</b> Add some hover descriptions to
+            the links below
+          </p>
         </div>
+      </div>
+      <div class="container has-padded-links">
+        {{range $item := .Items}}
+        <a class="button is-large" href="{{$item.Url}}">{{$item.Key}}</a>
+        {{end}}
       </div>
     </section>
   </div>

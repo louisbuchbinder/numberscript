@@ -16,6 +16,7 @@ func Page(in templates.DocumentTemplateInput) []byte {
 		Title: in.Title,
 		Links: template.HTML(strings.Join([]string{
 			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: "/external/bulma-1.0.4/css/bulma.css"})),
+			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: "/external/font-awesome-7.1.0/css/all.css"})),
 			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: "/css/site.css"})),
 			string(in.Links),
 		}, "\n")),
@@ -38,6 +39,7 @@ var UtilityPlaygroundPage = Page(templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundMainTemplate(templates.WasmPlaygroundMainTemplateInput{
 		Title: "Utility Playground",
 		Menu:  wasm_playground.Menu("", ""),
+		Items: wasm_playground.WasmPlaygroundMainMenuItem,
 	})),
 })
 

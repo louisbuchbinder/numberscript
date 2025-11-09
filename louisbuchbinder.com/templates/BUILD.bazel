@@ -90,6 +90,10 @@ templates = [
                 name = "Menu",
                 type = "template.HTML",
             ),
+            template_struct_field(
+                name = "Items",
+                type = "[]WasmPlaygroundMainMenuItem",
+            ),
         ],
     ),
     template(

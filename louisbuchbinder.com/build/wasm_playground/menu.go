@@ -3,6 +3,7 @@ package wasm_playground
 import (
 	"html/template"
 
+	"github.com/louisbuchbinder/core/lib/util"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
@@ -62,6 +63,16 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 		},
 	},
 }
+
+var WasmPlaygroundMainMenuItem = util.Flatten(util.Map(WasmPlaygroundMenuItemContainers, func(_ int, container templates.WasmPlaygroundMenuItemContainer) []templates.WasmPlaygroundMainMenuItem {
+	return util.Map(container.Items, func(_ int, item templates.WasmPlaygroundMenuItem) templates.WasmPlaygroundMainMenuItem {
+		return templates.WasmPlaygroundMainMenuItem{
+			Key:         container.Title + "/" + item.Title,
+			Url:         item.Url,
+			Description: "",
+		}
+	})
+}))
 
 func Menu(ActiveContainer, ActiveItem string) template.HTML {
 	return template.HTML(templates.MustRenderWasmPlaygroundMenuTemplate(templates.WasmPlaygroundMenuTemplateInput{

@@ -16,7 +16,23 @@
         class="is-menu-button button"
         {{end}}
       >
-        {{$container.Title}}
+        <div class="level">
+          <div class="level-left">{{$container.Title}}</div>
+          <div class="level-right">
+            <span class="icon">
+              <i
+                {{if
+                eq
+                $.ActiveContainer
+                $container.Title}}
+                class="fa-solid fa-angle-down"
+                {{else}}
+                class="fa-solid fa-angle-up"
+                {{end}}
+              ></i>
+            </span>
+          </div>
+        </div>
       </button>
       <ul
         class="menu-list"
