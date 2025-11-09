@@ -5,29 +5,41 @@ import (
 	"html/template"
 	"strings"
 
+	"github.com/louisbuchbinder/core/lib/util"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
-func MathPlaygroundTabSingleArgFloat64(title string) templates.WasmPlaygroundTab {
+type MathPlaygroundTabInput struct {
+	Title string
+	Args  []MathPlaygroundTabArgInput
+}
+
+type MathPlaygroundTabArgInput struct {
+	Name     string
+	Title    string
+	Operator string
+}
+
+func MathPlaygroundTab(in MathPlaygroundTabInput) templates.WasmPlaygroundTab {
 	return templates.WasmPlaygroundTab{
-		Name:  strings.ToLower(title),
-		Title: title,
-		Args: []templates.WasmPlaygroundTabArg{
-			{
+		Name:  strings.ToLower(in.Title),
+		Title: in.Title,
+		Args: util.Map(in.Args, func(_ int, a MathPlaygroundTabArgInput) templates.WasmPlaygroundTabArg {
+			return templates.WasmPlaygroundTabArg{
 				Type:  templates.WasmPlaygroundTabValType_Number,
-				Name:  "data",
-				Title: "Data",
+				Name:  a.Name,
+				Title: a.Title,
 				Operators: []templates.WasmPlaygroundTabOperator{
-					{Name: "from-number", Title: "From Number", Operator: "safeFloat"},
+					{Name: "from-number", Title: "From Number", Operator: a.Operator},
 				},
-			},
-		},
+			}
+		}),
 		Result: templates.WasmPlaygroundTabResult{
 			Operators: []templates.WasmPlaygroundTabOperator{
 				{
 					Name:     "as-number",
 					Title:    "As Number",
-					Operator: fmt.Sprintf("wasm.math.%s", title),
+					Operator: fmt.Sprintf("wasm.math.%s", in.Title),
 				},
 			},
 		},
@@ -44,72 +56,72 @@ var MathDocumentTemplateInput = templates.DocumentTemplateInput{
 		Title: "General Math",
 		Menu:  Menu("Math", "General"),
 		Tabs: []templates.WasmPlaygroundTab{
-			MathPlaygroundTabSingleArgFloat64("Abs"),
-			MathPlaygroundTabSingleArgFloat64("Acos"),
-			MathPlaygroundTabSingleArgFloat64("Acosh"),
-			MathPlaygroundTabSingleArgFloat64("Asin"),
-			MathPlaygroundTabSingleArgFloat64("Asinh"),
-			MathPlaygroundTabSingleArgFloat64("Atan"),
-			// func Atan2(y, x float64) float64
-			MathPlaygroundTabSingleArgFloat64("Atanh"),
-			MathPlaygroundTabSingleArgFloat64("Cbrt"),
-			MathPlaygroundTabSingleArgFloat64("Ceil"),
-			// func Copysign(f, sign float64) float64
-			MathPlaygroundTabSingleArgFloat64("Cos"),
-			MathPlaygroundTabSingleArgFloat64("Cosh"),
-			// func Dim(x, y float64) float64
-			MathPlaygroundTabSingleArgFloat64("Erf"),
-			MathPlaygroundTabSingleArgFloat64("Erfc"),
-			MathPlaygroundTabSingleArgFloat64("Erfcinv"),
-			MathPlaygroundTabSingleArgFloat64("Erfinv"),
-			MathPlaygroundTabSingleArgFloat64("Exp"),
-			MathPlaygroundTabSingleArgFloat64("Exp2"),
-			MathPlaygroundTabSingleArgFloat64("Expm1"),
-			// func FMA(x, y, z float64) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Abs", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Acos", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Acosh", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Asin", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Asinh", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Atan", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Atan2", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Atanh", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Cbrt", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Ceil", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Copysign", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input F", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Sign", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Cos", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Cosh", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Dim", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Erf", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Erfc", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Erfcinv", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Erfinv", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Exp", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Exp2", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Expm1", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "FMA", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}, {Name: "input-z", Title: "Input Z", Operator: "safeFloat"}}}),
 			// func Float32bits(f float32) uint32
 			// func Float32frombits(b uint32) float32
 			// func Float64bits(f float64) uint64
 			// func Float64frombits(b uint64) float64
-			MathPlaygroundTabSingleArgFloat64("Floor"),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Floor", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			// func Frexp(f float64) (frac float64, exp int)
-			MathPlaygroundTabSingleArgFloat64("Gamma"),
-			// func Hypot(p, q float64) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Gamma", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Hypot", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			// func Ilogb(x float64) int
 			// func Inf(sign int) float64
 			// func IsInf(f float64, sign int) bool
 			// func IsNaN(f float64) (is bool)
-			MathPlaygroundTabSingleArgFloat64("J0"),
-			MathPlaygroundTabSingleArgFloat64("J1"),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "J0", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "J1", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			// func Jn(n int, x float64) float64
 			// func Ldexp(frac float64, exp int) float64
 			// func Lgamma(x float64) (lgamma float64, sign int)
-			MathPlaygroundTabSingleArgFloat64("Log"),
-			MathPlaygroundTabSingleArgFloat64("Log10"),
-			MathPlaygroundTabSingleArgFloat64("Log1p"),
-			MathPlaygroundTabSingleArgFloat64("Log2"),
-			MathPlaygroundTabSingleArgFloat64("Logb"),
-			// func Max(x, y float64) float64
-			// func Min(x, y float64) float64
-			// func Mod(x, y float64) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Log", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Log10", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Log1p", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Log2", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Logb", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Max", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Min", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Mod", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			// func Modf(f float64) (int float64, frac float64)
 			// func NaN() float64
-			// func Nextafter(x, y float64) (r float64)
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Nextafter", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			// func Nextafter32(x, y float32) (r float32)
-			// func Pow(x, y float64) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Pow", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			// func Pow10(n int) float64
-			// func Remainder(x, y float64) float64
-			MathPlaygroundTabSingleArgFloat64("Round"),
-			MathPlaygroundTabSingleArgFloat64("RoundToEven"),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Remainder", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Round", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "RoundToEven", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			// func Signbit(x float64) bool
-			MathPlaygroundTabSingleArgFloat64("Sin"),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Sin", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			// func Sincos(x float64) (sin, cos float64)
-			MathPlaygroundTabSingleArgFloat64("Sinh"),
-			MathPlaygroundTabSingleArgFloat64("Sqrt"),
-			MathPlaygroundTabSingleArgFloat64("Tan"),
-			MathPlaygroundTabSingleArgFloat64("Tanh"),
-			MathPlaygroundTabSingleArgFloat64("Trunc"),
-			MathPlaygroundTabSingleArgFloat64("Y0"),
-			MathPlaygroundTabSingleArgFloat64("Y1"),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Sinh", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Sqrt", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Tan", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Tanh", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Trunc", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Y0", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Y1", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			// func Yn(n int, x float64) float64
 		},
 	})),
