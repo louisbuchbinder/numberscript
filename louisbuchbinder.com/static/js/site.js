@@ -4,6 +4,9 @@ function addClass(cls, ...elems) {
 function removeClass(cls, ...elems) {
   elems.forEach((e) => e.classList.remove(cls));
 }
+function toggleClass(cls, ...elems) {
+  elems.forEach((e) => e.classList.toggle(cls));
+}
 function hide(...elems) {
   elems.forEach((e) => e.setAttribute("hidden", "true"));
 }

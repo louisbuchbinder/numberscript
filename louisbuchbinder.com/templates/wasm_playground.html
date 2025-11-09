@@ -2,8 +2,8 @@
   const page = {};
   page.toggleTab = function (name, group) {
     const target = document.getElementById(name + "-toggle");
-    removeClass("is-active", ...target.parentElement.children);
-    addClass("is-active", target);
+    removeClass("is-link", ...target.parentElement.children);
+    addClass("is-link", target);
     hide(...[].slice.call(document.getElementsByClassName(group)));
     unhide(
       ...[].slice.call(document.getElementsByClassName(group + "-" + name))
@@ -66,32 +66,36 @@
         <h1 class="title is-1">{{.Title}}</h1>
       </div>
     </section>
-    <div
-      class="tabs is-centered is-toggle is-toggle-rounded is-fullwidth {{if gt (len .Tabs) 5}}is-medium{{else}}is-large{{end}}"
-    >
-      <ul>
-        {{range $i, $t := .Tabs}}
-        <li id="{{$t.Name}}-toggle" {{if eq $i 0}}class="is-active" {{end}}>
-          <a
-            {{if
-            eq
-            (len
-            $.Tabs)
-            1}}
-            href="javascript:void(0)"
-            style="cursor: default"
-            {{else}}
-            href="javascript:[
+    <div class="buttons is-centered is-toggle is-toggle-rounded are-large">
+      {{range $i, $t := .Tabs}}
+      <a
+        id="{{$t.Name}}-toggle"
+        {{if
+        eq
+        $i
+        0}}
+        class="button is-link is-width-one-fifth"
+        {{else}}
+        class="button is-width-one-fifth"
+        {{end}}
+        {{if
+        eq
+        (len
+        $.Tabs)
+        1}}
+        href="javascript:void(0)"
+        style="cursor: default; pointer-events: none"
+        {{else}}
+        href="javascript:[
             page.toggleTab('{{$t.Name}}', 'tab-group-function'),
             page.operator('{{$t.Name}}', Number('{{len $t.Args}}')),
           ]"
-            {{end}}
-            >{{$t.Title}}</a
-          >
-        </li>
         {{end}}
-      </ul>
+        >{{$t.Title}}</a
+      >
+      {{end}}
     </div>
+
     {{range $i, $t := .Tabs}} {{if eq $i 0}}
     <script>
       Promise.all(window.wasmContentLoaders).then((_) => {
@@ -148,7 +152,7 @@
                   $a.Operators)
                   1}}
                   href="javascript:void(0)"
-                  style="cursor: default"
+                  style="cursor: default; pointer-events: none"
                   {{else}}
                   href="javascript:[
                   page.toggleTab('{{$t.Name}}-{{$a.Name}}-{{$o.Name}}', 'tab-group-function-arg-operator'),
@@ -212,7 +216,7 @@
                   $t.Result.Operators)
                   1}}
                   href="javascript:void(0)"
-                  style="cursor: default"
+                  style="cursor: default; pointer-events: none"
                   {{else}}
                   href="javascript:[
                   page.toggleTab('{{$t.Name}}-result-{{$o.Name}}', 'is-tab-group-function-result-operator'),
