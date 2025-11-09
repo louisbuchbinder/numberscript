@@ -109,3 +109,15 @@ function safeUInt(v) {
   }
   return n;
 }
+function safeFloat(v) {
+  n = Number(v);
+  if (isNaN(n)) {
+    throw new Error("expected uint, but instead got: " + v);
+  }
+  if (n < -1 * Number.MAX_VALUE || Number.MAX_VALUE < n) {
+    throw new Error(
+      "value must be within float64 range, but instead got: " + v
+    );
+  }
+  return n;
+}

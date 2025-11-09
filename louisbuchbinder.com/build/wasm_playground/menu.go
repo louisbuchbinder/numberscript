@@ -62,6 +62,15 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 			},
 		},
 	},
+	{
+		Title: "Math",
+		Items: []templates.WasmPlaygroundMenuItem{
+			{
+				Url:   "/math",
+				Title: "General",
+			},
+		},
+	},
 }
 
 var WasmPlaygroundMainMenuItem = util.Flatten(util.Map(WasmPlaygroundMenuItemContainers, func(_ int, container templates.WasmPlaygroundMenuItemContainer) []templates.WasmPlaygroundMainMenuItem {

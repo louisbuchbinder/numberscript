@@ -14,8 +14,8 @@ type WasmPlaygroundTab struct {
 type WasmPlaygroundTabValType string
 
 const (
-	WasmPlaygroundTabValType_Text WasmPlaygroundTabValType = "text"
-	WasmPlaygroundTabValType_Int  WasmPlaygroundTabValType = "int"
+	WasmPlaygroundTabValType_Text   WasmPlaygroundTabValType = "text"
+	WasmPlaygroundTabValType_Number WasmPlaygroundTabValType = "number"
 )
 
 type WasmPlaygroundTabArg struct {
@@ -27,15 +27,15 @@ type WasmPlaygroundTabArg struct {
 }
 
 type WasmPlaygroundTabArgOptions struct {
-	TextOptions WasmPlaygroundTabArgOptions_Text
-	IntOptions  WasmPlaygroundTabArgOptions_Int
+	TextOptions   *WasmPlaygroundTabArgOptions_Text
+	NumberOptions *WasmPlaygroundTabArgOptions_Number
 }
 
 type WasmPlaygroundTabArgOptions_Text struct{}
 
-type WasmPlaygroundTabArgOptions_Int struct {
-	Min int
-	Max int
+type WasmPlaygroundTabArgOptions_Number struct {
+	Min float64
+	Max float64
 }
 
 type WasmPlaygroundTabResult struct {

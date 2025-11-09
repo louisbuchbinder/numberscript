@@ -1,0 +1,122 @@
+# gazelle:ignore
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("//wasm:rules.bzl", "wasm_dist", "wasm_go", "wasm_html", "wasm_js")
+
+module = "wasm/math"
+
+wasm_exports = [
+    "wasm.math.Abs",
+    "wasm.math.Abs",
+    "wasm.math.Acos",
+    "wasm.math.Acosh",
+    "wasm.math.Asin",
+    "wasm.math.Asinh",
+    "wasm.math.Atan",
+    # func Atan2(y, x float64 float64
+    "wasm.math.Atanh",
+    "wasm.math.Cbrt",
+    "wasm.math.Ceil",
+    # func Copysign(f, sign float64 float64
+    "wasm.math.Cos",
+    "wasm.math.Cosh",
+    # func Dim(x, y float64 float64
+    "wasm.math.Erf",
+    "wasm.math.Erfc",
+    "wasm.math.Erfcinv",
+    "wasm.math.Erfinv",
+    "wasm.math.Exp",
+    "wasm.math.Exp2",
+    "wasm.math.Expm1",
+    # func FMA(x, y, z float64 float64
+    # func Float32bits(f float32 uint32
+    # func Float32frombits(b uint32 float32
+    # func Float64bits(f float64 uint64
+    # func Float64frombits(b uint64 float64
+    "wasm.math.Floor",
+    # func Frexp(f float64 (frac float64, exp int)
+    "wasm.math.Gamma",
+    # func Hypot(p, q float64 float64
+    # func Ilogb(x float64 int
+    # func Inf(sign int float64
+    # func IsInf(f float64, sign int bool
+    # func IsNaN(f float64 (is bool)
+    "wasm.math.J0",
+    "wasm.math.J1",
+    # func Jn(n int, x float64 float64
+    # func Ldexp(frac float64, exp int float64
+    # func Lgamma(x float64 (lgamma float64, sign int)
+    "wasm.math.Log",
+    "wasm.math.Log10",
+    "wasm.math.Log1p",
+    "wasm.math.Log2",
+    "wasm.math.Logb",
+    # func Max(x, y float64 float64
+    # func Min(x, y float64 float64
+    # func Mod(x, y float64 float64
+    # func Modf(f float64 (int float64, frac float64)
+    # func NaN( float64
+    # func Nextafter(x, y float64 (r float64)
+    # func Nextafter32(x, y float32 (r float32)
+    # func Pow(x, y float64 float64
+    # func Pow10(n int float64
+    # func Remainder(x, y float64 float64
+    "wasm.math.Round",
+    "wasm.math.RoundToEven",
+    # func Signbit(x float64 bool
+    "wasm.math.Sin",
+    # func Sincos(x float64 (sin, cos float64)
+    "wasm.math.Sinh",
+    "wasm.math.Sqrt",
+    "wasm.math.Tan",
+    "wasm.math.Tanh",
+    "wasm.math.Trunc",
+    "wasm.math.Y0",
+    "wasm.math.Y1",
+    # func Yn(n int, x float64) float64
+]
+
+wasm_js(
+    name = "wasm_js",
+    module = module,
+    wasm_exports = wasm_exports,
+)
+
+wasm_go(
+    name = "wasm.go",
+    wasm_exports = wasm_exports,
+)
+
+wasm_html(
+    name = "script.partial",
+    module = module,
+)
+
+wasm_dist(
+    name = "dist",
+    module = module,
+)
+
+go_library(
+    name = "pkg_lib",
+    srcs = select({
+        "@rules_go//go/platform:js": [
+            ":wasm.go",
+        ],
+        "//conditions:default": [],
+    }),
+    importpath = "github.com/louisbuchbinder/core/" + module + "/pkg",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//wasm",
+        "//" + module,
+        "//wasm/js",
+    ],
+)
+
+go_binary(
+    name = "pkg",
+    embed = [":pkg_lib"],
+    goarch = "wasm",
+    goos = "js",
+    visibility = ["//visibility:public"],
+)

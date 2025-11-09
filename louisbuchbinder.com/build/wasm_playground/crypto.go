@@ -224,14 +224,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 					{
-						Type:  templates.WasmPlaygroundTabValType_Int,
+						Type:  templates.WasmPlaygroundTabValType_Number,
 						Name:  "length",
 						Title: "Length",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
 						},
 						Options: templates.WasmPlaygroundTabArgOptions{
-							IntOptions: templates.WasmPlaygroundTabArgOptions_Int{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
 								Min: 0,
 								Max: 1024,
 							},
@@ -261,14 +261,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 					{
-						Type:  templates.WasmPlaygroundTabValType_Int,
+						Type:  templates.WasmPlaygroundTabValType_Number,
 						Name:  "length",
 						Title: "Length",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
 						},
 						Options: templates.WasmPlaygroundTabArgOptions{
-							IntOptions: templates.WasmPlaygroundTabArgOptions_Int{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
 								Min: 0,
 								Max: 1024,
 							},
