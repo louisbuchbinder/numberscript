@@ -1,12 +1,3 @@
-<style>
-  .is-scrollable-container {
-    overflow-y: auto;
-    max-height: calc(100vh-60px);
-  }
-  .has-padded-links > a.button {
-    padding: 4%;
-  }
-</style>
 <section class="columns">
   {{.Menu}}
   <div class="column container is-scrollable-container">
@@ -24,9 +15,11 @@
           </p>
         </div>
       </div>
-      <div class="container has-padded-links">
+      <div class="container">
         {{range $item := .Items}}
-        <a class="button is-large" href="{{$item.Url}}">{{$item.Key}}</a>
+        <a class="button is-large" href="{{$item.Url}}" style="padding: 4%"
+          >{{$item.Key}}</a
+        >
         {{end}}
       </div>
     </section>

@@ -14,9 +14,12 @@ textarea.is-auto-resize {
   overflow-y: hidden;
 }
 .menu {
+  padding-top: 30px;
+  padding-left: 30px;
+}
+.is-scrollable-container {
   overflow-y: auto;
   max-height: calc(100vh - 60px);
-  padding: 30px;
 }
 .is-width-one-fifth {
   width: 20%;
