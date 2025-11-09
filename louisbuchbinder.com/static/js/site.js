@@ -94,7 +94,7 @@ function dataValue(e) {
   return e.value || e.textContent;
 }
 function safeUInt(v) {
-  n = Number(v);
+  const n = Number(v);
   if (isNaN(n)) {
     throw new Error("expected uint, but instead got: " + v);
   }
@@ -109,14 +109,41 @@ function safeUInt(v) {
   }
   return n;
 }
-function safeFloat(v) {
-  n = Number(v);
+function safeInt(v) {
+  const n = Number(v);
   if (isNaN(n)) {
-    throw new Error("expected uint, but instead got: " + v);
+    throw new Error("expected int, but instead got: " + v);
+  }
+  if (!Number.isInteger(n)) {
+    throw new Error("expected int, but instead got: " + n);
+  }
+  if (!Number.isSafeInteger(n)) {
+    throw new Error("integer out of range: " + n);
+  }
+  return n;
+}
+function safeFloat(v) {
+  const n = Number(v);
+  if (isNaN(n)) {
+    throw new Error("expected float64, but instead got: " + v);
   }
   if (n < -1 * Number.MAX_VALUE || Number.MAX_VALUE < n) {
     throw new Error(
       "value must be within float64 range, but instead got: " + v
+    );
+  }
+  return n;
+}
+function safeFloat32(v) {
+  const maxFloat32 = 3.4028235 * Math.pow(10, 38);
+  const n = Number(v);
+  if (isNaN(n)) {
+    throw new Error("expected float32, but instead got: " + v);
+  }
+
+  if (n < -1 * maxFloat32 || maxFloat32 < n) {
+    throw new Error(
+      "value must be within float32 range, but instead got: " + v
     );
   }
   return n;

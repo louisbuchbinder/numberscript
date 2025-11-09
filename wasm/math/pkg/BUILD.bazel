@@ -28,23 +28,20 @@ wasm_exports = [
     "wasm.math.Exp2",
     "wasm.math.Expm1",
     "wasm.math.FMA",
-    # func Float32bits(f float32 uint32
-    # func Float32frombits(b uint32 float32
-    # func Float64bits(f float64 uint64
-    # func Float64frombits(b uint64 float64
+    # "wasm.math.Float32bits",
+    # "wasm.math.Float32frombits",
+    # "wasm.math.Float64bits",
+    # "wasm.math.Float64frombits",
     "wasm.math.Floor",
-    # func Frexp(f float64 (frac float64, exp int)
+    # "wasm.math.Frexp",
     "wasm.math.Gamma",
     "wasm.math.Hypot",
-    # func Ilogb(x float64 int
-    # func Inf(sign int float64
-    # func IsInf(f float64, sign int bool
-    # func IsNaN(f float64 (is bool)
+    "wasm.math.Ilogb",
     "wasm.math.J0",
     "wasm.math.J1",
-    # func Jn(n int, x float64 float64
-    # func Ldexp(frac float64, exp int float64
-    # func Lgamma(x float64 (lgamma float64, sign int)
+    "wasm.math.Jn",
+    # "wasm.math.Ldexp",
+    # "wasm.math.Lgamma",
     "wasm.math.Log",
     "wasm.math.Log10",
     "wasm.math.Log1p",
@@ -53,18 +50,17 @@ wasm_exports = [
     "wasm.math.Max",
     "wasm.math.Min",
     "wasm.math.Mod",
-    # func Modf(f float64 (int float64, frac float64)
-    # func NaN( float64
+    # "wasm.math.Modf",
     "wasm.math.Nextafter",
-    # func Nextafter32(x, y float32 (r float32)
+    "wasm.math.Nextafter32",
     "wasm.math.Pow",
-    # func Pow10(n int float64
+    "wasm.math.Pow10",
     "wasm.math.Remainder",
     "wasm.math.Round",
     "wasm.math.RoundToEven",
-    # func Signbit(x float64 bool
+    # "wasm.math.Signbit",
     "wasm.math.Sin",
-    # func Sincos(x float64 (sin, cos float64)
+    # "wasm.math.Sincos",
     "wasm.math.Sinh",
     "wasm.math.Sqrt",
     "wasm.math.Tan",
@@ -72,7 +68,7 @@ wasm_exports = [
     "wasm.math.Trunc",
     "wasm.math.Y0",
     "wasm.math.Y1",
-    # func Yn(n int, x float64) float64
+    "wasm.math.Yn",
 ]
 
 wasm_js(

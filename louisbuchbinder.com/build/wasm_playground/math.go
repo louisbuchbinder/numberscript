@@ -86,13 +86,10 @@ var MathDocumentTemplateInput = templates.DocumentTemplateInput{
 			// func Frexp(f float64) (frac float64, exp int)
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Gamma", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Hypot", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
-			// func Ilogb(x float64) int
-			// func Inf(sign int) float64
-			// func IsInf(f float64, sign int) bool
-			// func IsNaN(f float64) (is bool)
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Ilogb", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "J0", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "J1", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
-			// func Jn(n int, x float64) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Jn", Args: []MathPlaygroundTabArgInput{{Name: "input-n", Title: "Input N", Operator: "safeInt"}, {Name: "input-x", Title: "Input X", Operator: "safeFloat"}}}),
 			// func Ldexp(frac float64, exp int) float64
 			// func Lgamma(x float64) (lgamma float64, sign int)
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Log", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
@@ -104,11 +101,10 @@ var MathDocumentTemplateInput = templates.DocumentTemplateInput{
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Min", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Mod", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			// func Modf(f float64) (int float64, frac float64)
-			// func NaN() float64
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Nextafter", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
-			// func Nextafter32(x, y float32) (r float32)
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Nextafter32", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat32"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat32"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Pow", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
-			// func Pow10(n int) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Pow10", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeInt"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Remainder", Args: []MathPlaygroundTabArgInput{{Name: "input-x", Title: "Input X", Operator: "safeFloat"}, {Name: "input-y", Title: "Input Y", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Round", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "RoundToEven", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
@@ -122,7 +118,7 @@ var MathDocumentTemplateInput = templates.DocumentTemplateInput{
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Trunc", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Y0", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
 			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Y1", Args: []MathPlaygroundTabArgInput{{Name: "input", Title: "Input", Operator: "safeFloat"}}}),
-			// func Yn(n int, x float64) float64
+			MathPlaygroundTab(MathPlaygroundTabInput{Title: "Yn", Args: []MathPlaygroundTabArgInput{{Name: "input-n", Title: "Input N", Operator: "safeInt"}, {Name: "input-x", Title: "Input X", Operator: "safeFloat"}}}),
 		},
 	})),
 }
