@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "aes",
+    srcs = ["wasm.go"],
+    importpath = "github.com/louisbuchbinder/core/wasm/crypto/aes",
+    visibility = ["//visibility:public"],
+    deps = ["//wasm"],
+)

@@ -7,6 +7,66 @@ import (
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
+var CryptoAESDocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "AES Encryption",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/aes/pkg/wasm.js"})),   // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "AES Encryption",
+		Menu:  Menu("Crypto", "AES"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "encrypt",
+				Title: "Encrypt",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "AES Ciphertext Result:",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.aes.Encrypt",
+							},
+						},
+					},
+					{
+						Title: "AES Nonce Result:",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.aes.Encrypt",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
 var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "MD5 Hash",
 	Scripts: template.HTML(strings.Join([]string{
@@ -30,12 +90,14 @@ var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.md5.Sum",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.md5.Sum",
+							},
 						},
 					},
 				},
@@ -58,12 +120,14 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 				Name:  "text",
 				Title: "Text",
 				Args:  nil,
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.rand.Text",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.rand.Text",
+							},
 						},
 					},
 				},
@@ -95,12 +159,14 @@ var CryptoSHA1DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha1.Sum",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha1.Sum",
+							},
 						},
 					},
 				},
@@ -132,12 +198,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha3.Sum224",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha3.Sum224",
+							},
 						},
 					},
 				},
@@ -155,12 +223,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha3.Sum256",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha3.Sum256",
+							},
 						},
 					},
 				},
@@ -178,12 +248,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha3.Sum384",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha3.Sum384",
+							},
 						},
 					},
 				},
@@ -201,12 +273,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha3.Sum512",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha3.Sum512",
+							},
 						},
 					},
 				},
@@ -238,12 +312,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha3.SumSHAKE128",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha3.SumSHAKE128",
+							},
 						},
 					},
 				},
@@ -275,12 +351,14 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha3.SumSHAKE256",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha3.SumSHAKE256",
+							},
 						},
 					},
 				},
@@ -312,12 +390,14 @@ var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha256.Sum224",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha256.Sum224",
+							},
 						},
 					},
 				},
@@ -335,12 +415,14 @@ var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha256.Sum256",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha256.Sum256",
+							},
 						},
 					},
 				},
@@ -372,12 +454,14 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha512.Sum512_224",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha512.Sum512_224",
+							},
 						},
 					},
 				},
@@ -395,12 +479,14 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha512.Sum512_256",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha512.Sum512_256",
+							},
 						},
 					},
 				},
@@ -418,12 +504,14 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha512.Sum384",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha512.Sum384",
+							},
 						},
 					},
 				},
@@ -441,12 +529,14 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.crypto.sha512.Sum512",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.sha512.Sum512",
+							},
 						},
 					},
 				},

@@ -34,12 +34,14 @@ func MathPlaygroundTab(in MathPlaygroundTabInput) templates.WasmPlaygroundTab {
 				},
 			}
 		}),
-		Result: templates.WasmPlaygroundTabResult{
-			Operators: []templates.WasmPlaygroundTabOperator{
-				{
-					Name:     "as-number",
-					Title:    "As Number",
-					Operator: fmt.Sprintf("wasm.math.%s", in.Title),
+		Results: []templates.WasmPlaygroundTabResult{
+			{
+				Operators: []templates.WasmPlaygroundTabOperator{
+					{
+						Name:     "as-number",
+						Title:    "As Number",
+						Operator: fmt.Sprintf("wasm.math.%s", in.Title),
+					},
 				},
 			},
 		},

@@ -30,12 +30,14 @@ var EncodingBase32DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.base32.EncodeToString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.base32.EncodeToString",
+							},
 						},
 					},
 				},
@@ -53,12 +55,14 @@ var EncodingBase32DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.base32.DecodeString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.base32.DecodeString",
+							},
 						},
 					},
 				},
@@ -90,12 +94,14 @@ var EncodingBase64DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.base64.EncodeToString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.base64.EncodeToString",
+							},
 						},
 					},
 				},
@@ -113,12 +119,14 @@ var EncodingBase64DocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.base64.DecodeString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.base64.DecodeString",
+							},
 						},
 					},
 				},
@@ -151,12 +159,14 @@ var EncodingHexDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.hex.EncodeToString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.hex.EncodeToString",
+							},
 						},
 					},
 				},
@@ -174,17 +184,19 @@ var EncodingHexDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.hex.DecodeString",
-						},
-						{
-							Name:     "as-bytes",
-							Title:    "As Bytes",
-							Operator: "wasm.encoding.hex.DecodeStringAsBytes",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.hex.DecodeString",
+							},
+							{
+								Name:     "as-bytes",
+								Title:    "As Bytes",
+								Operator: "wasm.encoding.hex.DecodeStringAsBytes",
+							},
 						},
 					},
 				},
@@ -216,12 +228,14 @@ var EncodingHTMLDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.html.EscapeString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.html.EscapeString",
+							},
 						},
 					},
 				},
@@ -239,12 +253,14 @@ var EncodingHTMLDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "wasm.encoding.html.UnescapeString",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.encoding.html.UnescapeString",
+							},
 						},
 					},
 				},
@@ -273,12 +289,14 @@ var EncodingURIDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "encodeURI",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "encodeURI",
+							},
 						},
 					},
 				},
@@ -296,12 +314,14 @@ var EncodingURIDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "decodeURI",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "decodeURI",
+							},
 						},
 					},
 				},
@@ -319,12 +339,14 @@ var EncodingURIDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "encodeURIComponent",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "encodeURIComponent",
+							},
 						},
 					},
 				},
@@ -342,12 +364,14 @@ var EncodingURIDocumentTemplateInput = templates.DocumentTemplateInput{
 						},
 					},
 				},
-				Result: templates.WasmPlaygroundTabResult{
-					Operators: []templates.WasmPlaygroundTabOperator{
-						{
-							Name:     "as-text",
-							Title:    "As Text",
-							Operator: "decodeURIComponent",
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "decodeURIComponent",
+							},
 						},
 					},
 				},

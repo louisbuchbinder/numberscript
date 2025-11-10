@@ -5,10 +5,10 @@ import (
 )
 
 type WasmPlaygroundTab struct {
-	Name   string
-	Title  string
-	Args   []WasmPlaygroundTabArg
-	Result WasmPlaygroundTabResult
+	Name    string
+	Title   string
+	Args    []WasmPlaygroundTabArg
+	Results []WasmPlaygroundTabResult
 }
 
 type WasmPlaygroundTabValType string
@@ -39,6 +39,7 @@ type WasmPlaygroundTabArgOptions_Number struct {
 }
 
 type WasmPlaygroundTabResult struct {
+	Title     string
 	Operators []WasmPlaygroundTabOperator
 }
 
