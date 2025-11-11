@@ -20,6 +20,10 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 				Title: "ECDH",
 			},
 			{
+				Url:   "/crypto/ecdsa",
+				Title: "ECDSA",
+			},
+			{
 				Url:   "/crypto/md5",
 				Title: "MD5",
 			},

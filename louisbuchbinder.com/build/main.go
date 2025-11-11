@@ -59,6 +59,7 @@ func main() {
 
 	util.Must0(write("crypto/aes/index.html", Page(wasm_playground.CryptoAESDocumentTemplateInput)))
 	util.Must0(write("crypto/ecdh/index.html", Page(wasm_playground.CryptoECDHDocumentTemplateInput)))
+	util.Must0(write("crypto/ecdsa/index.html", Page(wasm_playground.CryptoECDSADocumentTemplateInput)))
 	util.Must0(write("crypto/md5/index.html", Page(wasm_playground.CryptoMD5DocumentTemplateInput)))
 	util.Must0(write("crypto/rand/index.html", Page(wasm_playground.CryptoRandDocumentTemplateInput)))
 	util.Must0(write("crypto/sha1/index.html", Page(wasm_playground.CryptoSHA1DocumentTemplateInput)))

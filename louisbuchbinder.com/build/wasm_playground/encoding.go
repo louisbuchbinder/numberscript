@@ -10,7 +10,7 @@ import (
 var EncodingBase32DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Base32 Encoding",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/base32/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -74,7 +74,7 @@ var EncodingBase32DocumentTemplateInput = templates.DocumentTemplateInput{
 var EncodingBase64DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Base64 Encoding",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/base64/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -138,7 +138,7 @@ var EncodingBase64DocumentTemplateInput = templates.DocumentTemplateInput{
 var EncodingHexDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Hex Encoding",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -208,7 +208,7 @@ var EncodingHexDocumentTemplateInput = templates.DocumentTemplateInput{
 var EncodingHTMLDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "HTML Encoding",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/html/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{

@@ -9,10 +9,11 @@ bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.1", dev_dependenc
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(
     name = "go_sdk",
-    version = "1.24.5",
+    version = "1.25.0",
 )
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 
 include("//external/github.com/jgthms/bulma:bulma.MODULE.bazel")
+
 include("//external/github.com/FontAwesome/Font-Awesome:font-awesome.MODULE.bazel")

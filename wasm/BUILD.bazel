@@ -7,13 +7,15 @@ go_library(
     visibility = ["//visibility:public"],
 )
 
+# copy wasm_exec from source
+# cp .bazel/core/external/rules_go++go_sdk+go_sdk/lib/wasm/wasm_exec.js wasm/go1.25.0_wasm_exec.js
 genrule(
     name = "external",
-    srcs = [":go1.24.5_wasm_exec.js"],
+    srcs = [":go1.25.0_wasm_exec.js"],
     outs = ["external.tar.gz"],
     cmd = """
         mkdir -p wasm/external
-        cp $(location :go1.24.5_wasm_exec.js) wasm/external
+        cp $(location :go1.25.0_wasm_exec.js) wasm/external
         tar -czf  $(location :external.tar.gz) wasm/external/*
     """,
 )
@@ -22,6 +24,7 @@ dist_srcs = [
     ":external.tar.gz",
     "//wasm/crypto/aes/pkg:dist",
     "//wasm/crypto/ecdh/pkg:dist",
+    "//wasm/crypto/ecdsa/pkg:dist",
     "//wasm/crypto/md5/pkg:dist",
     "//wasm/crypto/rand/pkg:dist",
     "//wasm/crypto/sha1/pkg:dist",

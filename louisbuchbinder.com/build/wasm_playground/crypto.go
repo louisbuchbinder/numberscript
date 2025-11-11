@@ -10,7 +10,7 @@ import (
 var CryptoAESDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "AES Encryption",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/aes/pkg/wasm.js"})),   // TODO: use the hash-named file
 	}, "\n")),
@@ -181,7 +181,7 @@ var CryptoAESDocumentTemplateInput = templates.DocumentTemplateInput{
 var CryptoECDHDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Elliptic Curve Diffie-Hellman",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/ecdh/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -300,10 +300,224 @@ var CryptoECDHDocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var CryptoECDSADocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "Elliptic Curve Diffie-Hellman",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/ecdsa/pkg/wasm.js"})), // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "Elliptic Curve Digital Signature Algorithm",
+		Menu:  Menu("Crypto", "ECDSA"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "p224",
+				Title: "P224",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P224",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P224",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "p256",
+				Title: "P256",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P256",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P256",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "p384",
+				Title: "P384",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P384",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P384",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "p521",
+				Title: "P521",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P521",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.P521",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "signasn1",
+				Title: "SignASN1",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "type",
+						Title: "Type",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "private-key",
+						Title: "PrivateKey",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Signature",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdsa.SignASN1",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "verify1",
+				Title: "VerifyASN1",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "type",
+						Title: "Type",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "public-key",
+						Title: "PublicKey",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "signature",
+						Title: "Signature",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Is Valid",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.ecdsa.VerifyASN1",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
 var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "MD5 Hash",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/md5/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -342,7 +556,7 @@ var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Rand",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/rand/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -459,7 +673,7 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 var CryptoSHA1DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA1 Hash",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha1/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -498,7 +712,7 @@ var CryptoSHA1DocumentTemplateInput = templates.DocumentTemplateInput{
 var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA3 Hash",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha3/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -690,7 +904,7 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA256 Hash",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha256/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
@@ -754,7 +968,7 @@ var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "SHA512 Hash",
 	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha512/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
