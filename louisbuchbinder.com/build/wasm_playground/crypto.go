@@ -51,13 +51,124 @@ var CryptoAESDocumentTemplateInput = templates.DocumentTemplateInput{
 							},
 						},
 					},
+				},
+			},
+			{
+				Name:  "encrypt-consistent",
+				Title: "Encrypt Consistent",
+				Args: []templates.WasmPlaygroundTabArg{
 					{
-						Title: "AES Nonce Result:",
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "nonce",
+						Title: "Nonce",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "AES Ciphertext Result:",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{
 								Name:     "as-text",
 								Title:    "As Text",
-								Operator: "wasm.crypto.aes.Encrypt",
+								Operator: "wasm.crypto.aes.EncryptConsistent",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "decrypt",
+				Title: "Decrypt",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "ciphertext",
+						Title: "Ciphertext",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "AES Plaintext Result:",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.aes.Decrypt",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "decrypt-consistent",
+				Title: "Decrypt Consistent",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "nonce",
+						Title: "Nonce",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "ciphertext",
+						Title: "Ciphertext",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "AES Plaintext Result:",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.aes.DecryptConsistent",
 							},
 						},
 					},

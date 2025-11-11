@@ -6,7 +6,9 @@ module = "wasm/crypto/aes"
 
 wasm_exports = [
     "wasm.crypto.aes.Encrypt",
-    # "wasm.crypto.aes.Decrypt",
+    "wasm.crypto.aes.EncryptConsistent",
+    "wasm.crypto.aes.Decrypt",
+    "wasm.crypto.aes.DecryptConsistent",
 ]
 
 wasm_js(
