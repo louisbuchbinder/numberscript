@@ -228,6 +228,93 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 		Menu:  Menu("Crypto", "Rand"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
+				Name:  "int",
+				Title: "Int",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "max",
+						Title: "Max",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.rand.Int",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "prime",
+				Title: "Prime",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "bits",
+						Title: "Bits",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 2,
+								Max: 4096,
+							},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.rand.Prime",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "bytes",
+				Title: "Bytes",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "count",
+						Title: "Count",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 0,
+								Max: 1000000,
+							},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.rand.Bytes",
+							},
+						},
+					},
+				},
+			},
+			{
 				Name:  "text",
 				Title: "Text",
 				Args:  nil,

@@ -5,6 +5,9 @@ load("//wasm:rules.bzl", "wasm_dist", "wasm_go", "wasm_html", "wasm_js")
 module = "wasm/crypto/rand"
 
 wasm_exports = [
+    "wasm.crypto.rand.Int",
+    "wasm.crypto.rand.Prime",
+    "wasm.crypto.rand.Bytes",
     "wasm.crypto.rand.Text",
 ]
 
