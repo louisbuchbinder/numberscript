@@ -178,6 +178,128 @@ var CryptoAESDocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var CryptoECDHDocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "Elliptic Curve Diffie-Hellman",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/external/go1.24.5_wasm_exec.js"})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/ecdh/pkg/wasm.js"})), // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "Elliptic Curve Diffie-Hellman",
+		Menu:  Menu("Crypto", "ECDH"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "p256",
+				Title: "P256",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.P256",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.P256",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "p384",
+				Title: "P384",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.P384",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.P384",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "p521",
+				Title: "P521",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.P521",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.P521",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "x25519",
+				Title: "X25519",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.X25519",
+							},
+						},
+					},
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ecdh.X25519",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
 var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "MD5 Hash",
 	Scripts: template.HTML(strings.Join([]string{

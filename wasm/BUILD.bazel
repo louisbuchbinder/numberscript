@@ -21,6 +21,7 @@ genrule(
 dist_srcs = [
     ":external.tar.gz",
     "//wasm/crypto/aes/pkg:dist",
+    "//wasm/crypto/ecdh/pkg:dist",
     "//wasm/crypto/md5/pkg:dist",
     "//wasm/crypto/rand/pkg:dist",
     "//wasm/crypto/sha1/pkg:dist",
