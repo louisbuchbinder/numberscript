@@ -461,7 +461,7 @@ var CryptoECDSADocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "verify1",
+				Name:  "verifyasn1",
 				Title: "VerifyASN1",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
@@ -505,6 +505,123 @@ var CryptoECDSADocumentTemplateInput = templates.DocumentTemplateInput{
 								Name:     "as-text",
 								Title:    "As Text",
 								Operator: "wasm.crypto.ecdsa.VerifyASN1",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
+var CryptoED25519DocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "ED25519",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/ed25519/pkg/wasm.js"})), // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "ED25519",
+		Menu:  Menu("Crypto", "ED25519"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "generate-key",
+				Title: "GenerateKey",
+				Args:  nil,
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Public Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ed25519.GenerateKey",
+							},
+						},
+					},
+					{
+						Title: "Private Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ed25519.GenerateKey",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "sign",
+				Title: "Sign",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "private-key",
+						Title: "PrivateKey",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Signature",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.ed25519.Sign",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "verify",
+				Title: "Verify",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "public-key",
+						Title: "PublicKey",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "signature",
+						Title: "Signature",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "Is Valid",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.crypto.ed25519.Verify",
 							},
 						},
 					},

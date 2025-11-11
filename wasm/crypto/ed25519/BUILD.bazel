@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "ed25519",
+    srcs = ["wasm.go"],
+    importpath = "github.com/louisbuchbinder/core/wasm/crypto/ed25519",
+    visibility = ["//visibility:public"],
+    deps = ["//wasm"],
+)
