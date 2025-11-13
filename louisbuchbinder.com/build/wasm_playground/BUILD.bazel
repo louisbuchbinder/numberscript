@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "crypto.go",
         "encoding.go",
+        "hash.go",
         "math.go",
         "menu.go",
         "var.go",

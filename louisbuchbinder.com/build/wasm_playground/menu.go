@@ -87,6 +87,15 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 		},
 	},
 	{
+		Title: "Hash",
+		Items: []templates.WasmPlaygroundMenuItem{
+			{
+				Url:   "/hash/adler32",
+				Title: "Adler32",
+			},
+		},
+	},
+	{
 		Title: "Math",
 		Items: []templates.WasmPlaygroundMenuItem{
 			{

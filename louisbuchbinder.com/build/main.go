@@ -76,5 +76,7 @@ func main() {
 	util.Must0(write("encoding/html/index.html", Page(wasm_playground.EncodingHTMLDocumentTemplateInput)))
 	util.Must0(write("encoding/uri/index.html", Page(wasm_playground.EncodingURIDocumentTemplateInput)))
 
+	util.Must0(write("hash/adler32/index.html", Page(wasm_playground.HashAdler32DocumentTemplateInput)))
+
 	util.Must0(write("math/index.html", Page(wasm_playground.MathDocumentTemplateInput)))
 }
