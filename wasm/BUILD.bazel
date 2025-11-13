@@ -39,6 +39,8 @@ dist_srcs = [
     "//wasm/encoding/hex/pkg:dist",
     "//wasm/encoding/html/pkg:dist",
     "//wasm/hash/adler32/pkg:dist",
+    "//wasm/hash/crc32/pkg:dist",
+    "//wasm/hash/crc64/pkg:dist",
     "//wasm/math/pkg:dist",
 ]
 

@@ -93,6 +93,14 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 				Url:   "/hash/adler32",
 				Title: "Adler32",
 			},
+			{
+				Url:   "/hash/crc32",
+				Title: "CRC32",
+			},
+			{
+				Url:   "/hash/crc64",
+				Title: "CRC64",
+			},
 		},
 	},
 	{
