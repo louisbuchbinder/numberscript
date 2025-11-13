@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pbkdf2",
+    srcs = ["wasm.go"],
+    importpath = "github.com/louisbuchbinder/core/wasm/crypto/pbkdf2",
+    visibility = ["//visibility:public"],
+    deps = ["//wasm"],
+)

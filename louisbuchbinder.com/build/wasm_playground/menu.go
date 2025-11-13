@@ -36,6 +36,10 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 				Title: "MD5",
 			},
 			{
+				Url:   "/crypto/pbkdf2",
+				Title: "PBKDF2",
+			},
+			{
 				Url:   "/crypto/rand",
 				Title: "Rand",
 			},

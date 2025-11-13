@@ -666,7 +666,6 @@ var CryptoHMACDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 				Results: []templates.WasmPlaygroundTabResult{
 					{
-						Title: "HMAC_MD5 Result",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{
 								Name:     "as-hex",
@@ -701,7 +700,6 @@ var CryptoHMACDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 				Results: []templates.WasmPlaygroundTabResult{
 					{
-						Title: "HMAC_SHA1 Result",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{
 								Name:     "as-hex",
@@ -736,7 +734,6 @@ var CryptoHMACDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 				Results: []templates.WasmPlaygroundTabResult{
 					{
-						Title: "HMAC_SHA256 Result",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{
 								Name:     "as-hex",
@@ -771,7 +768,6 @@ var CryptoHMACDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 				Results: []templates.WasmPlaygroundTabResult{
 					{
-						Title: "HMAC_SHA512 Result",
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{
 								Name:     "as-hex",
@@ -816,6 +812,203 @@ var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 								Name:     "as-text",
 								Title:    "As Text",
 								Operator: "wasm.crypto.md5.Sum",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
+var CryptoPBKDF2DocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "PBKDF2",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/pbkdf2/pkg/wasm.js"})), // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "Password Based Key Derrivation Function (PBKDF2)",
+		Menu:  Menu("Crypto", "PBKDF2"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "pbkdf2-sha1",
+				Title: "PBKDF2_SHA1",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "password",
+						Title: "Password",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "salt",
+						Title: "Salt",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "iterations",
+						Title: "Iterations",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 1,
+								Max: 2000000,
+							},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "key-length",
+						Title: "Key Length",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 20,
+								Max: 128,
+							},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.pbkdf2.PBKDF2_SHA1",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "pbkdf2-sha256",
+				Title: "PBKDF2_SHA256",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "password",
+						Title: "Password",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "salt",
+						Title: "Salt",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "iterations",
+						Title: "Iterations",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 1,
+								Max: 2000000,
+							},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "key-length",
+						Title: "Key Length",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 32,
+								Max: 128,
+							},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.pbkdf2.PBKDF2_SHA256",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "pbkdf2-sha512",
+				Title: "PBKDF2_SHA512",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "password",
+						Title: "Password",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "salt",
+						Title: "Salt",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "iterations",
+						Title: "Iterations",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 64,
+								Max: 128,
+							},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Number,
+						Name:  "key-length",
+						Title: "Key Length",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-integer", Title: "From Integer", Operator: "safeUInt"},
+						},
+						Options: templates.WasmPlaygroundTabArgOptions{
+							NumberOptions: &templates.WasmPlaygroundTabArgOptions_Number{
+								Min: 1,
+								Max: 2000000,
+							},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.pbkdf2.PBKDF2_SHA512",
 							},
 						},
 					},
