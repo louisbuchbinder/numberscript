@@ -28,6 +28,10 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 				Title: "ED25519",
 			},
 			{
+				Url:   "/crypto/hmac",
+				Title: "HMAC",
+			},
+			{
 				Url:   "/crypto/md5",
 				Title: "MD5",
 			},

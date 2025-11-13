@@ -631,6 +631,161 @@ var CryptoED25519DocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var CryptoHMACDocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "HMAC",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/hmac/pkg/wasm.js"})),  // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "Hash Based Message Authentication Code (HMAC)",
+		Menu:  Menu("Crypto", "HMAC"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "hmac-md5",
+				Title: "HMAC_MD5",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "HMAC_MD5 Result",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.hmac.HMAC_MD5",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "hmac-sha1",
+				Title: "HMAC_SHA1",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "HMAC_SHA1 Result",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.hmac.HMAC_SHA1",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "hmac-sha256",
+				Title: "HMAC_SHA256",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "HMAC_SHA256 Result",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.hmac.HMAC_SHA256",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "hmac-sha512",
+				Title: "HMAC_SHA512",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "key",
+						Title: "Key",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "content",
+						Title: "Content",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Title: "HMAC_SHA512 Result",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-hex",
+								Title:    "As Hex",
+								Operator: "wasm.crypto.hmac.HMAC_SHA512",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
 var CryptoMD5DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "MD5 Hash",
 	Scripts: template.HTML(strings.Join([]string{

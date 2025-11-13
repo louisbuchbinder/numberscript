@@ -26,6 +26,7 @@ dist_srcs = [
     "//wasm/crypto/ecdh/pkg:dist",
     "//wasm/crypto/ecdsa/pkg:dist",
     "//wasm/crypto/ed25519/pkg:dist",
+    "//wasm/crypto/hmac/pkg:dist",
     "//wasm/crypto/md5/pkg:dist",
     "//wasm/crypto/rand/pkg:dist",
     "//wasm/crypto/sha1/pkg:dist",
