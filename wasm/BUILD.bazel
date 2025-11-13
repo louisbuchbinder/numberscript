@@ -41,6 +41,7 @@ dist_srcs = [
     "//wasm/hash/adler32/pkg:dist",
     "//wasm/hash/crc32/pkg:dist",
     "//wasm/hash/crc64/pkg:dist",
+    "//wasm/hash/fnv/pkg:dist",
     "//wasm/math/pkg:dist",
 ]
 

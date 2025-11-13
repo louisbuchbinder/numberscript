@@ -207,3 +207,174 @@ var HashCRC64DocumentTemplateInput = templates.DocumentTemplateInput{
 		},
 	})),
 }
+
+var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "FNV Hash",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/hash/fnv/pkg/wasm.js"})),     // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "FNV Hash",
+		Menu:  Menu("Hash", "FNV"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:  "fnv-128",
+				Title: "FNV 128",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.hash.fnv.Hash128",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "fnv-128a",
+				Title: "FNV 128a",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.hash.fnv.Hash128a",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "fnv-32",
+				Title: "FNV 32",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.hash.fnv.Hash32",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "fnv-32a",
+				Title: "FNV 32a",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.hash.fnv.Hash32a",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "fnv-64",
+				Title: "FNV 64",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.hash.fnv.Hash64",
+							},
+						},
+					},
+				},
+			},
+			{
+				Name:  "fnv-64a",
+				Title: "FNV 64a",
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "data",
+						Title: "Data",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
+							{Name: "from-hex", Title: "From Hex", Operator: "String"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-text",
+								Title:    "As Text",
+								Operator: "wasm.hash.fnv.Hash64a",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}

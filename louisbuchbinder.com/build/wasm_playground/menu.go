@@ -101,6 +101,10 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 				Url:   "/hash/crc64",
 				Title: "CRC64",
 			},
+			{
+				Url:   "/hash/fnv",
+				Title: "FNV",
+			},
 		},
 	},
 	{
