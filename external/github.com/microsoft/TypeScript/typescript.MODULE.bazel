@@ -1,0 +1,12 @@
+"""
+"""
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "typescript-5.9.3",
+    build_file = "//external/github.com/microsoft/TypeScript:typescript.BUILD",
+    sha256 = "10e108c9cf7d5f2879053dff18515fb405abf2ccef63eaaf017d9c571687a1d3",
+    strip_prefix = "package",
+    url = "https://github.com/microsoft/TypeScript/releases/download/v5.9.3/typescript-5.9.3.tgz",
+)

@@ -1,0 +1,38 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("//:rules/utils.bzl", "write")
+
+alias(
+    name = "typescript",
+    actual = "@typescript-5.9.3//:typescript",
+)
+
+write(
+    name = "package",
+    content = json.encode({"type": "module"}),
+    out_file = "package.json",
+)
+
+sh_binary(
+    name = "tsc",
+    srcs = ["@node-v22.20.0-darwin-x64//:node"],
+    args = ["$(location @typescript-5.9.3//:bin_tsc)"],
+    data = [
+        ":package.json",
+        "@typescript-5.9.3//:bin_tsc",
+        "@typescript-5.9.3//:typescript",
+    ],
+)
+
+genrule(
+    name = "tsconfig",
+    srcs = [
+        "@typescript-5.9.3//:bin_tsc",
+        "@typescript-5.9.3//:typescript",
+    ],
+    outs = ["tsconfig.json"],
+    cmd = """
+        $(location @node-v22.20.0-darwin-x64//:node) $(location @typescript-5.9.3//:bin_tsc) --init
+        cp tsconfig.json $(location :tsconfig.json)
+    """,
+    tools = ["@node-v22.20.0-darwin-x64//:node"],
+)

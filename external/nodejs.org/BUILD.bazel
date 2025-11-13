@@ -1,0 +1,19 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
+# bazel run --config=use-build-dir external/nodejs.org:node -- -e 'console.log(process.cwd())'
+sh_binary(
+    name = "node",
+    srcs = ["@node-v22.20.0-darwin-x64//:node"],
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "npm",
+    srcs = ["@node-v22.20.0-darwin-x64//:node"],
+    args = ["$(location @node-v22.20.0-darwin-x64//:npm)"],
+    data = [
+        "@node-v22.20.0-darwin-x64//:files",
+        "@node-v22.20.0-darwin-x64//:npm",
+    ],
+    visibility = ["//visibility:public"],
+)

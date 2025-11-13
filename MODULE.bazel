@@ -2,6 +2,7 @@
 """
 
 bazel_dep(name = "rules_go", version = "0.57.0")
+bazel_dep(name = "rules_shell", version = "0.5.1")
 bazel_dep(name = "gazelle", version = "0.44.0")
 
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.1", dev_dependency = True)
@@ -17,3 +18,7 @@ go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 include("//external/github.com/jgthms/bulma:bulma.MODULE.bazel")
 
 include("//external/github.com/FontAwesome/Font-Awesome:font-awesome.MODULE.bazel")
+
+include("//external/github.com/microsoft/TypeScript:typescript.MODULE.bazel")
+
+include("//external/nodejs.org:nodejs.MODULE.bazel")

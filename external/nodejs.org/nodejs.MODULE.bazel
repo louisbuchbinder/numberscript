@@ -1,0 +1,12 @@
+"""
+"""
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "node-v22.20.0-darwin-x64",
+    build_file = "//external/nodejs.org:nodejs.org.BUILD",
+    sha256 = "00df9c5df3e4ec6848c26b70fb47bf96492f342f4bed6b17f12d99b3a45eeecc",
+    strip_prefix = "node-v22.20.0-darwin-x64",
+    url = "https://nodejs.org/dist/v22.20.0/node-v22.20.0-darwin-x64.tar.gz",
+)

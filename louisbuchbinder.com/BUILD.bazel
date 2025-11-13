@@ -40,6 +40,7 @@ dist_srcs = [
     "//louisbuchbinder.com/build:site",
     ":external",
     ":static",
+    "//louisbuchbinder.com/lib:tsc",
     "//wasm:dist",
 ]
 
