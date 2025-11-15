@@ -91,7 +91,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 function dataValue(e) {
+  if (
+    e.tagName.toLowerCase() === "input" &&
+    e.getAttribute("type") === "file"
+  ) {
+    return e.files;
+  }
   return e.value || e.textContent;
+}
+function firstGoFile(files) {
+  if (files.length < 1) {
+    throw new Error("missing expected input file");
+  }
+  return new GoFile(files[0]);
 }
 function safeUInt(v) {
   const n = Number(v);

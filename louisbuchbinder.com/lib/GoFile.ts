@@ -1,16 +1,14 @@
 class GoFile {
   file: File;
   parts: Blob[];
-  index: number;
   error: null | Error;
 
-  constructor(f: File, limit: number) {
+  constructor(f: File, limit: number = 100) {
     this.file = f;
     this.parts = [];
     for (let i = 0; i < f.size; i += limit) {
       this.parts.push(this.file.slice(i, i + limit));
     }
-    this.index = this.parts.length > 0 ? 0 : -1;
     this.error = null;
   }
 
@@ -19,11 +17,11 @@ class GoFile {
   }
 
   async read(): Promise<Uint8Array<ArrayBufferLike>> {
-    if (this.index < 0 || this.index >= this.parts.length) {
+    if (this.parts.length === 0) {
       return null;
     }
 
-    const part = this.parts[this.index];
+    const part = this.parts.shift();
 
     if (this.error != null) {
       throw this.error;
@@ -32,8 +30,8 @@ class GoFile {
     return part
       .arrayBuffer()
       .then((ab) => {
-        this.index++;
-        return new Uint8Array(ab);
+        const arr = new Uint8Array(ab);
+        return arr;
       })
       .catch((err) => {
         this.error = err;

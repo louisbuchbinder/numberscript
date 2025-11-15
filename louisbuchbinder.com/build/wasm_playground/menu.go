@@ -9,6 +9,15 @@ import (
 
 var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContainer{
 	{
+		Title: "Archive",
+		Items: []templates.WasmPlaygroundMenuItem{
+			{
+				Url:   "/archive/checksum",
+				Title: "Checksum",
+			},
+		},
+	},
+	{
 		Title: "Crypto",
 		Items: []templates.WasmPlaygroundMenuItem{
 			{

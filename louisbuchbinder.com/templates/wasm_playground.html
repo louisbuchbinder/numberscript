@@ -11,7 +11,7 @@
       ...[].slice.call(document.getElementsByClassName(group + "-" + name))
     );
   };
-  page.operator = function (name, argLength, resultLength) {
+  page.operator = async function (name, argLength, resultLength) {
     const warning = document.getElementById("page-warning");
     try {
       const argOps = Array(argLength)
@@ -34,6 +34,9 @@
       let result = op(...args);
       if (result instanceof Error) {
         throw result;
+      }
+      if (result instanceof Promise) {
+        result = await result;
       }
       if (Array.isArray(result) && result.length === resultLength) {
         // result is array of correct length
@@ -209,6 +212,13 @@
             min="{{$a.Options.NumberOptions.Min}}"
             max="{{$a.Options.NumberOptions.Max}}"
             {{end}}
+          />
+          {{else if eq $a.Type "file"}}
+          <input
+            id="{{$t.Name}}-input-{{$j}}"
+            class="input is-copy-target content is-large"
+            type="file"
+            oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
           />
           {{end}}
         </div>

@@ -22,6 +22,7 @@ def wasm_js(name, wasm_exports, module):
     )
 
 go_export_template = '\tjs.Global(){go_export_gets}.Set("{func_name}", js.FuncOf(func(_ js.Value, args []js.Value) any {{\n\t\treturn jsutil.OrError(pkg.{func_name}(jsutil.ToValues(args)))\n\t}}))'
+go_async_export_template = '\tjs.Global(){go_export_gets}.Set("{func_name}", js.FuncOf(func(_ js.Value, args []js.Value) any {{\n\t\treturn js.Global().Get("Promise").New(js.FuncOf(func (_ js.Value, promiseArgs []js.Value) any {{\n\t\t\tgo func() {{ _ = pkg.{func_name}(jsutil.ToValues(append(promiseArgs, args...))) }}()\n\t\t\treturn js.Undefined()\n\t\t}}))\n\t}}))'
 
 wasm_go_main_template = """
 package main
@@ -34,6 +35,7 @@ import (
 
 func main() {{
 {go_exports}
+{go_async_exports}
 	select{{}}
 }}
 """
@@ -53,12 +55,24 @@ def _wasm_go_impl(ctx):
         for wasm_export in ctx.attr.wasm_exports
     ])
 
+    go_async_exports = "\n".join([
+        go_async_export_template.format(
+            func_name = wasm_async_export.split(".")[-1],
+            go_export_gets = "".join([
+                '.Get("{}")'.format(e)
+                for e in wasm_async_export.split(".")[:-1]
+            ]),
+        )
+        for wasm_async_export in ctx.attr.wasm_async_exports
+    ])
+
     ctx.actions.write(
         go_out,
         wasm_go_main_template.format(
             gazelle_prefix = gazelle_prefix,
             module = module,
             go_exports = go_exports,
+            go_async_exports = go_async_exports,
         ),
     )
     return [DefaultInfo(files = depset([go_out]))]
@@ -66,6 +80,7 @@ def _wasm_go_impl(ctx):
 wasm_go = rule(
     implementation = _wasm_go_impl,
     attrs = {
+        "wasm_async_exports": attr.string_list(),
         "wasm_exports": attr.string_list(),
     },
 )

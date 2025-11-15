@@ -1,6 +1,8 @@
 package js
 
 import (
+	"fmt"
+	"io/fs"
 	"syscall/js"
 
 	"github.com/louisbuchbinder/core/wasm"
@@ -39,6 +41,29 @@ func (w wrapper) Array() []any {
 	return arr
 }
 
+func (w wrapper) IsFile() bool {
+	return w.InstanceOf(js.Global().Get("GoFile"))
+}
+
+func (w wrapper) File() (fs.File, error) {
+	if !w.IsFile() {
+		return nil, fmt.Errorf("expected js.Value wrapper to be GoFile")
+	}
+	return NewFile(w.Value), nil
+}
+
+func (w wrapper) IsPromise() bool {
+	return w.InstanceOf(js.Global().Get("Promise"))
+}
+
+func (w wrapper) Invoke(args ...any) wasm.Value {
+	return wrapper{w.Value.Invoke(args...)}
+}
+
+func (w wrapper) Reject(err error) {
+	_ = w.Value.Invoke(Error(err))
+}
+
 func ToValues(args []js.Value) []wasm.Value {
 	values := make([]wasm.Value, len(args))
 	for i, arg := range args {
@@ -51,7 +76,8 @@ func OrError(val any) any {
 	if err, ok := val.(error); ok {
 		return Error(err)
 	}
-	// TODO other arrays here
+	// TODO: other arrays here
+	// TODO: actually can we return []any to avoid this
 	if l, ok := val.([]int); ok {
 		return Array(l)
 	}
