@@ -125,3 +125,24 @@ func ExecuteTemplate(t Template, data any) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
+
+const (
+	ThirtyTwoKB   = 1024 * 32
+	OneMB         = 1048576
+	ThirtyTwoMB   = OneMB * 32
+	FiveHundredMB = OneMB * 500
+	FiveGB        = 1073741824 * 5
+)
+
+func CopyFlexBuffer(dst io.Writer, src io.Reader, n int64) (int64, error) {
+	var buf []byte
+	switch {
+	case n > FiveGB:
+		buf = make([]byte, ThirtyTwoMB)
+	case n > FiveHundredMB:
+		buf = make([]byte, OneMB)
+	default:
+		buf = make([]byte, ThirtyTwoKB)
+	}
+	return io.CopyBuffer(dst, src, buf)
+}

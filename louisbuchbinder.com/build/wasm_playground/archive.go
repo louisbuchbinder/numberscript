@@ -22,8 +22,9 @@ var ArchiveChecksumDocumentTemplateInput = templates.DocumentTemplateInput{
 		Menu:  Menu("Archive", "Checksum"),
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "md5",
-				Title: "MD5",
+				Name:              "md5",
+				Title:             "MD5",
+				HasGenerateButton: true,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_File,
@@ -47,8 +48,9 @@ var ArchiveChecksumDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sha1",
-				Title: "SHA1",
+				Name:              "sha1",
+				Title:             "SHA1",
+				HasGenerateButton: true,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_File,
@@ -72,8 +74,9 @@ var ArchiveChecksumDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sha256",
-				Title: "SHA256",
+				Name:              "sha256",
+				Title:             "SHA256",
+				HasGenerateButton: true,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_File,
@@ -97,8 +100,9 @@ var ArchiveChecksumDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sha512",
-				Title: "SHA512",
+				Name:              "sha512",
+				Title:             "SHA512",
+				HasGenerateButton: true,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_File,

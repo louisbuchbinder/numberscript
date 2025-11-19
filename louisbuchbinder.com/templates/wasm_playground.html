@@ -99,7 +99,7 @@
         {{else}}
         href="javascript:[
             page.toggleTab('{{$t.Name}}', 'tab-group-function'),
-            page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),
+            {{if not $t.HasGenerateButton}}page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),{{end}}
           ]"
         {{end}}
         >{{$t.Title}}</a
@@ -107,7 +107,7 @@
       {{end}}
     </div>
 
-    {{range $i, $t := .Tabs}} {{if eq $i 0}}
+    {{range $i, $t := .Tabs}} {{if eq $i 0}} {{if not $t.HasGenerateButton}}
     <script>
       Promise.all(window.wasmContentLoaders).then((_) => {
         page.operator(
@@ -117,7 +117,7 @@
         );
       });
     </script>
-    {{end}}
+    {{end}} {{end}}
     <div
       class="tab-group-function tab-group-function-{{$t.Name}}"
       {{if
@@ -126,7 +126,7 @@
       0}}hidden="true"
       {{end}}
     >
-      {{if eq (len $t.Args) 0}}
+      {{if or (eq (len $t.Args) 0) ($t.HasGenerateButton)}}
       <div class="level has-text-centered">
         <div class="level-left">
           <div class="level-item">
@@ -135,7 +135,7 @@
           <div class="level-item">
             <button
               class="button is-large"
-              onclick="javascript:page.operator('{{$t.Name}}', 0, Number('{{len $t.Results}}'))"
+              onclick="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
             >
               Generate
             </button>
@@ -171,7 +171,7 @@
                   {{else}}
                   href="javascript:[
                   page.toggleTab('{{$t.Name}}-{{$a.Name}}-{{$o.Name}}', 'tab-group-function-arg-operator'),
-                  page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),
+                  {{if not $t.HasGenerateButton}}page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),{{end}}
                 ]"
                   {{end}}
                   >{{$o.Title}}</a
@@ -218,7 +218,6 @@
             id="{{$t.Name}}-input-{{$j}}"
             class="input is-copy-target content is-large"
             type="file"
-            oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
           />
           {{end}}
         </div>
@@ -255,7 +254,7 @@
                   {{else}}
                   href="javascript:[
                   page.toggleTab('{{$t.Name}}-result-{{$o.Name}}', 'is-tab-group-function-result-operator'),
-                  page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),
+                  {{if not $t.HasGenerateButton}}page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),{{end}}
                 ]"
                   {{end}}
                   >{{$o.Title}}</a

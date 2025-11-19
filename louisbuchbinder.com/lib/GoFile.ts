@@ -1,14 +1,41 @@
 class GoFile {
   file: File;
-  parts: Blob[];
+  generator: Generator<Blob, null, undefined>;
+  done: boolean;
   error: null | Error;
 
-  constructor(f: File, limit: number = 100) {
-    this.file = f;
-    this.parts = [];
-    for (let i = 0; i < f.size; i += limit) {
-      this.parts.push(this.file.slice(i, i + limit));
+  static ThirtyTwoKB = Math.pow(2, 10) * 32;
+  static OneMB = Math.pow(2, 20);
+  static ThirtyTwoMB = Math.pow(2, 20) * 32;
+  static FiveHundredMB = Math.pow(2, 20) * 500;
+  static FiveGB = Math.pow(2, 30) * 5;
+
+  static BufferSize(size: number): number {
+    if (size > GoFile.FiveGB) {
+      return this.ThirtyTwoMB;
     }
+
+    if (size > GoFile.FiveHundredMB) {
+      return this.OneMB;
+    }
+
+    return this.ThirtyTwoKB;
+  }
+
+  static *Generator(f: File): Generator<Blob, null, undefined> {
+    let i = 0;
+    const limit = GoFile.BufferSize(f.size);
+    while (i < f.size) {
+      yield f.slice(i, i + limit);
+      i += limit;
+    }
+    return null;
+  }
+
+  constructor(f: File) {
+    this.file = f;
+    this.generator = GoFile.Generator(f);
+    this.done = false;
     this.error = null;
   }
 
@@ -17,17 +44,23 @@ class GoFile {
   }
 
   async read(): Promise<Uint8Array<ArrayBufferLike>> {
-    if (this.parts.length === 0) {
-      return null;
+    if (this.done) {
+      this.error =
+        this.error ||
+        new Error("unexpected call to read after processing the complete file");
     }
-
-    const part = this.parts.shift();
-
-    if (this.error != null) {
+    if (this.error !== null) {
       throw this.error;
     }
 
-    return part
+    const next = this.generator.next();
+
+    if (next.done) {
+      this.done = true;
+      return next.value;
+    }
+
+    return next.value
       .arrayBuffer()
       .then((ab) => {
         const arr = new Uint8Array(ab);

@@ -4,8 +4,8 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
-	"io"
 
+	"github.com/louisbuchbinder/core/lib/util"
 	"github.com/louisbuchbinder/core/wasm"
 )
 
@@ -34,7 +34,7 @@ func AsyncChecksum(args []wasm.Value) any {
 	}
 	go func() {
 		h := sha1.New()
-		n, err := io.Copy(h, file)
+		n, err := util.CopyFlexBuffer(h, file, info.Size())
 		if err != nil {
 			reject.Reject(err)
 			return

@@ -5,10 +5,11 @@ import (
 )
 
 type WasmPlaygroundTab struct {
-	Name    string
-	Title   string
-	Args    []WasmPlaygroundTabArg
-	Results []WasmPlaygroundTabResult
+	Name              string
+	Title             string
+	HasGenerateButton bool
+	Args              []WasmPlaygroundTabArg
+	Results           []WasmPlaygroundTabResult
 }
 
 type WasmPlaygroundTabValType string
