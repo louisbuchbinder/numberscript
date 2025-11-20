@@ -1,4 +1,18 @@
-class GoFile {
+interface IGoFile {
+  stat(): IGoFileInfo;
+  read(): Promise<Uint8Array<ArrayBufferLike>>;
+}
+
+interface IGoFileInfo {
+  name(): string;
+  mode(): null;
+  size(): number;
+  modTime(): number;
+  isDir(): boolean;
+  sys(): null;
+}
+
+class GoFile implements IGoFile {
   file: File;
   generator: Generator<Blob, null, undefined>;
   done: boolean;
