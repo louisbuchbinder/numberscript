@@ -219,6 +219,14 @@
             class="input is-copy-target content is-large"
             type="file"
           />
+          {{else if eq $a.Type "files"}}
+          <input
+            id="{{$t.Name}}-input-{{$j}}"
+            class="input is-copy-target content is-large"
+            type="file"
+            webkitdirectory
+            multiple
+          />
           {{end}}
         </div>
       </div>

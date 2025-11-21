@@ -37,18 +37,19 @@ class GoDirEntry implements IGoDirEntry {
   }
 }
 
-class GoReadDirFile implements IGoReadDirFile {
+class GoReadDirFile extends GoFile implements IGoReadDirFile {
   info: GoDirFileInfo;
   begin: number;
   entries: IGoDirEntry[];
 
   constructor(dirName: string, entries: IGoDirEntry[]) {
+    super(null);
     this.begin = 0;
     this.entries = entries;
     this.info = new GoDirFileInfo(dirName);
   }
 
-  stat(): GoDirFileInfo {
+  stat(): IGoFileInfo {
     return this.info;
   }
 
@@ -166,6 +167,13 @@ class FSTrie {
   get(p: string): IGoFile | Error {
     if (p.length === 0) {
       return GoFS.ErrInvalid;
+    }
+    if (p[0] === "/") {
+      // Only relative paths are supported
+      return GoFS.ErrInvalid;
+    }
+    if (p === ".") {
+      return new GoReadDirFile(".", this.entries());
     }
     const parts = p.split("/");
     let current: FSTrie = this;

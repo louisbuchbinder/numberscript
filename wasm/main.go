@@ -14,4 +14,5 @@ type Value interface {
 	Invoke(...any) Value
 	Reject(error)
 	File() (fs.File, error)
+	FS() (fs.FS, error)
 }

@@ -105,6 +105,12 @@ function firstGoFile(files) {
   }
   return new GoFile(files[0]);
 }
+function newGoFS(files) {
+  if (files.length < 1) {
+    throw new Error("missing expected input file");
+  }
+  return new GoFS(files);
+}
 function safeUInt(v) {
   const n = Number(v);
   if (isNaN(n)) {

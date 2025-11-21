@@ -18,6 +18,7 @@ const (
 	WasmPlaygroundTabValType_Text   WasmPlaygroundTabValType = "text"
 	WasmPlaygroundTabValType_Number WasmPlaygroundTabValType = "number"
 	WasmPlaygroundTabValType_File   WasmPlaygroundTabValType = "file"
+	WasmPlaygroundTabValType_Files  WasmPlaygroundTabValType = "files"
 )
 
 type WasmPlaygroundTabArg struct {

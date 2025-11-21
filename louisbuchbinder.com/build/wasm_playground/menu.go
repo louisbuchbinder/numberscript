@@ -12,6 +12,10 @@ var WasmPlaygroundMenuItemContainers = []templates.WasmPlaygroundMenuItemContain
 		Title: "Archive",
 		Items: []templates.WasmPlaygroundMenuItem{
 			{
+				Url:   "/archive/zip",
+				Title: "Zip",
+			},
+			{
 				Url:   "/archive/checksum",
 				Title: "Checksum",
 			},

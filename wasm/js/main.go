@@ -52,6 +52,17 @@ func (w wrapper) File() (fs.File, error) {
 	return NewFile(w.Value), nil
 }
 
+func (w wrapper) IsFS() bool {
+	return w.InstanceOf(js.Global().Get("GoFS"))
+}
+
+func (w wrapper) FS() (fs.FS, error) {
+	if !w.IsFS() {
+		return nil, fmt.Errorf("expected js.Value wrapper to be GoFS")
+	}
+	return NewFS(w.Value), nil
+}
+
 func (w wrapper) IsPromise() bool {
 	return w.InstanceOf(js.Global().Get("Promise"))
 }

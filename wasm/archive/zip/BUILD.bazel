@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "zip",
+    srcs = ["wasm.go"],
+    importpath = "github.com/louisbuchbinder/core/wasm/archive/zip",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//lib/util",
+        "//wasm",
+    ],
+)

@@ -18,6 +18,9 @@ func Sum(args []wasm.Value) any {
 }
 
 func AsyncChecksum(args []wasm.Value) any {
+	if len(args) < 2 {
+		return nil
+	}
 	resolve, reject := args[0], args[1]
 	if len(args) < 3 {
 		return resolve.Invoke()

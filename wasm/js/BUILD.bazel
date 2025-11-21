@@ -6,6 +6,7 @@ go_library(
     srcs = select({
         "@rules_go//go/platform:js": [
             "file.go",
+            "fs.go",
             "main.go",
         ],
         "//conditions:default": [],

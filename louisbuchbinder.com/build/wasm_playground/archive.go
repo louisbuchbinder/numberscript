@@ -7,6 +7,48 @@ import (
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
+var ArchiveZipDocumentTemplateInput = templates.DocumentTemplateInput{
+	Title: "Zip Archive",
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFile.js"})),          // TODO: use the hash-named file
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFs.js"})),            // TODO: use the hash-named file
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/archive/zip/pkg/wasm.js"})), // TODO: use the hash-named file
+	}, "\n")),
+	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
+		Title: "Zip Archive",
+		Menu:  Menu("Archive", "Zip"),
+		Tabs: []templates.WasmPlaygroundTab{
+			{
+				Name:              "zip",
+				Title:             "Zip",
+				HasGenerateButton: true,
+				Args: []templates.WasmPlaygroundTabArg{
+					{
+						Type:  templates.WasmPlaygroundTabValType_Files,
+						Name:  "files",
+						Title: "Files",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-files", Title: "From Files", Operator: "newGoFS"},
+						},
+					},
+				},
+				Results: []templates.WasmPlaygroundTabResult{
+					{
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{
+								Name:     "as-bytes",
+								Title:    "As Bytes",
+								Operator: "wasm.archive.zip.AsyncZip",
+							},
+						},
+					},
+				},
+			},
+		},
+	})),
+}
+
 var ArchiveChecksumDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Archive Checksum",
 	Scripts: template.HTML(strings.Join([]string{

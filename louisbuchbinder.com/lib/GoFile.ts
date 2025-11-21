@@ -53,7 +53,7 @@ class GoFile implements IGoFile {
     this.error = null;
   }
 
-  stat(): GoFileInfo {
+  stat(): IGoFileInfo {
     return new GoFileInfo(this.file);
   }
 
