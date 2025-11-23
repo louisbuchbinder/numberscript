@@ -2,6 +2,7 @@ package js
 
 import (
 	"fmt"
+	"io"
 	"io/fs"
 	"syscall/js"
 
@@ -42,14 +43,30 @@ func (w wrapper) Array() []any {
 }
 
 func (w wrapper) IsFile() bool {
-	return w.InstanceOf(js.Global().Get("GoFile"))
+	return w.InstanceOf(js.Global().Get("GoFile")) || w.InstanceOf(js.Global().Get("OpfsFile"))
 }
 
 func (w wrapper) File() (fs.File, error) {
 	if !w.IsFile() {
-		return nil, fmt.Errorf("expected js.Value wrapper to be GoFile")
+		return nil, fmt.Errorf("expected js.Value wrapper to be GoFile or OpfsFile")
 	}
 	return NewFile(w.Value), nil
+}
+
+func (w wrapper) IsFileWriter() bool {
+	return w.InstanceOf(js.Global().Get("OpfsFile"))
+}
+
+type OpfsFile interface {
+	io.WriteCloser
+	fs.File
+}
+
+func (w wrapper) FileWriter() (wasm.OpfsFile, error) {
+	if !w.IsFileWriter() {
+		return nil, fmt.Errorf("expected js.Value wrapper to be OpfsFile")
+	}
+	return NewFileWriter(w.Value), nil
 }
 
 func (w wrapper) IsFS() bool {

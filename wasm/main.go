@@ -1,6 +1,14 @@
 package wasm
 
-import "io/fs"
+import (
+	"io"
+	"io/fs"
+)
+
+type OpfsFile interface {
+	io.WriteCloser
+	fs.File
+}
 
 type Value interface {
 	Bool() bool
@@ -14,5 +22,6 @@ type Value interface {
 	Invoke(...any) Value
 	Reject(error)
 	File() (fs.File, error)
+	FileWriter() (OpfsFile, error)
 	FS() (fs.FS, error)
 }

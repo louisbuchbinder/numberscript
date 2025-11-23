@@ -23,7 +23,7 @@ func (d *jsGoDirEntry) IsDir() bool {
 }
 
 func (d *jsGoDirEntry) Type() fs.FileMode {
-	return 0
+	return 0o777
 }
 
 func (d *jsGoDirEntry) Info() (fs.FileInfo, error) {

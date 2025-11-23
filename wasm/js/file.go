@@ -14,7 +14,7 @@ type jsGoFileInfo struct{ Value js.Value }
 
 func (info *jsGoFileInfo) Name() string      { return info.Value.Call("name").String() }
 func (info *jsGoFileInfo) Size() int64       { return int64(info.Value.Call("size").Int()) }
-func (info *jsGoFileInfo) Mode() fs.FileMode { return 0 }
+func (info *jsGoFileInfo) Mode() fs.FileMode { return 0o644 }
 func (info *jsGoFileInfo) ModTime() time.Time {
 	return time.UnixMilli(int64(info.Value.Call("modTime").Int()))
 }

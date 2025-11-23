@@ -15,10 +15,11 @@ type WasmPlaygroundTab struct {
 type WasmPlaygroundTabValType string
 
 const (
-	WasmPlaygroundTabValType_Text   WasmPlaygroundTabValType = "text"
-	WasmPlaygroundTabValType_Number WasmPlaygroundTabValType = "number"
-	WasmPlaygroundTabValType_File   WasmPlaygroundTabValType = "file"
-	WasmPlaygroundTabValType_Files  WasmPlaygroundTabValType = "files"
+	WasmPlaygroundTabValType_Text     WasmPlaygroundTabValType = "text"
+	WasmPlaygroundTabValType_Number   WasmPlaygroundTabValType = "number"
+	WasmPlaygroundTabValType_File     WasmPlaygroundTabValType = "file"
+	WasmPlaygroundTabValType_Files    WasmPlaygroundTabValType = "files"
+	WasmPlaygroundTabValType_Download WasmPlaygroundTabValType = "download"
 )
 
 type WasmPlaygroundTabArg struct {
@@ -43,6 +44,7 @@ type WasmPlaygroundTabArgOptions_Number struct {
 
 type WasmPlaygroundTabResult struct {
 	Title     string
+	Type      WasmPlaygroundTabValType
 	Operators []WasmPlaygroundTabOperator
 }
 

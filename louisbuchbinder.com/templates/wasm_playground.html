@@ -23,9 +23,18 @@
               .querySelector(".is-active").dataset.operator
           );
         });
-      const args = argOps.map((argOp, i) => {
-        return argOp(dataValue(document.getElementById(name + "-input-" + i)));
-      });
+      const args = await Promise.all(
+        argOps.map((argOp, i) => {
+          const a = argOp(
+            dataValue(document.getElementById(name + "-input-" + i))
+          );
+          if (a instanceof Promise) {
+            return a;
+          } else {
+            return Promise.resolve(a);
+          }
+        })
+      );
       const op = resolve(
         document
           .getElementById(name + "-result-ops")
@@ -50,7 +59,11 @@
         if (Array.isArray(item)) {
           item = arrToSpaceSeparatedString(item);
         }
-        document.getElementById(name + "-result-" + i).textContent = item;
+        const resultElement = document.getElementById(name + "-result-" + i);
+        resultElement.textContent = item;
+        if (resultElement.tagName.toLowerCase() === "button") {
+          resultElement.click();
+        }
         hide(warning);
       }
     } catch (err) {
@@ -191,7 +204,11 @@
           <textarea
             id="{{$t.Name}}-input-{{$j}}"
             class="input is-copy-target content is-large is-auto-resize"
+            {{if
+            not
+            $t.HasGenerateButton}}
             oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
+            {{end}}
           ></textarea>
           {{else if eq $a.Type "number"}}
           <input
@@ -217,12 +234,14 @@
           <input
             id="{{$t.Name}}-input-{{$j}}"
             class="input is-copy-target content is-large"
+            accept="*"
             type="file"
           />
           {{else if eq $a.Type "files"}}
           <input
             id="{{$t.Name}}-input-{{$j}}"
             class="input is-copy-target content is-large"
+            accept="*"
             type="file"
             webkitdirectory
             multiple
@@ -274,12 +293,61 @@
         </div>
       </div>
       <div class="box is-hover-visible-parent">
+        {{if eq $result.Type "download"}}
+        <div class="level">
+          <div class="level-left">
+            <button
+              id="{{$t.Name}}-result-{{$j}}"
+              style="display: none"
+              onclick="javascript:[
+                window.URL.revokeObjectURL(document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').getAttribute('href')||''),
+                async function(){
+                  const data = JSON.parse(document.getElementById('{{$t.Name}}-result-{{$j}}').textContent);
+                  const {file} = await newOpfsFile(data.filename);
+                  const dataUrl = window.URL.createObjectURL(file);
+                  document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').setAttribute('href', dataUrl);
+                  document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').classList.remove('is-disabled');
+                  document.getElementById('{{$t.Name}}-result-{{$j}}-download').setAttribute('download', data.filename);
+                  document.getElementById('{{$t.Name}}-result-{{$j}}-download').removeAttribute('disabled');
+                  document.getElementById('{{$t.Name}}-result-{{$j}}-revoke').removeAttribute('disabled');
+                }(),
+              ]"
+            ></button>
+            <button
+              id="{{$t.Name}}-result-{{$j}}-download"
+              class="button is-large"
+              disabled="true"
+            >
+              <a
+                id="{{$t.Name}}-result-{{$j}}-download-link"
+                class="is-disabled"
+                >Download</a
+              >
+            </button>
+            <button
+              class="button is-large"
+              id="{{$t.Name}}-result-{{$j}}-revoke"
+              disabled="true"
+              onclick="javascript:[
+                window.URL.revokeObjectURL(document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').getAttribute('href')||''),
+                document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').classList.add('is-disabled'),
+                document.getElementById('{{$t.Name}}-result-{{$j}}-download').removeAttribute('download'),
+                document.getElementById('{{$t.Name}}-result-{{$j}}-download').setAttribute('disabled', 'true'),
+                document.getElementById('{{$t.Name}}-result-{{$j}}-revoke').setAttribute('disabled', 'true'),
+              ]"
+            >
+              Revoke
+            </button>
+          </div>
+        </div>
+        {{else}}
         <button class="button is-right is-hover-visible-target is-copy-button">
           copy
         </button>
         <div class="content is-large" style="overflow-wrap: break-word">
           <p id="{{$t.Name}}-result-{{$j}}" class="is-copy-target"></p>
         </div>
+        {{end}}
       </div>
       {{end}}
     </div>

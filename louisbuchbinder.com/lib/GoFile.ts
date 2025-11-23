@@ -86,9 +86,7 @@ class GoFile implements IGoFile {
       });
   }
 
-  async close(): Promise<null> {
-    return null;
-  }
+  async close(): Promise<void> {}
 }
 
 class GoFileInfo {

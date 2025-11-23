@@ -2,31 +2,36 @@ package wasmzip
 
 import (
 	"archive/zip"
-	"bytes"
-	"fmt"
-	"strings"
+	"encoding/json"
 
-	"github.com/louisbuchbinder/core/lib/util"
 	"github.com/louisbuchbinder/core/wasm"
 )
+
+type ZipArchiveData struct {
+	Filename string `json:"filename"`
+	Size     int    `json:"size"`
+}
 
 func AsyncZip(args []wasm.Value) any {
 	if len(args) < 2 {
 		return nil
 	}
 	resolve, reject := args[0], args[1]
-	if len(args) < 3 {
+	if len(args) < 4 {
 		return resolve.Invoke()
 	}
-	fs, err := args[2].FS()
+	fw, err := args[2].FileWriter()
 	if err != nil {
 		reject.Reject(err)
 		return nil
 	}
-	_ = fs
+	fs, err := args[3].FS()
+	if err != nil {
+		reject.Reject(err)
+		return nil
+	}
 	go func() {
-		buf := new(bytes.Buffer) // TODO
-		writer := zip.NewWriter(buf)
+		writer := zip.NewWriter(fw)
 		if err := writer.AddFS(fs); err != nil {
 			reject.Reject(err)
 			return
@@ -35,7 +40,20 @@ func AsyncZip(args []wasm.Value) any {
 			reject.Reject(err)
 			return
 		}
-		resolve.Invoke(strings.Join(util.Map(buf.Bytes(), func(_ int, b uint8) string { return fmt.Sprintf("%d", b) }), " "))
+		if err := fw.Close(); err != nil {
+			reject.Reject(err)
+			return
+		}
+		stat, err := fw.Stat()
+		if err != nil {
+			reject.Reject(err)
+			return
+		}
+		b, err := json.Marshal(ZipArchiveData{
+			Filename: stat.Name(),
+			Size:     int(stat.Size()),
+		})
+		resolve.Invoke(string(b))
 	}()
 	return nil
 }

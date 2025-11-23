@@ -111,6 +111,15 @@ function newGoFS(files) {
   }
   return new GoFS(files);
 }
+async function createOpfsFile(name) {
+  return await newOpfsFile(name, { create: true });
+}
+async function newOpfsFile(name, opts) {
+  if (name.length === 0) {
+    throw new Error("missing expected file name");
+  }
+  return await OpfsFile.open(name, opts);
+}
 function safeUInt(v) {
   const n = Number(v);
   if (isNaN(n)) {

@@ -12,6 +12,7 @@ var ArchiveZipDocumentTemplateInput = templates.DocumentTemplateInput{
 	Scripts: template.HTML(strings.Join([]string{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFile.js"})),          // TODO: use the hash-named file
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/OpfsFile.js"})),        // TODO: use the hash-named file
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFs.js"})),            // TODO: use the hash-named file
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/archive/zip/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
@@ -25,6 +26,14 @@ var ArchiveZipDocumentTemplateInput = templates.DocumentTemplateInput{
 				HasGenerateButton: true,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
+						Type:  templates.WasmPlaygroundTabValType_Text,
+						Name:  "output-filename",
+						Title: "Output Filename",
+						Operators: []templates.WasmPlaygroundTabOperator{
+							{Name: "from-text", Title: "From Text", Operator: "createOpfsFile"},
+						},
+					},
+					{
 						Type:  templates.WasmPlaygroundTabValType_Files,
 						Name:  "files",
 						Title: "Files",
@@ -35,10 +44,11 @@ var ArchiveZipDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 				Results: []templates.WasmPlaygroundTabResult{
 					{
+						Type: templates.WasmPlaygroundTabValType_Download,
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{
-								Name:     "as-bytes",
-								Title:    "As Bytes",
+								Name:     "as-file",
+								Title:    "As File",
 								Operator: "wasm.archive.zip.AsyncZip",
 							},
 						},

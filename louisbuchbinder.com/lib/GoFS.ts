@@ -58,6 +58,10 @@ class GoReadDirFile extends GoFile implements IGoReadDirFile {
   }
 
   readDir(n: number): IGoDirEntry[] {
+    if (n === -1) {
+      this.begin = 0;
+      return this.entries;
+    }
     if (this.begin >= this.entries.length) {
       return null;
     }
@@ -86,8 +90,8 @@ class GoDirFileInfo implements IGoFileInfo {
     return 0;
   }
 
-  modTime(): null {
-    return null;
+  modTime(): number {
+    return 0;
   }
 
   isDir(): boolean {

@@ -24,3 +24,6 @@ textarea.is-auto-resize {
 .is-width-one-fifth {
   width: 20%;
 }
+a.is-disabled {
+  cursor: not-allowed;
+}
