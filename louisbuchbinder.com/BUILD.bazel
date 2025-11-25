@@ -1,3 +1,5 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
 filegroup(
     name = "static_srcs",
     srcs = glob(["static/**/*"]),
@@ -60,4 +62,27 @@ genrule(
             for src in dist_srcs
         ]),
     ),
+)
+
+go_library(
+    name = "louisbuchbinder_com_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/louisbuchbinder/core/louisbuchbinder.com",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//lib/util",
+        "@rules_go//go/runfiles",
+    ],
+)
+
+go_binary(
+    name = "louisbuchbinder.com",
+    data = [
+        ":dist",
+    ],
+    embed = [":louisbuchbinder_com_lib"],
+    visibility = ["//visibility:public"],
+    x_defs = {
+        "distRlocation": "$(rlocationpath :dist)",
+    },
 )

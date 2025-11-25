@@ -2,9 +2,12 @@ package util
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"io"
+	"net"
+	"os"
 )
 
 func Ptr[A any](a A) *A { return &a }
@@ -145,4 +148,54 @@ func CopyFlexBuffer(dst io.Writer, src io.Reader, n int64) (int64, error) {
 		buf = make([]byte, ThirtyTwoKB)
 	}
 	return io.CopyBuffer(dst, src, buf)
+}
+
+type CleanupFunctionWrapper struct {
+	fns []func() error
+}
+
+func NewCleanupFunctionWrapper(fns ...func() error) *CleanupFunctionWrapper {
+	return &CleanupFunctionWrapper{fns: fns}
+}
+
+func (w *CleanupFunctionWrapper) Cleanup() func() error {
+	return func() error {
+		var firstErr error
+		for _, fn := range w.fns {
+			if err := fn(); err != nil && firstErr == nil {
+				firstErr = err
+			}
+		}
+		return firstErr
+	}
+}
+
+func (w *CleanupFunctionWrapper) Add(fn func() error) {
+	w.fns = append(w.fns, fn)
+}
+
+func (w *CleanupFunctionWrapper) AddCancel(fn context.CancelFunc) {
+	w.fns = append(w.fns, func() error {
+		fn()
+		return nil
+	})
+}
+
+func FreePort() (int, error) {
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		return 0, err
+	}
+	defer listener.Close()
+
+	addr := listener.Addr().(*net.TCPAddr)
+	return addr.Port, nil
+}
+
+func MkdirTemp(dir string, pattern string) (string, func() error, error) {
+	tempdir, err := os.MkdirTemp(dir, pattern)
+	cleanup := func() error {
+		return os.RemoveAll(tempdir)
+	}
+	return tempdir, cleanup, err
 }
