@@ -35,26 +35,25 @@ func TestLoadHomePage(t *testing.T) {
 }
 
 func TestEncodingBase32(t *testing.T) {
-	t.Parallel()
 	testEncoding(t, encodeTestcasesBase32)
 }
 
 func TestEncodingBase64(t *testing.T) {
-	t.Parallel()
 	testEncoding(t, encodeTestcasesBase64)
 }
 
 func TestEncodingHex(t *testing.T) {
-	t.Parallel()
 	testEncoding(t, encodeTestcasesHex)
 }
 
 func TestEncodingHtml(t *testing.T) {
-	t.Parallel()
 	testEncoding(t, encodeTestcasesHtml)
 }
 
 func TestEncodingUri(t *testing.T) {
-	t.Parallel()
 	testEncoding(t, encodeTestcasesUri)
+}
+
+func TestHashAdler32(t *testing.T) {
+	testHash(t, hashTestcasesAdler32)
 }

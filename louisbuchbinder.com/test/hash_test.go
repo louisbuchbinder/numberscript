@@ -10,7 +10,7 @@ import (
 	"github.com/louisbuchbinder/core/lib/util/testutil"
 )
 
-func testEncoding(t *testing.T, testcases []encodingTestcase) {
+func testHash(t *testing.T, testcases []hashTestcase) {
 	ctx, cancel := chromedp.NewContext(h.ChromedpContext)
 	defer cancel()
 	for _, tc := range testcases {
@@ -21,12 +21,14 @@ func testEncoding(t *testing.T, testcases []encodingTestcase) {
 
 		err := chromedp.Run(
 			ctx,
-			chromedp.Navigate(fmt.Sprintf("http://localhost:%d/encoding/%s/", h.ServerPort, tc.pkg)),
+			chromedp.Navigate(fmt.Sprintf("http://localhost:%d/hash/%s/", h.ServerPort, tc.pkg)),
 			chromedp.WaitReady("body", chromedp.ByQuery),
 			chromedp.WaitReady(toggleId, chromedp.ByID),
 			chromedp.Click(toggleId, chromedp.ByID),
 			chromedp.WaitVisible(inputId, chromedp.ByID),
 			chromedp.WaitVisible(resultId, chromedp.ByID),
+			chromedp.WaitReady(inputId, chromedp.ByID),
+			chromedp.WaitReady(resultId, chromedp.ByID),
 			chromedp.ActionFunc(func(actx context.Context) error {
 				in, err := GetElementById(actx, inputId)
 				if err != nil {
