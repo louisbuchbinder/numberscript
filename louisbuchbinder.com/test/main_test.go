@@ -34,26 +34,42 @@ func TestLoadHomePage(t *testing.T) {
 	testutil.AssertNilError(t, err)
 }
 
+func TestCryptoMd5(t *testing.T) {
+	testStd(t, cryptoTestcasesMd5)
+}
+
 func TestEncodingBase32(t *testing.T) {
-	testEncoding(t, encodeTestcasesBase32)
+	testStd(t, encodeTestcasesBase32)
 }
 
 func TestEncodingBase64(t *testing.T) {
-	testEncoding(t, encodeTestcasesBase64)
+	testStd(t, encodeTestcasesBase64)
 }
 
 func TestEncodingHex(t *testing.T) {
-	testEncoding(t, encodeTestcasesHex)
+	testStd(t, encodeTestcasesHex)
 }
 
 func TestEncodingHtml(t *testing.T) {
-	testEncoding(t, encodeTestcasesHtml)
+	testStd(t, encodeTestcasesHtml)
 }
 
 func TestEncodingUri(t *testing.T) {
-	testEncoding(t, encodeTestcasesUri)
+	testStd(t, encodeTestcasesUri)
 }
 
 func TestHashAdler32(t *testing.T) {
-	testHash(t, hashTestcasesAdler32)
+	testStd(t, hashTestcasesAdler32)
+}
+
+func TestHashCrc32(t *testing.T) {
+	testStd(t, hashTestcasesCrc32)
+}
+
+func TestHashCrc64(t *testing.T) {
+	testStd(t, hashTestcasesCrc64)
+}
+
+func TestHashFnv(t *testing.T) {
+	testStd(t, hashTestcasesFnv)
 }

@@ -3,9 +3,11 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "test",
     srcs = [
+        "crypto.go",
         "encoding.go",
         "hash.go",
         "main.go",
+        "test.go",
     ],
     data = ["//louisbuchbinder.com"],
     importpath = "github.com/louisbuchbinder/core/louisbuchbinder.com/test",
@@ -15,6 +17,7 @@ go_library(
     },
     deps = [
         "//lib/util",
+        "//lib/util/testutil",
         "@com_github_chromedp_cdproto//cdp",
         "@com_github_chromedp_cdproto//target",
         "@com_github_chromedp_chromedp//:chromedp",
@@ -24,11 +27,7 @@ go_library(
 
 go_test(
     name = "test_test",
-    srcs = [
-        "encoding_test.go",
-        "hash_test.go",
-        "main_test.go",
-    ],
+    srcs = ["main_test.go"],
     embed = [":test"],
     deps = [
         "//lib/util",
