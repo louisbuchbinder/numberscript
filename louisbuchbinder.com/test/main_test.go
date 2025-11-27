@@ -38,6 +38,18 @@ func TestCryptoMd5(t *testing.T) {
 	testStd(t, cryptoTestcasesMd5)
 }
 
+func TestCryptoSha1(t *testing.T) {
+	testStd(t, cryptoTestcasesSha1)
+}
+
+func TestCryptoSha256(t *testing.T) {
+	testStd(t, cryptoTestcasesSha256)
+}
+
+func TestCryptoSha512(t *testing.T) {
+	testStd(t, cryptoTestcasesSha512)
+}
+
 func TestEncodingBase32(t *testing.T) {
 	testStd(t, encodeTestcasesBase32)
 }
