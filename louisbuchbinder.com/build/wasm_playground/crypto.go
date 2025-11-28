@@ -1178,12 +1178,16 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/rand/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
-		Title: "Rand",
-		Menu:  Menu("Crypto", "Rand"),
+		Title:     "Rand",
+		Menu:      Menu("Crypto", "Rand"),
+		Docstring: "Cryptographically secure random number generator.",
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "int",
 				Title: "Int",
+				Docstring: `
+					Int returns a uniform random value in [0, max).
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1207,8 +1211,9 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "prime",
-				Title: "Prime",
+				Name:      "prime",
+				Title:     "Prime",
+				Docstring: "Prime returns a number of the given bit length that is prime with high probability.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Number,
@@ -1240,6 +1245,9 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "bytes",
 				Title: "Bytes",
+				Docstring: `
+					Generates cryptographically secure random bytes.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Number,
@@ -1271,7 +1279,15 @@ var CryptoRandDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "text",
 				Title: "Text",
-				Args:  nil,
+				Docstring: `
+					Text returns a cryptographically random string using the standard RFC
+					4648 base32 alphabet for use when a secret string, token, password, or
+					other text is needed. The result contains at least 128 bits of randomness,
+					enough to prevent brute force guessing attacks and to make the likelihood
+					of collisions vanishingly small. A future version may return longer texts as
+					needed to maintain those properties.
+				`,
+				Args: nil,
 				Results: []templates.WasmPlaygroundTabResult{
 					{
 						Operators: []templates.WasmPlaygroundTabOperator{
@@ -1297,10 +1313,16 @@ var CryptoSHA1DocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA1 Hash",
 		Menu:  Menu("Crypto", "SHA1"),
+		Docstring: `
+			SHA-1 hash algorithm as defined in RFC 3174.
+			SHA-1 is cryptographically broken and should not be used for secure
+			applications.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "hash",
-				Title: "Hash",
+				Name:      "hash",
+				Title:     "Hash",
+				Docstring: "SHA-1 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1336,10 +1358,15 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA3 Hash",
 		Menu:  Menu("Crypto", "SHA3"),
+		Docstring: `
+			SHA-3 hash algorithms and the SHAKE extendable
+			output functions defined in FIPS 202.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "sum224-hash",
-				Title: "Sum224 Hash",
+				Name:      "sum224-hash",
+				Title:     "Sum224 Hash",
+				Docstring: "SHA3-224 hash of data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1363,8 +1390,9 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum256-hash",
-				Title: "Sum256 Hash",
+				Name:      "sum256-hash",
+				Title:     "Sum256 Hash",
+				Docstring: "SHA3-256 hash of data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1388,8 +1416,9 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum384-hash",
-				Title: "Sum384 Hash",
+				Name:      "sum384-hash",
+				Title:     "Sum384 Hash",
+				Docstring: "SHA3-384 hash of data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1413,8 +1442,9 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum512-hash",
-				Title: "Sum512 Hash",
+				Name:      "sum512-hash",
+				Title:     "Sum512 Hash",
+				Docstring: "SHA3-512 hash of data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1440,6 +1470,10 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "sum-shake-128-hash",
 				Title: "SumSHAKE128 Hash",
+				Docstring: `
+					Applies the SHAKE128 extendable output function to data and
+					returns an output of the given length in bytes.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1479,6 +1513,10 @@ var CryptoSHA3DocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "sum-shake-256-hash",
 				Title: "SumSHAKE256 Hash",
+				Docstring: `
+					SumSHAKE256 applies the SHAKE256 extendable output function to data and
+					returns an output of the given length in bytes.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1526,12 +1564,14 @@ var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha256/pkg/wasm.js"})), // TODO: use the hash-named file
 	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
-		Title: "SHA256 Hash",
-		Menu:  Menu("Crypto", "SHA256"),
+		Title:     "SHA256 Hash",
+		Menu:      Menu("Crypto", "SHA256"),
+		Docstring: "SHA224 and SHA256 hash algorithms as defined in FIPS 180-4.",
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "sum224-hash",
-				Title: "Sum224 Hash",
+				Name:      "sum224-hash",
+				Title:     "Sum224 Hash",
+				Docstring: "SHA224 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1555,8 +1595,9 @@ var CryptoSHA256DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum256-hash",
-				Title: "Sum256 Hash",
+				Name:      "sum256-hash",
+				Title:     "Sum256 Hash",
+				Docstring: "SHA256 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1592,10 +1633,14 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "SHA512 Hash",
 		Menu:  Menu("Crypto", "SHA512"),
+		Docstring: `
+			SHA-384, SHA-512, SHA-512/224, and SHA-512/256 hash algorithms as defined in FIPS 180-4.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "sum512_224-hash",
-				Title: "Sum512_224 Hash",
+				Name:      "sum512_224-hash",
+				Title:     "Sum512_224 Hash",
+				Docstring: "Sum512/224 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1619,8 +1664,9 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum512_256-hash",
-				Title: "Sum512_256 Hash",
+				Name:      "sum512_256-hash",
+				Title:     "Sum512_256 Hash",
+				Docstring: "Sum512/256 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1644,8 +1690,9 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum384-hash",
-				Title: "Sum384 Hash",
+				Name:      "sum384-hash",
+				Title:     "Sum384 Hash",
+				Docstring: "SHA384 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -1669,8 +1716,9 @@ var CryptoSHA512DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "sum512-hash",
-				Title: "Sum512 Hash",
+				Name:      "sum512-hash",
+				Title:     "Sum512 Hash",
+				Docstring: "SHA512 checksum of the data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
