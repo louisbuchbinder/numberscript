@@ -17,15 +17,24 @@ var HashAdler32DocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Adler32 Hash",
 		Menu:  Menu("Hash", "Adler32"),
+		Docstring: `
+			Adler-32 is composed of two sums accumulated per byte: s1 is
+			the sum of all bytes, s2 is the sum of all s1 values. Both sums
+			are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
+			Adler-32 checksum is stored as s2*65536 + s1 in most-
+			significant-byte first (network) order.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "checksum",
-				Title: "Checksum",
+				Name:      "checksum",
+				Title:     "Checksum",
+				Docstring: "Checksum returns the Adler-32 checksum of data.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
 						Name:  "data",
 						Title: "Data",
+
 						Operators: []templates.WasmPlaygroundTabOperator{
 							{Name: "from-text", Title: "From Text", Operator: "wasm.encoding.hex.EncodeToString"},
 							{Name: "from-hex", Title: "From Hex", Operator: "String"},
@@ -58,10 +67,26 @@ var HashCRC32DocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "CRC32 Checksum",
 		Menu:  Menu("Hash", "CRC32"),
+		Docstring: `
+			32-bit cyclic redundancy check, or CRC-32,
+			checksum. See <a target="_blank" href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check">wiki:Cyclic_redundancy_check</a> for
+			information.
+
+			Polynomials are represented in LSB-first form also known as reversed
+			representation.
+
+			See
+			<a target="_blank" href="https://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomials">wiki:Mathematics_of_cyclic_redundancy_checks</a>
+			for information.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "ieee",
 				Title: "IEEE",
+				Docstring: `
+					IEEE is by far and away the most common CRC-32 polynomial.
+					Used by ethernet (IEEE 802.3), v.42, fddi, gzip, zip, png, ...
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -88,6 +113,10 @@ var HashCRC32DocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "castangnoli",
 				Title: "Castagnoli",
+				Docstring: `
+					Castagnoli's polynomial, used in iSCSI.
+					Has <a target="_blank" href="https://dx.doi.org/10.1109/26.231911">better</a> error detection characteristics than IEEE.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -114,6 +143,10 @@ var HashCRC32DocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "koopman",
 				Title: "Koopman",
+				Docstring: `
+				Koopman's polynomial.
+				Also has <a target="_blank" href="https://dx.doi.org/10.1109/DSN.2002.1028931">better</a> error detection characteristics than IEEE.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -151,10 +184,16 @@ var HashCRC64DocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "CRC64 Checksum",
 		Menu:  Menu("Hash", "CRC64"),
+		Docstring: `
+		64-bit cyclic redundancy check, or CRC-64,
+		checksum. See <a target="_blank" href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check">wiki:Cyclic_redundancy_check<a> for
+		information.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
-				Name:  "iso",
-				Title: "ISO",
+				Name:      "iso",
+				Title:     "ISO",
+				Docstring: "The ISO polynomial, defined in ISO 3309 and used in HDLC.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -179,8 +218,9 @@ var HashCRC64DocumentTemplateInput = templates.DocumentTemplateInput{
 				},
 			},
 			{
-				Name:  "ecma",
-				Title: "ECMA",
+				Name:      "ecma",
+				Title:     "ECMA",
+				Docstring: "The ECMA polynomial, defined in ECMA 182.",
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -218,10 +258,19 @@ var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "FNV Hash",
 		Menu:  Menu("Hash", "FNV"),
+		Docstring: `
+			FNV-1 and FNV-1a, non-cryptographic hash
+			functions created by Glenn Fowler, Landon Curt Noll, and Phong Vo. See
+			<a target="_blank" href="https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function">wiki:Fowler-Noll-Vo_hash_function</a>.
+		`,
 		Tabs: []templates.WasmPlaygroundTab{
 			{
 				Name:  "fnv-128",
 				Title: "FNV 128",
+				Docstring: `
+					128-bit FNV-1 hash.Hash. Its Sum method will lay the
+    				value out in big-endian byte order.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -248,6 +297,10 @@ var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "fnv-128a",
 				Title: "FNV 128a",
+				Docstring: `
+					128-bit FNV-1a hash.Hash. Its Sum method will lay the
+					value out in big-endian byte order.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -274,6 +327,10 @@ var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "fnv-32",
 				Title: "FNV 32",
+				Docstring: `
+					32-bit FNV-1 hash.Hash. Its Sum method will lay the
+					value out in big-endian byte order.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -300,6 +357,10 @@ var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "fnv-32a",
 				Title: "FNV 32a",
+				Docstring: `
+					32-bit FNV-1a hash.Hash. Its Sum method will lay the
+					value out in big-endian byte order.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -326,6 +387,10 @@ var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "fnv-64",
 				Title: "FNV 64",
+				Docstring: `
+					64-bit FNV-1 hash.Hash. Its Sum method will lay the
+					value out in big-endian byte order.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,
@@ -352,6 +417,10 @@ var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 			{
 				Name:  "fnv-64a",
 				Title: "FNV 64a",
+				Docstring: `
+					64-bit FNV-1a hash.Hash. Its Sum method will lay the
+					value out in big-endian byte order.
+				`,
 				Args: []templates.WasmPlaygroundTabArg{
 					{
 						Type:  templates.WasmPlaygroundTabValType_Text,

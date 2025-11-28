@@ -1,12 +1,15 @@
 package templates
 
 import (
+	"html/template"
+
 	_ "github.com/louisbuchbinder/core/lib/util"
 )
 
 type WasmPlaygroundTab struct {
 	Name              string
 	Title             string
+	Docstring         template.HTML
 	HasGenerateButton bool
 	Args              []WasmPlaygroundTabArg
 	Results           []WasmPlaygroundTabResult

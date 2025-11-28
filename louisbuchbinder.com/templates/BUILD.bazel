@@ -110,6 +110,10 @@ templates = [
                 type = "template.HTML",
             ),
             template_struct_field(
+                name = "Docstring",
+                type = "template.HTML",
+            ),
+            template_struct_field(
                 name = "Tabs",
                 type = "[]WasmPlaygroundTab",
             ),

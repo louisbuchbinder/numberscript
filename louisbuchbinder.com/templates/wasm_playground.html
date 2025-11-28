@@ -90,216 +90,225 @@
         <h1 class="title is-1">{{.Title}}</h1>
       </div>
     </section>
-    <div class="buttons is-centered is-toggle is-toggle-rounded are-large">
-      {{range $i, $t := .Tabs}}
-      <a
-        id="{{$t.Name}}-toggle"
-        {{if
-        eq
-        $i
-        0}}
-        class="button is-link is-width-one-fifth"
-        {{else}}
-        class="button is-width-one-fifth"
-        {{end}}
-        {{if
-        eq
-        (len
-        $.Tabs)
-        1}}
-        href="javascript:void(0)"
-        style="cursor: default; pointer-events: none"
-        {{else}}
-        href="javascript:[
+    <section class="section" style="padding-top: 0px">
+      <div class="content is-large">
+        <p>{{.Docstring}}</p>
+      </div>
+      <div class="buttons is-centered is-toggle is-toggle-rounded are-large">
+        {{range $i, $t := .Tabs}}
+        <a
+          id="{{$t.Name}}-toggle"
+          {{if
+          eq
+          $i
+          0}}
+          class="button is-link is-width-one-fifth"
+          {{else}}
+          class="button is-width-one-fifth"
+          {{end}}
+          {{if
+          eq
+          (len
+          $.Tabs)
+          1}}
+          href="javascript:void(0)"
+          style="cursor: default; pointer-events: none"
+          {{else}}
+          href="javascript:[
             page.toggleTab('{{$t.Name}}', 'tab-group-function'),
             {{if not $t.HasGenerateButton}}page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),{{end}}
           ]"
+          {{end}}
+          >{{$t.Title}}</a
+        >
         {{end}}
-        >{{$t.Title}}</a
-      >
-      {{end}}
-    </div>
+      </div>
 
-    {{range $i, $t := .Tabs}} {{if eq $i 0}} {{if not $t.HasGenerateButton}}
-    <script>
-      Promise.all(window.wasmContentLoaders).then((_) => {
-        page.operator(
-          "{{$t.Name}}",
-          Number("{{len $t.Args}}"),
-          Number("{{len $t.Results}}")
-        );
-      });
-    </script>
-    {{end}} {{end}}
-    <div
-      class="tab-group-function tab-group-function-{{$t.Name}}"
-      {{if
-      ne
-      $i
-      0}}hidden="true"
-      {{end}}
-    >
-      {{if or (eq (len $t.Args) 0) ($t.HasGenerateButton)}}
-      <div class="level has-text-centered">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="subtitle is-2">{{$t.Title}}:</h2>
-          </div>
-          <div class="level-item">
-            <button
-              class="button is-large"
-              onclick="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
-            >
-              Generate
-            </button>
+      {{range $i, $t := .Tabs}} {{if eq $i 0}} {{if not $t.HasGenerateButton}}
+      <script>
+        Promise.all(window.wasmContentLoaders).then((_) => {
+          page.operator(
+            "{{$t.Name}}",
+            Number("{{len $t.Args}}"),
+            Number("{{len $t.Results}}")
+          );
+        });
+      </script>
+      {{end}} {{end}}
+      <div
+        class="tab-group-function tab-group-function-{{$t.Name}}"
+        {{if
+        ne
+        $i
+        0}}hidden="true"
+        {{end}}
+      >
+        <div class="content is-large">
+          <p>{{$t.Docstring}}</p>
+        </div>
+        {{if or (eq (len $t.Args) 0) ($t.HasGenerateButton)}}
+        <div class="level has-text-centered">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="subtitle is-2">{{$t.Title}}:</h2>
+            </div>
+            <div class="level-item">
+              <button
+                class="button is-large"
+                onclick="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
+              >
+                Generate
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      {{end}}{{range $j, $a := $t.Args}}
-      <div class="level has-text-centered">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="subtitle is-2">{{$a.Title}}:</h2>
-          </div>
-          <div class="tabs level-item is-large is-toggle is-toggle-rounded">
-            <ul id="{{$t.Name}}-arg-{{$j}}-ops">
-              {{range $k, $o := $a.Operators}}
-              <li
-                id="{{$t.Name}}-{{$a.Name}}-{{$o.Name}}-toggle"
-                {{if
-                eq
-                $k
-                0}}class="is-active"
-                {{end}}
-                data-operator="{{$o.Operator}}"
-              >
-                <a
+        {{end}}{{range $j, $a := $t.Args}}
+        <div class="level has-text-centered">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="subtitle is-2">{{$a.Title}}:</h2>
+            </div>
+            <div class="tabs level-item is-large is-toggle is-toggle-rounded">
+              <ul id="{{$t.Name}}-arg-{{$j}}-ops">
+                {{range $k, $o := $a.Operators}}
+                <li
+                  id="{{$t.Name}}-{{$a.Name}}-{{$o.Name}}-toggle"
                   {{if
                   eq
-                  (len
-                  $a.Operators)
-                  1}}
-                  href="javascript:void(0)"
-                  style="cursor: default; pointer-events: none"
-                  {{else}}
-                  href="javascript:[
+                  $k
+                  0}}class="is-active"
+                  {{end}}
+                  data-operator="{{$o.Operator}}"
+                >
+                  <a
+                    {{if
+                    eq
+                    (len
+                    $a.Operators)
+                    1}}
+                    href="javascript:void(0)"
+                    style="cursor: default; pointer-events: none"
+                    {{else}}
+                    href="javascript:[
                   page.toggleTab('{{$t.Name}}-{{$a.Name}}-{{$o.Name}}', 'tab-group-function-arg-operator'),
                   {{if not $t.HasGenerateButton}}page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),{{end}}
                 ]"
-                  {{end}}
-                  >{{$o.Title}}</a
-                >
-              </li>
-              {{end}}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="box is-hover-visible-parent">
-        <button class="button is-right is-hover-visible-target is-copy-button">
-          copy
-        </button>
-        <div class="content is-large">
-          {{if eq $a.Type "text"}}
-          <textarea
-            id="{{$t.Name}}-input-{{$j}}"
-            class="input is-copy-target content is-large is-auto-resize"
-            {{if
-            not
-            $t.HasGenerateButton}}
-            oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
-            {{end}}
-          ></textarea>
-          {{else if eq $a.Type "number"}}
-          <input
-            id="{{$t.Name}}-input-{{$j}}"
-            class="input is-copy-target content is-large"
-            style="width: 95%"
-            type="number"
-            autocomplete="off"
-            data-1p-ignore
-            data-lpignore="true"
-            data-protonpass-ignore="true"
-            data-bwignore
-            oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
-            {{if
-            ne
-            $a.Options.NumberOptions
-            nil}}
-            min="{{$a.Options.NumberOptions.Min}}"
-            max="{{$a.Options.NumberOptions.Max}}"
-            {{end}}
-          />
-          {{else if eq $a.Type "file"}}
-          <input
-            id="{{$t.Name}}-input-{{$j}}"
-            class="input is-copy-target content is-large"
-            accept="*"
-            type="file"
-          />
-          {{else if eq $a.Type "files"}}
-          <input
-            id="{{$t.Name}}-input-{{$j}}"
-            class="input is-copy-target content is-large"
-            accept="*"
-            type="file"
-            webkitdirectory
-            multiple
-          />
-          {{end}}
-        </div>
-      </div>
-      {{end}} {{range $j, $result := $t.Results}}
-      <div class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="subtitle is-2">
-              {{if eq $result.Title ""}}{{$t.Title}}
-              Result:{{else}}{{$result.Title}}{{end}}
-            </h2>
-          </div>
-          <div class="tabs is-centered is-large is-toggle is-toggle-rounded">
-            <ul id="{{$t.Name}}-result-ops">
-              {{range $k, $o := $result.Operators}}
-              <li
-                id="{{$t.Name}}-result-{{$o.Name}}-toggle"
-                {{if
-                eq
-                $k
-                0}}class="is-active"
+                    {{end}}
+                    >{{$o.Title}}</a
+                  >
+                </li>
                 {{end}}
-                data-operator="{{$o.Operator}}"
-              >
-                <a
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="box is-hover-visible-parent">
+          <button
+            class="button is-right is-hover-visible-target is-copy-button"
+          >
+            copy
+          </button>
+          <div class="content is-large">
+            {{if eq $a.Type "text"}}
+            <textarea
+              id="{{$t.Name}}-input-{{$j}}"
+              class="input is-copy-target content is-large is-auto-resize"
+              {{if
+              not
+              $t.HasGenerateButton}}
+              oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
+              {{end}}
+            ></textarea>
+            {{else if eq $a.Type "number"}}
+            <input
+              id="{{$t.Name}}-input-{{$j}}"
+              class="input is-copy-target content is-large"
+              style="width: 95%"
+              type="number"
+              autocomplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-protonpass-ignore="true"
+              data-bwignore
+              oninput="javascript:page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}'))"
+              {{if
+              ne
+              $a.Options.NumberOptions
+              nil}}
+              min="{{$a.Options.NumberOptions.Min}}"
+              max="{{$a.Options.NumberOptions.Max}}"
+              {{end}}
+            />
+            {{else if eq $a.Type "file"}}
+            <input
+              id="{{$t.Name}}-input-{{$j}}"
+              class="input is-copy-target content is-large"
+              accept="*"
+              type="file"
+            />
+            {{else if eq $a.Type "files"}}
+            <input
+              id="{{$t.Name}}-input-{{$j}}"
+              class="input is-copy-target content is-large"
+              accept="*"
+              type="file"
+              webkitdirectory
+              multiple
+            />
+            {{end}}
+          </div>
+        </div>
+        {{end}} {{range $j, $result := $t.Results}}
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="subtitle is-2">
+                {{if eq $result.Title ""}}{{$t.Title}}
+                Result:{{else}}{{$result.Title}}{{end}}
+              </h2>
+            </div>
+            <div class="tabs is-centered is-large is-toggle is-toggle-rounded">
+              <ul id="{{$t.Name}}-result-ops">
+                {{range $k, $o := $result.Operators}}
+                <li
+                  id="{{$t.Name}}-result-{{$o.Name}}-toggle"
                   {{if
                   eq
-                  (len
-                  $result.Operators)
-                  1}}
-                  href="javascript:void(0)"
-                  style="cursor: default; pointer-events: none"
-                  {{else}}
-                  href="javascript:[
+                  $k
+                  0}}class="is-active"
+                  {{end}}
+                  data-operator="{{$o.Operator}}"
+                >
+                  <a
+                    {{if
+                    eq
+                    (len
+                    $result.Operators)
+                    1}}
+                    href="javascript:void(0)"
+                    style="cursor: default; pointer-events: none"
+                    {{else}}
+                    href="javascript:[
                   page.toggleTab('{{$t.Name}}-result-{{$o.Name}}', 'is-tab-group-function-result-operator'),
                   {{if not $t.HasGenerateButton}}page.operator('{{$t.Name}}', Number('{{len $t.Args}}'), Number('{{len $t.Results}}')),{{end}}
                 ]"
-                  {{end}}
-                  >{{$o.Title}}</a
-                >
-              </li>
-              {{end}}
-            </ul>
+                    {{end}}
+                    >{{$o.Title}}</a
+                  >
+                </li>
+                {{end}}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="box is-hover-visible-parent">
-        {{if eq $result.Type "download"}}
-        <div class="level">
-          <div class="level-left">
-            <button
-              id="{{$t.Name}}-result-{{$j}}"
-              style="display: none"
-              onclick="javascript:[
+        <div class="box is-hover-visible-parent">
+          {{if eq $result.Type "download"}}
+          <div class="level">
+            <div class="level-left">
+              <button
+                id="{{$t.Name}}-result-{{$j}}"
+                style="display: none"
+                onclick="javascript:[
                 window.URL.revokeObjectURL(document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').getAttribute('href')||''),
                 async function(){
                   const data = JSON.parse(document.getElementById('{{$t.Name}}-result-{{$j}}').textContent);
@@ -312,45 +321,48 @@
                   document.getElementById('{{$t.Name}}-result-{{$j}}-revoke').removeAttribute('disabled');
                 }(),
               ]"
-            ></button>
-            <button
-              id="{{$t.Name}}-result-{{$j}}-download"
-              class="button is-large"
-              disabled="true"
-            >
-              <a
-                id="{{$t.Name}}-result-{{$j}}-download-link"
-                class="is-disabled"
-                >Download</a
+              ></button>
+              <button
+                id="{{$t.Name}}-result-{{$j}}-download"
+                class="button is-large"
+                disabled="true"
               >
-            </button>
-            <button
-              class="button is-large"
-              id="{{$t.Name}}-result-{{$j}}-revoke"
-              disabled="true"
-              onclick="javascript:[
+                <a
+                  id="{{$t.Name}}-result-{{$j}}-download-link"
+                  class="is-disabled"
+                  >Download</a
+                >
+              </button>
+              <button
+                class="button is-large"
+                id="{{$t.Name}}-result-{{$j}}-revoke"
+                disabled="true"
+                onclick="javascript:[
                 window.URL.revokeObjectURL(document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').getAttribute('href')||''),
                 document.getElementById('{{$t.Name}}-result-{{$j}}-download-link').classList.add('is-disabled'),
                 document.getElementById('{{$t.Name}}-result-{{$j}}-download').removeAttribute('download'),
                 document.getElementById('{{$t.Name}}-result-{{$j}}-download').setAttribute('disabled', 'true'),
                 document.getElementById('{{$t.Name}}-result-{{$j}}-revoke').setAttribute('disabled', 'true'),
               ]"
-            >
-              Revoke
-            </button>
+              >
+                Revoke
+              </button>
+            </div>
           </div>
-        </div>
-        {{else}}
-        <button class="button is-right is-hover-visible-target is-copy-button">
-          copy
-        </button>
-        <div class="content is-large" style="overflow-wrap: break-word">
-          <p id="{{$t.Name}}-result-{{$j}}" class="is-copy-target"></p>
+          {{else}}
+          <button
+            class="button is-right is-hover-visible-target is-copy-button"
+          >
+            copy
+          </button>
+          <div class="content is-large" style="overflow-wrap: break-word">
+            <p id="{{$t.Name}}-result-{{$j}}" class="is-copy-target"></p>
+          </div>
+          {{end}}
         </div>
         {{end}}
       </div>
       {{end}}
-    </div>
-    {{end}}
+    </section>
   </div>
 </section>
