@@ -1,0 +1,19 @@
+genrule(
+    name = "dist",
+    srcs = [
+        "@htmx-2.0.7//:LICENSE",
+        "@htmx-2.0.7//:dist",
+    ],
+    outs = [
+        "dist.tar.gz",
+    ],
+    cmd = """
+    DIR=htmx-2.0.7
+    mkdir $$DIR
+    mkdir $$DIR/dist
+    cp $(location @htmx-2.0.7//:LICENSE) $$DIR
+    find $$(dirname $(location @htmx-2.0.7//:LICENSE))/dist -maxdepth 1 -exec cp -r {} $$DIR/ ';'
+    find $$DIR -type f | xargs tar -czf $(location dist.tar.gz)
+    """,
+    visibility = ["//visibility:public"],
+)

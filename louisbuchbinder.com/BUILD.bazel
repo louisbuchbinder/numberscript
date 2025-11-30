@@ -18,6 +18,7 @@ genrule(
 external_srcs = [
     "//external/github.com/jgthms/bulma:dist",
     "//external/github.com/FontAwesome/Font-Awesome:dist",
+    "//external/github.com/bigskysoftware/htmx:dist",
 ]
 
 genrule(

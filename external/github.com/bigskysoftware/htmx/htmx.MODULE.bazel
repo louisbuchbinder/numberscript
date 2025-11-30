@@ -1,0 +1,11 @@
+"""
+"""
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "htmx-2.0.7",
+    build_file = "//external/github.com/bigskysoftware/htmx:htmx.BUILD",
+    sha256 = "1ba2e0c63150833114ecf541a5cba97665ca2657b7c0ea4c7345fa141a0005c4",
+    strip_prefix = "htmx-2.0.7",
+    url = "https://github.com/bigskysoftware/htmx/archive/refs/tags/v2.0.7.tar.gz",
+)
