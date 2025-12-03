@@ -7,6 +7,7 @@ templates = [
         name = "Document",
         const_name = "DOCUMENT",
         filename = "document.html",
+        is_text = False,
         struct_fields_list = [
             template_struct_field(
                 name = "Title",
@@ -14,19 +15,19 @@ templates = [
             ),
             template_struct_field(
                 name = "Links",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
             template_struct_field(
                 name = "Scripts",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
             template_struct_field(
                 name = "Navbar",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
             template_struct_field(
                 name = "Main",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
         ],
     ),
@@ -34,6 +35,7 @@ templates = [
         name = "Link",
         const_name = "LINK",
         filename = "link.html",
+        is_text = False,
         struct_fields_list = [
             template_struct_field(
                 name = "Rel",
@@ -45,7 +47,7 @@ templates = [
             ),
             template_struct_field(
                 name = "Attrs",
-                type = "template.HTMLAttr",
+                type = "htmlTemplate.HTMLAttr",
             ),
         ],
     ),
@@ -53,6 +55,7 @@ templates = [
         name = "Script",
         const_name = "SCRIPT",
         filename = "script.html",
+        is_text = False,
         struct_fields_list = [
             template_struct_field(
                 name = "Src",
@@ -60,7 +63,7 @@ templates = [
             ),
             template_struct_field(
                 name = "Attrs",
-                type = "template.HTMLAttr",
+                type = "htmlTemplate.HTMLAttr",
             ),
         ],
     ),
@@ -68,6 +71,7 @@ templates = [
         name = "Home",
         const_name = "HOME",
         filename = "home.html",
+        is_text = False,
         struct_fields_list = [
         ],
     ),
@@ -75,12 +79,14 @@ templates = [
         name = "Navbar",
         const_name = "NAVBAR",
         filename = "navbar.html",
+        is_text = False,
         struct_fields_list = [],
     ),
     template(
         name = "WasmPlaygroundMain",
         const_name = "WASM_PLAYGROUND_MAIN",
         filename = "wasm_playground_main.html",
+        is_text = False,
         struct_fields_list = [
             template_struct_field(
                 name = "Title",
@@ -88,7 +94,7 @@ templates = [
             ),
             template_struct_field(
                 name = "Menu",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
             template_struct_field(
                 name = "Items",
@@ -100,6 +106,7 @@ templates = [
         name = "WasmPlayground",
         const_name = "WASM_PLAYGROUND",
         filename = "wasm_playground.html",
+        is_text = False,
         struct_fields_list = [
             template_struct_field(
                 name = "Title",
@@ -107,11 +114,11 @@ templates = [
             ),
             template_struct_field(
                 name = "Menu",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
             template_struct_field(
                 name = "Docstring",
-                type = "template.HTML",
+                type = "htmlTemplate.HTML",
             ),
             template_struct_field(
                 name = "Tabs",
@@ -123,6 +130,7 @@ templates = [
         name = "WasmPlaygroundMenu",
         const_name = "WASM_PLAYGROUND_MENU",
         filename = "wasm_playground_menu.html",
+        is_text = False,
         struct_fields_list = [
             template_struct_field(
                 name = "Containers",
@@ -135,6 +143,30 @@ templates = [
             template_struct_field(
                 name = "ActiveItem",
                 type = "string",
+            ),
+        ],
+    ),
+    template(
+        name = "OpfsHtml",
+        const_name = "OPFS_HTML",
+        filename = "opfs.html",
+        is_text = False,
+        struct_fields_list = [
+        ],
+    ),
+    template(
+        name = "ServiceWorker",
+        const_name = "SERVICE_WORKER_JS",
+        filename = "sw.js",
+        is_text = True,
+        struct_fields_list = [
+            template_struct_field(
+                name = "Routes",
+                type = "[]ServiceWorkerRoute",
+            ),
+            template_struct_field(
+                name = "Scripts",
+                type = "[]string",
             ),
         ],
     ),

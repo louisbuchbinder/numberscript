@@ -1,0 +1,30 @@
+<div class="notification is-danger" id="page-error" hidden="true">
+  <button
+    class="delete"
+    onclick="javascript:hide(document.getElementById('page-error'))"
+  ></button>
+  <div class="content is-large">
+    <b><p></p></b>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-body">
+    <h1 class="title is-1">Origin Private File System</h1>
+    <div id="opfs"></div>
+    <button
+      id="opfs-init"
+      hx-get="/wasm/routes/filesystem"
+      hx-swap="innerHTML"
+      hx-target="#opfs"
+      hx-vals="js:{root: '/', dir: '', target: '#opfs'}"
+      style="display: none"
+    ></button>
+  </div>
+</section>
+
+<script>
+  serviceWorkerMainInit.then((_) =>
+    htmx.trigger(document.getElementById("opfs-init"), "click")
+  );
+</script>

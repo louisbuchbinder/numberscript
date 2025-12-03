@@ -6,7 +6,7 @@ genrule(
         "@font-awesome-7.1.0//:webfonts",
     ],
     outs = [
-        "dist.tar.gz",
+        "dist.tar",
     ],
     cmd = """
     DIR=font-awesome-7.1.0
@@ -16,7 +16,7 @@ genrule(
     cp $(location @font-awesome-7.1.0//:LICENSE.txt) $$DIR
     cp $(locations @font-awesome-7.1.0//:css) $$DIR/css
     cp $(locations @font-awesome-7.1.0//:webfonts) $$DIR/webfonts
-    find $$DIR -type f | xargs tar -czf $(location dist.tar.gz)
+    find $$DIR -type f | xargs tar -cf $(location dist.tar)
     """,
     visibility = ["//visibility:public"],
 )

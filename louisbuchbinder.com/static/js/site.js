@@ -28,9 +28,8 @@ function uint8ArrayFromSpaceSeparatedString(s) {
 function arrToSpaceSeparatedString(b) {
   return b.map(String).join(" ");
 }
-function resolve(p) {
+function resolve(p, v = window) {
   parts = p.split(".");
-  v = window;
   while (parts.length > 0) {
     v = v[parts.shift()];
   }

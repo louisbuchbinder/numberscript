@@ -1,0 +1,264 @@
+{{ define "fs" }} {{range $f := .EntryInput.Children}}
+<tr class="file-row">
+  {{if eq $f.Type "folder"}}
+  <td><i class="fa fa-folder"></i></td>
+  <td
+    class="is-clickable"
+    hx-get="/wasm/routes/filesystem"
+    hx-swap="innerHTML"
+    hx-target="{{$.Target}}"
+    hx-vals="js:{root: '{{$.Root}}', dir: ('{{$.Dir}}' === '' ? '' : '{{$.Dir}}' + '/') + '{{$f.Name}}', target: '{{$.Target}}'}"
+  >
+    {{$f.Name}}
+  </td>
+  {{else}}
+  <td><i class="fa fa-file"></i></td>
+  <td class="is-clickable">{{$f.Name}}</td>
+  {{end}}
+  <td>{{$f.Type}}</td>
+  <td>{{$f.Size}}</td>
+  <td>{{$f.Modified}}</td>
+  <td>
+    <i
+      class="fa fa-trash is-clickable"
+      onclick="javascript:[
+    document.getElementById('removeAllModal').classList.add('is-active'),
+    document.getElementById('removeAllModalFilename').textContent = '{{$f.Name}}',
+  ]"
+    ></i>
+  </td>
+</tr>
+{{end}} {{end}}
+
+<div>
+  <style>
+    /* Small custom styles for the tree and file list */
+    .filesystem-tree {
+      list-style: none;
+      padding-left: 0;
+    }
+    .filesystem-tree li {
+      padding: 4px 0;
+      cursor: default;
+    }
+    .filesystem-tree .caret {
+      cursor: pointer;
+      user-select: none;
+    }
+    .filesystem-tree .nested {
+      display: none;
+      margin-left: 1rem;
+    }
+    .filesystem-tree .active > .nested {
+      display: block;
+    }
+    .file-row:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    .is-clickable {
+      cursor: pointer;
+    }
+    .breadcrumb > ul > li:first-child::before {
+      content: "";
+    }
+    .breadcrumb > ul > li::before {
+      content: "➤";
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
+  </style>
+  <section class="container">
+    <div id="createFolderModal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p id="previewTitle" class="modal-card-title">Create Folder</p>
+          <button
+            class="delete"
+            aria-label="close"
+            onclick="javascript:[
+              document.getElementById('createFolderModal').classList.remove('is-active'),
+            ]"
+          ></button>
+        </header>
+        <section class="modal-card-body">
+          <input
+            class="input"
+            type="text"
+            id="createFolderInput"
+            placehoder="name"
+          />
+        </section>
+        <footer class="modal-card-foot">
+          <button
+            class="button"
+            onclick="javascript:[
+              document.getElementById('createFolderModal').classList.remove('is-active'),
+            ]"
+          >
+            cancel
+          </button>
+          <button
+            class="button is-active"
+            hx-get="/wasm/routes/filesystem/mkdirAll"
+            hx-swap="innerHTML"
+            hx-target="{{$.Target}}"
+            hx-vals="js:{root: '{{$.Root}}', dir: '{{$.Dir}}', folder: document.getElementById('createFolderInput').value, target: '{{$.Target}}'}"
+          >
+            submit
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="removeAllModal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p id="previewTitle" class="modal-card-title">
+            Remove: <b id="removeAllModalFilename"></b>
+          </p>
+          <button
+            class="delete"
+            aria-label="close"
+            onclick="javascript:[
+              document.getElementById('removeAllModal').classList.remove('is-active'),
+            ]"
+          ></button>
+        </header>
+        <footer class="modal-card-foot">
+          <button
+            class="button"
+            onclick="javascript:[
+              document.getElementById('removeAllModal').classList.remove('is-active'),
+            ]"
+          >
+            cancel
+          </button>
+          <button
+            class="button is-active"
+            hx-get="/wasm/routes/filesystem/removeAll"
+            hx-swap="innerHTML"
+            hx-target="{{$.Target}}"
+            hx-vals="js:{root: '{{$.Root}}', dir: '{{$.Dir}}', path: document.getElementById('removeAllModalFilename').textContent, target: '{{$.Target}}'}"
+          >
+            confirm
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="box">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <div class="field has-addons">
+                <p class="control has-icons-left">
+                  <input
+                    id="search"
+                    class="input"
+                    type="text"
+                    placeholder="Search files & folders"
+                  />
+                  <span class="icon is-left"
+                    ><i class="fa-solid fa-search"></i
+                  ></span>
+                </p>
+                <p class="control">
+                  <button id="clearSearch" class="button is-light">
+                    Clear
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <div class="buttons">
+                <button
+                  id="newFolder"
+                  class="button is-primary is-light"
+                  onclick="javascript:[
+                    document.getElementById('createFolderModal').classList.add('is-active'),
+                  ]"
+                >
+                  <span class="icon"
+                    ><i class="fa-solid fa-folder-plus"></i></span
+                  ><span>Create Folder</span>
+                </button>
+                <button id="upload" class="button is-info is-light">
+                  <span class="icon"><i class="fa-solid fa-upload"></i></span
+                  ><span>Upload</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-gapless">
+          <div class="column p-4">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+                    <ul>
+                      <li
+                        class="has-text-link is-clickable"
+                        hx-get="/wasm/routes/filesystem"
+                        hx-swap="innerHTML"
+                        hx-target="{{.Target}}"
+                        hx-vals="js:{root: '{{.Root}}', dir: '', target: '{{.Target}}'}"
+                      >
+                        {{.Root}}
+                      </li>
+                      {{$dir_path := ""}} {{range $i, $p := .DirParts}} {{if eq
+                      $dir_path ""}} {{$dir_path = $p}} {{else}} {{$dir_path =
+                      print $dir_path "/" $p}} {{end}}
+                      <li
+                        {{if
+                        ne
+                        $i
+                        (minus
+                        (len
+                        $.DirParts)
+                        1)}}
+                        class="has-text-link is-clickable"
+                        {{end}}
+                        hx-get="/wasm/routes/filesystem"
+                        hx-swap="innerHTML"
+                        hx-target="{{$.Target}}"
+                        hx-vals="js:{root: '{{$.Root}}', dir: '{{$dir_path}}', target: '{{$.Target}}'}"
+                      >
+                        {{$p}}
+                      </li>
+                      {{end}}
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+
+            <div id="filesContainer" class="box">
+              <table class="table is-fullwidth is-hoverable">
+                <thead>
+                  <tr>
+                    <th style="width: 36px"></th>
+                    <th>Name</th>
+                    <th style="width: 140px">Type</th>
+                    <th style="width: 120px">Size</th>
+                    <th style="width: 160px">Modified</th>
+                    <th style="width: 40px">-</th>
+                  </tr>
+                </thead>
+                <tbody id="fileListBody">
+                  {{template "fs" .}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

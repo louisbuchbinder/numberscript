@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "entries_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/louisbuchbinder/core/lib/build/manifest/entries",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//lib/build",
+        "//lib/util",
+    ],
+)
+
+go_binary(
+    name = "entries",
+    embed = [":entries_lib"],
+    visibility = ["//visibility:public"],
+)

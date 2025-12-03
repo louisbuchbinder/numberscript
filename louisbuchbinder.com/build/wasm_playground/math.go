@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/louisbuchbinder/core/lib/util"
+	"github.com/louisbuchbinder/core/louisbuchbinder.com/build/load"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
@@ -50,12 +51,15 @@ func MathPlaygroundTab(in MathPlaygroundTabInput) templates.WasmPlaygroundTab {
 	}
 }
 
+var _ = load.Register(func() {
+	MathDocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/math/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var MathDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Math",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/math/pkg/wasm.js"})), // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title:     "General Math",
 		Menu:      Menu("Math", "General"),

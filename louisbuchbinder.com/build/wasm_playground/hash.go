@@ -4,16 +4,20 @@ import (
 	"html/template"
 	"strings"
 
+	"github.com/louisbuchbinder/core/louisbuchbinder.com/build/load"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
+var _ = load.Register(func() {
+	HashAdler32DocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/encoding/hex/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/hash/adler32/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var HashAdler32DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Adler32 Hash",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/hash/adler32/pkg/wasm.js"})), // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Adler32 Hash",
 		Menu:  Menu("Hash", "Adler32"),
@@ -57,13 +61,16 @@ var HashAdler32DocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var _ = load.Register(func() {
+	HashCRC32DocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/encoding/hex/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/hash/crc32/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var HashCRC32DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "CRC32 Checksum",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/hash/crc32/pkg/wasm.js"})),   // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "CRC32 Checksum",
 		Menu:  Menu("Hash", "CRC32"),
@@ -174,13 +181,16 @@ var HashCRC32DocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var _ = load.Register(func() {
+	HashCRC64DocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/encoding/hex/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/hash/crc64/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var HashCRC64DocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "CRC64 Checksum",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/hash/crc64/pkg/wasm.js"})),   // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "CRC64 Checksum",
 		Menu:  Menu("Hash", "CRC64"),
@@ -248,13 +258,16 @@ var HashCRC64DocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var _ = load.Register(func() {
+	HashFNVDocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/encoding/hex/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/hash/fnv/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var HashFNVDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "FNV Hash",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/encoding/hex/pkg/wasm.js"})), // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/hash/fnv/pkg/wasm.js"})),     // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "FNV Hash",
 		Menu:  Menu("Hash", "FNV"),

@@ -11,6 +11,13 @@ import (
 )
 
 func Ptr[A any](a A) *A { return &a }
+func OrVal[A any](a *A, v A) A {
+	if a != nil {
+		return *a
+	} else {
+		return v
+	}
+}
 
 func Must0(err error) {
 	if err != nil {

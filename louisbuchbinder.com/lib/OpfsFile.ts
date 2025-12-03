@@ -1,5 +1,5 @@
 interface IGoWriteCloser {
-  write(p: Uint8Array<ArrayBufferLike>): Promise<number>;
+  write(p: Uint8Array<ArrayBuffer>): Promise<number>;
   close(): Promise<void>;
 }
 
@@ -32,7 +32,6 @@ class OpfsFile extends GoFile implements IGoWriteCloser, IGoFile {
     }
 
     const create = opts && opts.create === true;
-    const writer = new OpfsFile();
 
     // get the origin private file system root
     const root = await (navigator.storage as any).getDirectory();
@@ -48,20 +47,28 @@ class OpfsFile extends GoFile implements IGoWriteCloser, IGoFile {
 
     const fileName = parts.length > 0 ? parts[parts.length - 1] : path;
     // obtain the file handle
+    let fileHandle: FileSystemFileHandle | null = null;
     try {
-      writer.fileHandle = await current.getFileHandle(fileName, {
+      fileHandle = await current.getFileHandle(fileName, {
         create: create,
       });
     } catch (err) {
       throw new Error("failed to obtain file handle: " + String(err));
     }
 
+    return await OpfsFile.fromFileHandle(fileHandle);
+  }
+
+  static async fromFileHandle(
+    fileHandle: FileSystemFileHandle
+  ): Promise<OpfsFile> {
+    const writer = new OpfsFile();
+    writer.fileHandle = fileHandle;
     // create writable stream (deferred open of writable until first write)
     writer.position = 0;
     writer.writable = null;
     writer.closed = false;
     writer.file = (await writer.fileHandle.getFile()) as File;
-
     return writer;
   }
 
@@ -81,7 +88,7 @@ class OpfsFile extends GoFile implements IGoWriteCloser, IGoFile {
   }
 
   // Write bytes to the file. Returns the number of bytes written.
-  async write(data: Uint8Array): Promise<number> {
+  async write(data: Uint8Array<ArrayBuffer>): Promise<number> {
     await this.ensureWritable();
     if (!this.writable) {
       throw new Error("writable stream not available");

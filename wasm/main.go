@@ -24,4 +24,25 @@ type Value interface {
 	File() (fs.File, error)
 	FileWriter() (OpfsFile, error)
 	FS() (fs.FS, error)
+	Request() (JsRequest, error)
+}
+
+type JsRequest interface {
+	Method() string
+	Url() JsUrl
+}
+
+type JsUrl interface {
+	Hash() string
+	Host() string
+	Hostname() string
+	Href() string
+	Origin() string
+	Password() string
+	Pathname() string
+	Port() string
+	Protocol() string
+	Search() string
+	GetSearchParam(string) *string
+	Username() string
 }

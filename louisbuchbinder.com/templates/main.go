@@ -1,10 +1,20 @@
 package templates
 
 import (
+	"encoding/json"
 	"html/template"
 
+	"github.com/louisbuchbinder/core/lib/util"
 	_ "github.com/louisbuchbinder/core/lib/util"
 )
+
+var FuncMap = template.FuncMap{
+	"jsonMarshal": jsonMarshal,
+}
+
+func jsonMarshal(a any) string {
+	return string(util.Must(json.Marshal(a)))
+}
 
 type WasmPlaygroundTab struct {
 	Name              string
@@ -71,4 +81,9 @@ type WasmPlaygroundMainMenuItem struct {
 	Url         string
 	Key         string
 	Description string
+}
+
+type ServiceWorkerRoute struct {
+	Path    string `json:"path"`
+	Handler string `json:"handler"`
 }

@@ -2,21 +2,19 @@
 load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "js",
+    name = "filesystem",
     srcs = select({
         "@rules_go//go/platform:js": [
-            "file.go",
-            "fileWriter.go",
-            "fs.go",
-            "main.go",
-            "routes.go",
+            "wasm.go",
         ],
         "//conditions:default": [],
     }),
-    importpath = "github.com/louisbuchbinder/core/wasm/js",
+    embedsrcs = ["filesystem.html"],
+    importpath = "github.com/louisbuchbinder/core/wasm/routes/filesystem",
     visibility = ["//visibility:public"],
     deps = [
         "//lib/util",
         "//wasm",
+        "//wasm/js",
     ],
 )

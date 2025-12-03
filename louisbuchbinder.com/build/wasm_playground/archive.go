@@ -4,18 +4,22 @@ import (
 	"html/template"
 	"strings"
 
+	"github.com/louisbuchbinder/core/louisbuchbinder.com/build/load"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
 
+var _ = load.Register(func() {
+	ArchiveZipDocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/GoFile.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/OpfsFile.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/GoFS.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/archive/zip/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var ArchiveZipDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Zip Archive",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFile.js"})),          // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/OpfsFile.js"})),        // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFs.js"})),            // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/archive/zip/pkg/wasm.js"})), // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Zip Archive",
 		Menu:  Menu("Archive", "Zip"),
@@ -59,16 +63,19 @@ var ArchiveZipDocumentTemplateInput = templates.DocumentTemplateInput{
 	})),
 }
 
+var _ = load.Register(func() {
+	ArchiveChecksumDocumentTemplateInput.Scripts = template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/GoFile.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/crypto/md5/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/crypto/sha1/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/crypto/sha256/pkg/sha256.wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/crypto/sha512/pkg/sha256.wasm.js")})),
+	}, "\n"))
+})
+
 var ArchiveChecksumDocumentTemplateInput = templates.DocumentTemplateInput{
 	Title: "Archive Checksum",
-	Scripts: template.HTML(strings.Join([]string{
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: WASM_GO_SCRIPT_SRC})),
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/static/js/GoFile.js"})),            // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/md5/pkg/wasm.js"})),    // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha1/pkg/wasm.js"})),   // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha256/pkg/wasm.js"})), // TODO: use the hash-named file
-		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: "/wasm/crypto/sha512/pkg/wasm.js"})), // TODO: use the hash-named file
-	}, "\n")),
 	Main: template.HTML(templates.MustRenderWasmPlaygroundTemplate(templates.WasmPlaygroundTemplateInput{
 		Title: "Archive Checksum",
 		Menu:  Menu("Archive", "Checksum"),

@@ -6,6 +6,12 @@ import (
 	"syscall/js"
 )
 
+type OpfsFS interface {
+	fs.FS
+	MkdirAll(string) error
+	RemoveAll(string) error
+}
+
 var _ fs.DirEntry = new(jsGoDirEntry)
 
 func NewDirEntry(v js.Value) fs.DirEntry {
@@ -95,4 +101,28 @@ func (s *jsGoFS) Open(p string) (fs.File, error) {
 		return NewReadDirFile(res), nil
 	}
 	return NewFile(res), nil
+}
+
+type jsOpfsFS struct {
+	*jsGoFS
+}
+
+func (s *jsOpfsFS) MkdirAll(path string) error {
+	_, err := PromiseResolveOrReject(s.Value.Call("mkdirAll", path))
+	return err
+}
+
+func (s *jsOpfsFS) RemoveAll(path string) error {
+	_, err := PromiseResolveOrReject(s.Value.Call("removeAll", path))
+	return err
+}
+
+func NewOpfsFS(root string) (OpfsFS, error) {
+	opfs, err := PromiseResolveOrReject(js.Global().Get("OpfsFS").Call("fromRoot", root))
+	if err != nil {
+		return nil, err
+	}
+	return &jsOpfsFS{
+		jsGoFS: &jsGoFS{opfs},
+	}, nil
 }

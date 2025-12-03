@@ -112,23 +112,20 @@ def wasm_dist(name, module):
             ":script.partial.html",
             ":sha256.script.partial.html",
         ],
-        outs = ["pkg.tar.gz"],
+        outs = ["pkg.tar"],
+        tools = [
+            "//lib/build/manifest/entries",
+        ],
         cmd = """
         D={module}/pkg
-        function copy() {{
-            cp $$1 $$D/$$2
-        }}
-        function sha256_dist() {{
-            cp $$1 $$D/$$(sha256sum $$1 | cut -f 1 -d " ").$$2
-        }}
         mkdir -p $$D
-        copy $(location :pkg) main.wasm
-        sha256_dist $(location :pkg) main.wasm
-        copy $(location :script.partial.html) script.partial.html
-        sha256_dist $(location :sha256.script.partial.html) script.partial.html
-        copy $(location wasm.js) wasm.js
-        sha256_dist $(location sha256.wasm.js) wasm.js
-        tar -czf $(location :pkg.tar.gz) $$D/*
+        cp $(location :pkg) $$D/main.wasm
+        cp $(location :script.partial.html) $$D/script.partial.html
+        cp $(location wasm.js) $$D/wasm.js
+        cp $(location :sha256.wasm.js) $$D/
+        cp $(location :sha256.script.partial.html) $$D/
+        $(location //lib/build/manifest/entries) --dir $$D
+        tar -cf $(location :pkg.tar) $$D/*
         """.format(module = module),
         visibility = ["//visibility:public"],
     )

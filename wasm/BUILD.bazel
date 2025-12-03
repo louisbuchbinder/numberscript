@@ -12,16 +12,16 @@ go_library(
 genrule(
     name = "external",
     srcs = [":go1.25.0_wasm_exec.js"],
-    outs = ["external.tar.gz"],
+    outs = ["external.tar"],
     cmd = """
         mkdir -p wasm/external
         cp $(location :go1.25.0_wasm_exec.js) wasm/external
-        tar -czf  $(location :external.tar.gz) wasm/external/*
+        tar -cf  $(location :external.tar) wasm/external/*
     """,
 )
 
 dist_srcs = [
-    ":external.tar.gz",
+    ":external.tar",
     "//wasm/archive/zip/pkg:dist",
     "//wasm/crypto/aes/pkg:dist",
     "//wasm/crypto/ecdh/pkg:dist",
@@ -44,21 +44,22 @@ dist_srcs = [
     "//wasm/hash/crc64/pkg:dist",
     "//wasm/hash/fnv/pkg:dist",
     "//wasm/math/pkg:dist",
+    "//wasm/routes/filesystem/pkg:dist",
 ]
 
 genrule(
     name = "dist",
     srcs = dist_srcs,
-    outs = ["wasm.tar.gz"],
+    outs = ["wasm.tar"],
     cmd = """
     mkdir archive
     {extract_pkgs}
     cd archive
     find . -type f | xargs \
-        tar -czf ../$(location :wasm.tar.gz)
+        tar -cf ../$(location :wasm.tar)
     """.format(
         extract_pkgs = "\n".join([
-            "tar -xzf $(location {}) -C archive".format(src)
+            "tar -xf $(location {}) -C archive".format(src)
             for src in dist_srcs
         ]),
     ),

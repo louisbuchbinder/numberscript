@@ -8,7 +8,7 @@ template_struct_field = provider(
 
 template = provider(
     doc = "definition for the template",
-    fields = ["name", "const_name", "filename", "struct_fields_list"],
+    fields = ["name", "is_text", "const_name", "filename", "struct_fields_list"],
 )
 
 go_lib_template = """
@@ -17,10 +17,10 @@ var {const_name}_TEMPLATE string
 
 type {name}TemplateInput struct{{{struct_fields}}}
 
-var {name}Template *template.Template
+var {name}Template *{template}.Template
 
 func init() {{
-	{name}Template = template.Must(template.New("{const_name}_TEMPLATE").Parse({const_name}_TEMPLATE))
+	{name}Template = {template}.Must({template}.New("{const_name}_TEMPLATE").Funcs(FuncMap).Parse({const_name}_TEMPLATE))
 	var _ = MustRender{name}Template({name}TemplateInput{{}})
 }}
 
@@ -48,6 +48,7 @@ def render_templates(templates):
             name = t.name,
             const_name = t.const_name,
             filename = t.filename,
+            template = "textTemplate" if t.is_text else "htmlTemplate",
             struct_fields = render_struct_fields(t.struct_fields_list),
         )
         for t in templates
@@ -57,7 +58,8 @@ embed_go_template = """package templates
 
 import (
 	_ "embed"
-	"html/template"
+	htmlTemplate "html/template"
+    textTemplate "text/template"
 
 	"github.com/louisbuchbinder/core/lib/util"
 )

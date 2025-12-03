@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "lib": [
-            "dom",
-            "es5",
-            "es2015"
+            "DOM",
+            "DOM.Iterable",
+            "DOM.AsyncIterable",
+            "esnext"
         ],
         "module": "commonjs",
         "jsx": "react-jsx",

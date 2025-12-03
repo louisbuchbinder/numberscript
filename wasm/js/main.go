@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/fs"
 	"syscall/js"
+	"time"
 
 	"github.com/louisbuchbinder/core/wasm"
 )
@@ -70,12 +71,12 @@ func (w wrapper) FileWriter() (wasm.OpfsFile, error) {
 }
 
 func (w wrapper) IsFS() bool {
-	return w.InstanceOf(js.Global().Get("GoFS"))
+	return w.InstanceOf(js.Global().Get("GoFS")) || w.InstanceOf(js.Global().Get("OpfsFS"))
 }
 
 func (w wrapper) FS() (fs.FS, error) {
 	if !w.IsFS() {
-		return nil, fmt.Errorf("expected js.Value wrapper to be GoFS")
+		return nil, fmt.Errorf("expected js.Value wrapper to be GoFS or OpfsFS")
 	}
 	return NewFS(w.Value), nil
 }
@@ -90,6 +91,20 @@ func (w wrapper) Invoke(args ...any) wasm.Value {
 
 func (w wrapper) Reject(err error) {
 	_ = w.Value.Invoke(Error(err))
+}
+
+func (w wrapper) IsRequest() bool {
+	return w.InstanceOf(js.Global().Get("Request"))
+}
+
+func (w wrapper) Request() (wasm.JsRequest, error) {
+	if !w.IsRequest() {
+		return nil, fmt.Errorf("js.Value is not an instanceof Request")
+	}
+	return &jsRequest{
+		method: w.Get("method").String(),
+		url:    w.Get("url").String(),
+	}, nil
 }
 
 func ToValues(args []js.Value) []wasm.Value {
@@ -141,11 +156,17 @@ func PromiseResolveOrReject(promise js.Value) (js.Value, error) {
 	handler = js.FuncOf(fn)
 	errHandler = js.FuncOf(fn)
 	promise.Call("then", handler, errHandler)
-	dat := <-c
-	if IsError(dat) {
-		return js.Null(), fmt.Errorf(dat.Get("message").String())
+	ticker := time.NewTicker(time.Nanosecond)
+	for {
+		select {
+		case <-ticker.C:
+		case dat := <-c:
+			if IsError(dat) {
+				return js.Null(), fmt.Errorf(dat.Get("message").String())
+			}
+			return dat, nil
+		}
 	}
-	return dat, nil
 }
 
 func IsError(maybeErr js.Value) bool {

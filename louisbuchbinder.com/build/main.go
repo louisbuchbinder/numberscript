@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/louisbuchbinder/core/lib/util"
+	"github.com/louisbuchbinder/core/louisbuchbinder.com/build/load"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/build/wasm_playground"
 	"github.com/louisbuchbinder/core/louisbuchbinder.com/templates"
 )
@@ -15,8 +16,8 @@ func Page(in templates.DocumentTemplateInput) []byte {
 	return templates.MustRenderDocumentTemplate(templates.DocumentTemplateInput{
 		Title: in.Title,
 		Links: template.HTML(strings.Join([]string{
-			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: "/external/bulma-1.0.4/css/bulma.css"})),
-			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: "/external/font-awesome-7.1.0/css/all.css"})),
+			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: load.BULMA_CSS})),
+			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: load.FONT_AWESOME_CSS})),
 			string(templates.MustRenderLinkTemplate(templates.LinkTemplateInput{Rel: "stylesheet", Href: "/css/site.css"})),
 			string(in.Links),
 		}, "\n")),
@@ -43,6 +44,48 @@ var UtilityPlaygroundPage = Page(templates.DocumentTemplateInput{
 	})),
 })
 
+var OpfsPage = Page(templates.DocumentTemplateInput{
+	Title: "Origin Private File System",
+	Main:  template.HTML(templates.MustRenderOpfsHtmlTemplate(templates.OpfsHtmlTemplateInput{})),
+	Scripts: template.HTML(strings.Join([]string{
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.HTMX_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.WASM_GO_JS})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/wasm/routes/filesystem/pkg/wasm.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/GoFile.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/OpfsFile.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/OpfsFS.js")})),
+		string(templates.MustRenderScriptTemplate(templates.ScriptTemplateInput{Src: load.Sha256Version("/js/sw.main.js")})),
+	}, "\n")),
+})
+
+var serviceWorkerTemplateInput = templates.ServiceWorkerTemplateInput{
+	Routes: []templates.ServiceWorkerRoute{
+		{
+			Path:    "/wasm/routes/filesystem",
+			Handler: "wasm.routes.filesystem.AsyncHandler",
+		},
+		{
+			Path:    "/wasm/routes/filesystem/mkdirAll",
+			Handler: "wasm.routes.filesystem.AsyncMkdirAllHandler",
+		},
+		{
+			Path:    "/wasm/routes/filesystem/removeAll",
+			Handler: "wasm.routes.filesystem.AsyncRemoveAllHandler",
+		},
+	},
+}
+
+var _ = load.Register(func() {
+	serviceWorkerTemplateInput.Scripts = []string{
+		load.WASM_GO_JS,
+		load.Sha256Version("/js/GoFile.js"),
+		load.Sha256Version("/js/GoFS.js"),
+		load.Sha256Version("/js/OpfsFile.js"),
+		load.Sha256Version("/js/OpfsFS.js"),
+		load.Sha256Version("/wasm/routes/filesystem/pkg/sha256.wasm.js"),
+	}
+})
+
 func write(f string, content []byte) error {
 	if err := os.MkdirAll(path.Dir(f), 0o700); err != nil {
 		return err
@@ -53,9 +96,16 @@ func write(f string, content []byte) error {
 	return nil
 }
 
+func init() {
+	load.Load()
+}
+
 func main() {
 	util.Must0(write("index.html", MainPage))
 	util.Must0(write("utility-playground.html", UtilityPlaygroundPage))
+	util.Must0(write("opfs.html", OpfsPage))
+
+	util.Must0(write("sw.js", templates.MustRenderServiceWorkerTemplate(serviceWorkerTemplateInput)))
 
 	util.Must0(write("archive/zip/index.html", Page(wasm_playground.ArchiveZipDocumentTemplateInput)))
 	util.Must0(write("archive/checksum/index.html", Page(wasm_playground.ArchiveChecksumDocumentTemplateInput)))

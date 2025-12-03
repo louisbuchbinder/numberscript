@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "load",
+    srcs = [
+        "main.go",
+        "var.go",
+    ],
+    importpath = "github.com/louisbuchbinder/core/louisbuchbinder.com/build/load",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//lib/build",
+        "//lib/util",
+    ],
+)

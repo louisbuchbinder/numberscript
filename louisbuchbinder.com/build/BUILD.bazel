@@ -7,6 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//lib/util",
+        "//louisbuchbinder.com/build/load",
         "//louisbuchbinder.com/build/wasm_playground",
         "//louisbuchbinder.com/templates",
     ],
@@ -14,16 +15,17 @@ go_library(
 
 genrule(
     name = "site",
-    srcs = [],
+    srcs = ["//louisbuchbinder.com:manifest.json"],
     outs = [
-        ":site.tar.gz",
+        ":site.tar",
     ],
     cmd = """
     mkdir site
     BUILD=$$(realpath $(location :build))
+    MANIFEST=$$(realpath $(location //louisbuchbinder.com:manifest.json))
     cd site
-    $$BUILD
-    find . -type f | xargs tar -czf ../$(location :site.tar.gz)
+    $$BUILD --manifest $$MANIFEST
+    find . -type f | xargs tar -cf ../$(location :site.tar)
     """,
     tools = [":build"],
     visibility = ["//visibility:public"],

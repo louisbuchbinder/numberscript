@@ -8,6 +8,7 @@ require (
 	github.com/chromedp/chromedp v0.14.2
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.11.1
+	golang.org/x/sync v0.11.0
 )
 
 require (

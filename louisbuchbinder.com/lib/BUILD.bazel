@@ -1,7 +1,4 @@
 filegroup(
-    # TODO: create typescript rule for building
-    # for each ts source file create expected js output file
-    # execute the build like "tsc" target below
     name = "ts_srcs",
     srcs = glob(
         [
@@ -22,17 +19,21 @@ genrule(
         "@typescript-5.9.3//:typescript",
     ],
     outs = [
-        "static.tar.gz",
+        "tsc.tar",
     ],
     cmd = """
-    mkdir -p archive/static/js
+    mkdir -p archive/js
     $(location @node-v22.20.0-darwin-x64//:node) \
         $(location @typescript-5.9.3//:bin_tsc) \
         --project $(location tsconfig.json) \
-        --outDir  archive/static/js
+        --outDir  archive/js
+    $(location //lib/build/manifest/entries) --dir archive/js
     cd archive
-    find static -type f | xargs tar -czf ../$(location static.tar.gz)
+    find . -type f | xargs tar -cf ../$(location tsc.tar)
     """,
-    tools = ["@node-v22.20.0-darwin-x64//:node"],
+    tools = [
+        "//lib/build/manifest/entries",
+        "@node-v22.20.0-darwin-x64//:node",
+    ],
     visibility = ["//visibility:public"],
 )
