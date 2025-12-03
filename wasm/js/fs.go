@@ -79,14 +79,19 @@ type jsGoFS struct {
 }
 
 func (s *jsGoFS) Open(p string) (fs.File, error) {
-	res := s.Value.Call("open", p)
+	res, err := PromiseResolveOrReject(s.Value.Call("open", p))
+	if err != nil {
+		return nil, err
+	}
 	if res.IsNull() || res.IsUndefined() {
 		return nil, fs.ErrNotExist
 	}
-	if res.InstanceOf(js.Global().Get("Error")) {
-		return nil, fmt.Errorf(res.Get("message").String())
+
+	stat, err := PromiseResolveOrReject(res.Call("stat"))
+	if err != nil {
+		return nil, err
 	}
-	if res.Call("stat").Call("isDir").Bool() {
+	if stat.Call("isDir").Bool() {
 		return NewReadDirFile(res), nil
 	}
 	return NewFile(res), nil

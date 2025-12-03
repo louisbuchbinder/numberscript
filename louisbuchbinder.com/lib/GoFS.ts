@@ -10,30 +10,30 @@ interface IGoReadDirFile extends IGoFile {
 }
 
 interface IGoFS {
-  open(p: string): IGoFile | Error;
+  open(p: string): Promise<IGoFile>;
 }
 
 class GoDirEntry implements IGoDirEntry {
-  f: IGoFile;
+  _info: IGoFileInfo;
 
-  constructor(f: IGoFile) {
-    this.f = f;
+  constructor(info: IGoFileInfo) {
+    this._info = info;
   }
 
   name(): string {
-    return this.f.stat().name();
+    return this._info.name();
   }
 
   isDir(): boolean {
-    return this.f.stat().isDir();
+    return this._info.isDir();
   }
 
   type(): null {
-    return this.f.stat().mode();
+    return this._info.mode();
   }
 
   info(): IGoFileInfo | Error {
-    return this.f.stat();
+    return this._info;
   }
 }
 
@@ -49,7 +49,7 @@ class GoReadDirFile extends GoFile implements IGoReadDirFile {
     this.info = new GoDirFileInfo(dirName);
   }
 
-  stat(): IGoFileInfo {
+  async stat(): Promise<IGoFileInfo> {
     return this.info;
   }
 
@@ -103,7 +103,7 @@ class GoDirFileInfo implements IGoFileInfo {
   }
 }
 
-class GoFS {
+class GoFS implements IGoFS {
   static ErrInvalid = new Error("invalid");
   static ErrNotFound = new Error("not found");
 
@@ -129,7 +129,7 @@ class GoFS {
     }
   }
 
-  open(p: string): IGoFile | Error {
+  async open(p: string): Promise<IGoFile> {
     return this.trie.get(p);
   }
 }
@@ -168,22 +168,22 @@ class FSTrie {
     current.files.set(parts[parts.length - 1], file);
   }
 
-  get(p: string): IGoFile | Error {
+  async get(p: string): Promise<IGoFile> {
     if (p.length === 0) {
-      return GoFS.ErrInvalid;
+      throw GoFS.ErrInvalid;
     }
     if (p[0] === "/") {
       // Only relative paths are supported
-      return GoFS.ErrInvalid;
+      throw GoFS.ErrInvalid;
     }
     if (p === ".") {
-      return new GoReadDirFile(".", this.entries());
+      return new GoReadDirFile(".", await this.entries());
     }
     const parts = p.split("/");
     let current: FSTrie = this;
     for (let i = 0; i < parts.length - 1; i++) {
       if (!current.dirs.has(parts[i])) {
-        return GoFS.ErrNotFound;
+        throw GoFS.ErrNotFound;
       }
       current = current.dirs.get(parts[i]);
     }
@@ -193,17 +193,20 @@ class FSTrie {
     if (current.dirs.get(parts[parts.length - 1])) {
       return new GoReadDirFile(
         parts[parts.length - 1],
-        current.dirs.get(parts[parts.length - 1]).entries()
+        await current.dirs.get(parts[parts.length - 1]).entries()
       );
     }
-    return GoFS.ErrNotFound;
+    throw GoFS.ErrNotFound;
   }
 
-  entries(): IGoDirEntry[] {
-    const files = Array.from(this.files.values()).map((f) => new GoDirEntry(f));
-    const dirs = Array.from(this.dirs.entries()).map(
-      ([k, v]) => new GoDirEntry(new GoReadDirFile(k, v.entries()))
+  async entries(): Promise<IGoDirEntry[]> {
+    const files = Array.from(this.files.values()).map(
+      async (f) => new GoDirEntry(await f.stat())
     );
-    return Array.prototype.concat(files, dirs);
+    const dirs = Array.from(this.dirs.entries()).map(
+      async ([k, v]) =>
+        new GoDirEntry(await new GoReadDirFile(k, await v.entries()).stat())
+    );
+    return await Promise.all(Array.prototype.concat(files, dirs));
   }
 }

@@ -38,7 +38,11 @@ type jsGoFile struct {
 }
 
 func (f *jsGoFile) Stat() (fs.FileInfo, error) {
-	return &jsGoFileInfo{f.Value.Call("stat")}, nil
+	info, err := PromiseResolveOrReject(f.Value.Call("stat"))
+	if err != nil {
+		return nil, err
+	}
+	return &jsGoFileInfo{info}, nil
 }
 
 func (f *jsGoFile) Read(b []byte) (int, error) {

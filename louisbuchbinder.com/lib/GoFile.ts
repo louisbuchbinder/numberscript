@@ -1,5 +1,5 @@
 interface IGoFile {
-  stat(): IGoFileInfo;
+  stat(): Promise<IGoFileInfo>;
   read(): Promise<Uint8Array<ArrayBufferLike>>;
 }
 
@@ -53,7 +53,7 @@ class GoFile implements IGoFile {
     this.error = null;
   }
 
-  stat(): IGoFileInfo {
+  async stat(): Promise<IGoFileInfo> {
     return new GoFileInfo(this.file);
   }
 

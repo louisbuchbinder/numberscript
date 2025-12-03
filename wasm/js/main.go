@@ -124,3 +124,30 @@ func Array[T any](items []T) js.Value {
 func Error(err error) js.Value {
 	return js.Global().Get("Error").New(err.Error())
 }
+
+func PromiseResolveOrReject(promise js.Value) (js.Value, error) {
+	var handler, errHandler js.Func
+	c := make(chan js.Value, 1)
+	fn := func(this js.Value, args []js.Value) any {
+		defer handler.Release()
+		defer errHandler.Release()
+		if len(args) < 1 {
+			c <- js.Global().Get("Error").New("got unexpected undefined from promise invocation")
+		} else {
+			c <- args[0]
+		}
+		return nil
+	}
+	handler = js.FuncOf(fn)
+	errHandler = js.FuncOf(fn)
+	promise.Call("then", handler, errHandler)
+	dat := <-c
+	if IsError(dat) {
+		return js.Null(), fmt.Errorf(dat.Get("message").String())
+	}
+	return dat, nil
+}
+
+func IsError(maybeErr js.Value) bool {
+	return maybeErr.InstanceOf(js.Global().Get("Error"))
+}

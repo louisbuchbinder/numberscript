@@ -33,69 +33,20 @@ func (w *goFileWriter) Write(p []byte) (int, error) {
 
 	ta := js.Global().Get("Uint8Array").New(len(p))
 	js.CopyBytesToJS(ta, p)
-
-	var handler, errHandler js.Func
-	fn := func(this js.Value, args []js.Value) any {
-		defer handler.Release()
-		defer errHandler.Release()
-		if len(args) < 1 {
-			w.Data <- js.Undefined()
-		} else {
-			w.Data <- args[0]
-		}
-		return nil
+	v, err := PromiseResolveOrReject(w.Value.Call("write", ta))
+	if err != nil {
+		return 0, err
 	}
-	handler = js.FuncOf(fn)
-	errHandler = js.FuncOf(fn)
-
-	wr := wrapper{w.Value.Call("write", ta)}
-	if !wr.IsPromise() {
-		return 0, fmt.Errorf("expected a Promise in goFileWriter.Write")
+	if v.Type() == js.TypeNumber {
+		return v.Int(), nil
 	}
-	_ = wr.Call("then", handler, errHandler)
-
-	d := <-w.Data
-	wv := wrapper{d}
-	if wv.Value.IsNull() {
-		return 0, nil
-	}
-	if wv.Value.InstanceOf(js.Global().Get("Error")) {
-		return 0, fmt.Errorf(wv.Get("message").String())
-	}
-	if wv.Value.Type() == js.TypeNumber {
-		return wv.Value.Int(), nil
-	}
-	return 0, fmt.Errorf("unexpected write result: %v", wv.Value)
+	return 0, fmt.Errorf("unexpected write result: %v", v)
 }
 
 func (w *goFileWriter) Close() error {
 	if w == nil || w.Value.IsUndefined() || w.Value.IsNull() {
 		return fmt.Errorf("invalid writer")
 	}
-	var handler, errHandler js.Func
-	fn := func(this js.Value, args []js.Value) any {
-		defer handler.Release()
-		defer errHandler.Release()
-		if len(args) < 1 {
-			w.Data <- js.Undefined()
-		} else {
-			w.Data <- args[0]
-		}
-		return nil
-	}
-	handler = js.FuncOf(fn)
-	errHandler = js.FuncOf(fn)
-
-	wr := wrapper{w.Value.Call("close")}
-	_ = wr.Call("then", handler, errHandler)
-
-	d := <-w.Data
-	wv := wrapper{d}
-	if wv.Value.IsNull() || wv.Value.IsUndefined() {
-		return nil
-	}
-	if wv.Value.InstanceOf(js.Global().Get("Error")) {
-		return fmt.Errorf(wv.Get("message").String())
-	}
-	return nil
+	_, err := PromiseResolveOrReject(w.Value.Call("close"))
+	return err
 }
