@@ -1,0 +1,8 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "lib",
+    srcs = ["interpreter.go"],
+    importpath = "github.com/louisbuchbinder/numberscript/lib",
+    visibility = ["//visibility:public"],
+)

@@ -7,6 +7,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/louisbuchbinder/numberscript",
     visibility = ["//visibility:private"],
+    deps = ["//numberscript/lib"],
 )
 
 go_binary(
@@ -31,5 +32,8 @@ go_test(
         "test/printNumber.expect",
         "test/printNumber.ns",
     ],
-    deps = ["@com_github_stretchr_testify//assert"],
+    deps = [
+        "//numberscript/lib",
+        "@com_github_stretchr_testify//assert",
+    ],
 )

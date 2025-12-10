@@ -1,9 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"embed"
 	"testing"
+
+	"github.com/louisbuchbinder/numberscript/lib"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -96,11 +97,10 @@ func init() {
 func TestInterpreter(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			var buf = new(bytes.Buffer)
-			intrptr := newInterpreter()
-			intrptr.writer = buf
-			intrptr.exec([]rune(tc.script))
-			assert.Equal(tt, tc.expect, buf.String())
+			intrptr := lib.NewInterpreter()
+			b, err := intrptr.Exec([]rune(tc.script))
+			assert.Nil(t, err)
+			assert.Equal(tt, tc.expect, string(b))
 		})
 	}
 }
