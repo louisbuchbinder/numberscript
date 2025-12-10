@@ -43,6 +43,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       (async () => {
         try {
+          await Promise.all(wasmContentLoaders);
           fn = resolve(routes.get(url.pathname), self);
           return await fn(req);
         } catch (err) {

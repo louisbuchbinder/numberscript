@@ -1,14 +1,15 @@
-const serviceWorkerMainInit: Promise<boolean> =
-  (async function (): Promise<boolean> {
+const serviceWorkerMainInit: Promise<ServiceWorkerRegistration> =
+  (async function (): Promise<ServiceWorkerRegistration> {
     if ("serviceWorker" in navigator) {
       return navigator.serviceWorker
         .register("/sw.js", { scope: "/", updateViaCache: "imports" })
-        .then((reg) => reg.update())
-        .then(() => {
+        .then(async (reg) => {
+          await reg.update();
           if (window.navigator.serviceWorker.controller === null) {
             window.location.reload();
+            return;
           }
-          return true;
+          return navigator.serviceWorker.ready;
         });
     } else {
       const err = new Error(

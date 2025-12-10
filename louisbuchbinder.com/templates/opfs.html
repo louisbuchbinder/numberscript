@@ -24,7 +24,9 @@
 </section>
 
 <script>
-  serviceWorkerMainInit.then((_) =>
-    htmx.trigger(document.getElementById("opfs-init"), "click")
-  );
+  (async function () {
+    await Promise.all(wasmContentLoaders);
+    await serviceWorkerMainInit;
+    htmx.trigger(document.getElementById("opfs-init"), "click");
+  })();
 </script>
