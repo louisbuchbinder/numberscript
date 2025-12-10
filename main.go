@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"strconv"
 )
@@ -43,7 +42,7 @@ func newInterpreter() *interpreter {
 }
 
 func mustParseNumberRune(str []rune) []rune {
-	var number = parseNumberRune(str)
+	number := parseNumberRune(str)
 	if len(number) == 0 {
 		panic("missing expected number")
 	}
@@ -70,7 +69,7 @@ func toInt(str []rune) int {
 }
 
 func balancedRune(str []rune) []rune {
-	var depth = 0
+	depth := 0
 	for i := 0; i < len(str); i++ {
 		switch str[i] {
 		case '(':
@@ -252,7 +251,7 @@ func (intrptr *interpreter) exec(str []rune) {
 				i += len(str[i+1:])
 			}
 		default:
-			panic(fmt.Errorf("Unexpected char %s", string(str[i])))
+			panic(fmt.Errorf("unexpected char %s", string(str[i])))
 		}
 	}
 }
@@ -263,7 +262,7 @@ func main() {
 		panic(fmt.Errorf("usage numberscript <filename>"))
 	}
 	filename := flag.Args()[0]
-	content, err := ioutil.ReadFile(filename)
+	content, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "failed to read file:", err)
 		os.Exit(1)
