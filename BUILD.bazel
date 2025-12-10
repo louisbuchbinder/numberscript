@@ -1,6 +1,10 @@
-# gazelle:prefix github.com/louisbuchbinder/numberscript
-
+load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+# gazelle:resolve go github.com/louisbuchbinder/numberscript/lib //numberscript/lib
+
+# gazelle:prefix github.com/louisbuchbinder/numberscript
+gazelle(name = "gazelle")
 
 go_library(
     name = "numberscript_lib",
