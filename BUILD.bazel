@@ -1,0 +1,35 @@
+# gazelle:prefix github.com/louisbuchbinder/numberscript
+
+load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "numberscript_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/louisbuchbinder/numberscript",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "numberscript",
+    embed = [":numberscript_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "numberscript_test",
+    srcs = ["interpreter_test.go"],
+    embed = [":numberscript_lib"],
+    embedsrcs = [
+        "test/alphabet.expect",
+        "test/alphabet.ns",
+        "test/basicStackExample.expect",
+        "test/basicStackExample.ns",
+        "test/fibonacci.expect",
+        "test/fibonacci.ns",
+        "test/hello.expect",
+        "test/hello.ns",
+        "test/printNumber.expect",
+        "test/printNumber.ns",
+    ],
+    deps = ["@com_github_stretchr_testify//assert"],
+)
