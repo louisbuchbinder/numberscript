@@ -1,0 +1,34 @@
+===========
+= Fibonacci
+===========
+
+10>					= stack[0] += 10, newline
+32>					= stack[1] += 32, space
+48>					= stack[2] += 48, zero
+0>					= stack[3] += 0
+1>					= stack[4] += 1
+0>					= stack[5] += 0
+12(					= stack[6] += 10; loop fibonacci:
+<+<<.>>			= stack[5] += stack[3]
+>>+<<.>>		= stack[7] += stack[5]
+(						= Loop to print literal number
+/<<<<<<<. 	= stack[7] /= stack[0]
+>>>>>>>?		= if stack[7] != 0
++<<<<<.			= true: stack[7] += stack[2]
+>>>>>π			= true: print(stack[7])
+-<<<<<.			= true: stack[7] -= stack[2]
+>>>>>,.)		= false: noop; end loop number printer
+<<%<<<<<. 	= stack[5] %= stack[0]
+>>>>>+<<<.	= stack[5] += stack[2]
+>>>π				= print(stack[5])
+-<>					= stack[5] -= stack[5]
+<<<<π>>>> 	= print(stack[1])
++<<.>>			= stack[5] += stack[3]
++<.<				= stack[5] += stack[4]
+-<>					= stack[3] -= stack[3]
++>					= stack[3] += stack[4]
+-<>					= stack[4] -= stack[4]
++>					= stack[4] += stack[5]
+-<>.				= stack[5] -= stack[5]
+>--)				= stack[6] -= 1; end loop fibonacci
+<<<<<<π			= print(stack[0])
