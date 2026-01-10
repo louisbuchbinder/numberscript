@@ -10,7 +10,7 @@ import (
 
 func main() {
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "usage numberscript <filename>")
+		fmt.Fprintln(os.Stderr, "usage numberscript <filename>")
 	}
 	if flag.NArg() < 1 {
 		flag.Usage()
