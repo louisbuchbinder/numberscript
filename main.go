@@ -9,9 +9,12 @@ import (
 )
 
 func main() {
-	flag.Parse()
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "usage numberscript <filename>")
+	}
 	if flag.NArg() < 1 {
-		panic(fmt.Errorf("usage numberscript <filename>"))
+		flag.Usage()
+		os.Exit(1)
 	}
 	filename := flag.Args()[0]
 	content, err := os.ReadFile(filename)
